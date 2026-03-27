@@ -1,29 +1,59 @@
-﻿using DoAnQuanLyBanHang.DAL;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DoAnQuanLyBanHang.DAL;
+using DoAnQuanLyBanHang.DTO;
 
 namespace DoAnQuanLyBanHang.BUS
 {
     public class UserBUS
     {
-        UserDAL dal = new UserDAL();
+        private readonly UserDAL userDAL = new UserDAL();
 
-        // Đổi từ DataTable thành bool để lệnh IF bên Form hiểu được
-        public bool KiemTraDangNhap(string user, string pass)
+        // Đăng nhập — trả về UserDTO hoặc null
+        public UserDTO KiemTraDangNhap(string userName, string matKhau)
         {
-            // 1. Chặn lỗi nhập trống
-            if (string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass))
+            if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(matKhau))
+                return null;
+            return userDAL.KiemTraDangNhap(userName, matKhau);
+        }
+
+        // Lấy danh sách nhân viên
+        public DataTable LayDanhSachNhanVien()
+        {
+            return userDAL.LayDanhSachNhanVien();
+        }
+
+        // Thêm nhân viên
+        public bool ThemNhanVien(UserDTO user, string matKhau)
+        {
+            if (string.IsNullOrWhiteSpace(user.UserName) || string.IsNullOrWhiteSpace(matKhau))
                 return false;
+            if (userDAL.KiemTraUserName(user.UserName))
+                return false;  // Username đã tồn tại
+            if (string.IsNullOrWhiteSpace(user.Role))
+                user.Role = "Staff";
+            return userDAL.ThemNhanVien(user, matKhau);
+        }
 
-            // 2. Lấy kết quả từ DAL
-            DataTable dt = dal.Login(user, pass);
+        // Sửa nhân viên
+        public bool SuaNhanVien(UserDTO user)
+        {
+            if (string.IsNullOrWhiteSpace(user.FullName))
+                return false;
+            return userDAL.SuaNhanVien(user);
+        }
 
-            // 3. Trả về true nếu bảng có dữ liệu (đăng nhập đúng), ngược lại trả về false
-            return dt != null && dt.Rows.Count > 0;
+        // Đổi mật khẩu
+        public bool DoiMatKhau(int userId, string matKhauMoi)
+        {
+            if (string.IsNullOrWhiteSpace(matKhauMoi))
+                return false;
+            return userDAL.DoiMatKhau(userId, matKhauMoi);
+        }
+
+        // Xóa nhân viên
+        public bool XoaNhanVien(int userId)
+        {
+            return userDAL.XoaNhanVien(userId);
         }
     }
 }

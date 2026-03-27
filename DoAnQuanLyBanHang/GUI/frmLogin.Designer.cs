@@ -28,22 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLogin));
             label1 = new Label();
             label2 = new Label();
             txtUsername = new TextBox();
             txtPassword = new TextBox();
             btnLogin = new Button();
-            panel1 = new Panel();
             label3 = new Label();
             pictureBox1 = new PictureBox();
-            panel1.SuspendLayout();
+            groupBox1 = new GroupBox();
+            linkLabel1 = new LinkLabel();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(246, 374);
+            label1.Location = new Point(103, 54);
             label1.Name = "label1";
             label1.Size = new Size(112, 20);
             label1.TabIndex = 0;
@@ -52,7 +54,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(246, 438);
+            label2.Location = new Point(103, 90);
             label2.Name = "label2";
             label2.Size = new Size(72, 20);
             label2.TabIndex = 1;
@@ -60,7 +62,7 @@
             // 
             // txtUsername
             // 
-            txtUsername.Location = new Point(377, 374);
+            txtUsername.Location = new Point(221, 54);
             txtUsername.Name = "txtUsername";
             txtUsername.Size = new Size(125, 27);
             txtUsername.TabIndex = 2;
@@ -68,29 +70,22 @@
             // 
             // txtPassword
             // 
-            txtPassword.Location = new Point(377, 431);
+            txtPassword.Location = new Point(221, 87);
             txtPassword.Name = "txtPassword";
+            txtPassword.PasswordChar = '*';
             txtPassword.Size = new Size(125, 27);
             txtPassword.TabIndex = 3;
             // 
             // btnLogin
             // 
-            btnLogin.Location = new Point(364, 493);
+            btnLogin.Cursor = Cursors.Hand;
+            btnLogin.Location = new Point(163, 131);
             btnLogin.Name = "btnLogin";
-            btnLogin.Size = new Size(94, 29);
+            btnLogin.Size = new Size(110, 40);
             btnLogin.TabIndex = 4;
             btnLogin.Text = "Đăng nhập";
             btnLogin.UseVisualStyleBackColor = true;
             btnLogin.Click += btnLogin_Click;
-            // 
-            // panel1
-            // 
-            panel1.Controls.Add(label3);
-            panel1.Location = new Point(4, 23);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(800, 73);
-            panel1.TabIndex = 5;
-            panel1.Paint += panel1_Paint;
             // 
             // label3
             // 
@@ -99,9 +94,9 @@
             label3.CausesValidation = false;
             label3.Font = new Font("Times New Roman", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.FloralWhite;
-            label3.Location = new Point(0, 0);
+            label3.Location = new Point(-19, -1);
             label3.Name = "label3";
-            label3.Size = new Size(800, 73);
+            label3.Size = new Size(816, 73);
             label3.TabIndex = 0;
             label3.Text = "HỆ THỐNG QUẢN LÝ BÁN HÀNG CHO CỬA HÀNG TIỆN LỢI ";
             label3.TextAlign = ContentAlignment.MiddleCenter;
@@ -109,31 +104,56 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(-41, 12);
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(-1, 63);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(800, 352);
+            pictureBox1.Size = new Size(806, 425);
             pictureBox1.TabIndex = 6;
             pictureBox1.TabStop = false;
+            pictureBox1.Click += pictureBox1_Click;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(linkLabel1);
+            groupBox1.Controls.Add(label1);
+            groupBox1.Controls.Add(btnLogin);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(txtPassword);
+            groupBox1.Controls.Add(txtUsername);
+            groupBox1.Location = new Point(176, 111);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(479, 186);
+            groupBox1.TabIndex = 7;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "ĐĂNG NHẬP";
+            // 
+            // linkLabel1
+            // 
+            linkLabel1.AutoSize = true;
+            linkLabel1.Location = new Point(291, 151);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new Size(111, 20);
+            linkLabel1.TabIndex = 0;
+            linkLabel1.TabStop = true;
+            linkLabel1.Text = "Quên Mật Khẩu";
             // 
             // frmLogin
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(807, 532);
-            Controls.Add(panel1);
-            Controls.Add(btnLogin);
-            Controls.Add(txtPassword);
-            Controls.Add(txtUsername);
-            Controls.Add(label2);
-            Controls.Add(label1);
+            ClientSize = new Size(795, 357);
+            Controls.Add(groupBox1);
+            Controls.Add(label3);
             Controls.Add(pictureBox1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "frmLogin";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "frmLogin";
             Load += frmLogin_Load;
-            panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -143,8 +163,9 @@
         private TextBox txtUsername;
         private TextBox txtPassword;
         private Button btnLogin;
-        private Panel panel1;
         private Label label3;
         private PictureBox pictureBox1;
+        private LinkLabel linkLabel1;
+        public GroupBox groupBox1;
     }
 }
