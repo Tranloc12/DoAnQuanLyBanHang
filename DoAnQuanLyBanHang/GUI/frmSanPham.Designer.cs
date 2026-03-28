@@ -39,6 +39,7 @@ namespace DoAnQuanLyBanHang
             btnXoa        = new System.Windows.Forms.Button();
             btnLuu        = new System.Windows.Forms.Button();
             btnHuy        = new System.Windows.Forms.Button();
+            btnExcel      = new System.Windows.Forms.Button();
             lblTitle      = new System.Windows.Forms.Label();
 
             ((System.ComponentModel.ISupportInitialize)dgvSanPham).BeginInit();
@@ -124,8 +125,9 @@ namespace DoAnQuanLyBanHang
             btnXoa.Text  = "🗑 Xóa";  btnXoa.Location  = new System.Drawing.Point(bx + 220, 5); btnXoa.Size  = new System.Drawing.Size(bw, bh); btnXoa.BackColor = System.Drawing.Color.Crimson;    btnXoa.ForeColor = System.Drawing.Color.White; btnXoa.Click  += new System.EventHandler(btnXoa_Click);
             btnLuu.Text  = "💾 Lưu";  btnLuu.Location  = new System.Drawing.Point(bx + 330, 5); btnLuu.Size  = new System.Drawing.Size(bw, bh); btnLuu.BackColor = System.Drawing.Color.DarkOrange; btnLuu.ForeColor = System.Drawing.Color.White; btnLuu.Click  += new System.EventHandler(btnLuu_Click);
             btnHuy.Text  = "✖ Hủy";   btnHuy.Location  = new System.Drawing.Point(bx + 440, 5); btnHuy.Size  = new System.Drawing.Size(bw, bh); btnHuy.BackColor = System.Drawing.Color.Gray;       btnHuy.ForeColor = System.Drawing.Color.White; btnHuy.Click  += new System.EventHandler(btnHuy_Click);
+            btnExcel.Text  = "📂 Excel"; btnExcel.Location = new System.Drawing.Point(bx + 550, 5); btnExcel.Size = new System.Drawing.Size(bw, bh); btnExcel.BackColor = System.Drawing.Color.DarkGreen; btnExcel.ForeColor = System.Drawing.Color.White; btnExcel.Click += new System.EventHandler(btnExcel_Click);
 
-            pnlButtons.Controls.AddRange(new System.Windows.Forms.Control[] { btnThem, btnSua, btnXoa, btnLuu, btnHuy });
+            pnlButtons.Controls.AddRange(new System.Windows.Forms.Control[] { btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnExcel });
 
             // Form
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -152,7 +154,7 @@ namespace DoAnQuanLyBanHang
         private System.Windows.Forms.TextBox         txtSoLuong, txtSoLuongMin, txtDonVi;
         private System.Windows.Forms.ComboBox        cbDanhMuc, cbNhaCungCap;
         private System.Windows.Forms.Panel           pnlButtons;
-        private System.Windows.Forms.Button          btnThem, btnSua, btnXoa, btnLuu, btnHuy;
+        private System.Windows.Forms.Button          btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnExcel;
         private System.Windows.Forms.Label           lblTitle;
     }
 }

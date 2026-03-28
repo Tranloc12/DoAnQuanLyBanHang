@@ -14,7 +14,17 @@ namespace DoAnQuanLyBanHang
         private readonly OrderBUS    orderBUS    = new OrderBUS();
 
         // Danh sách các dòng đang chờ
+        // Danh sách các dòng đang chờ
         private readonly List<OrderDetailDTO> danhSachChiTiet = new List<OrderDetailDTO>();
+
+        // Lưu thông tin đơn lùi để in lại
+        private OrderDTO lastOrder = null;
+        private List<OrderDetailDTO> lastOrderDetails = null;
+        private string lastCustomerName = "";
+        private string lastEmployeeName = "";
+        
+        // Nút in hóa đơn động
+        private Button btnInHoaDon;
 
         public frmBanHang()
         {
@@ -23,6 +33,29 @@ namespace DoAnQuanLyBanHang
 
         private void frmBanHang_Load(object sender, EventArgs e)
         {
+            // Inject btnInHoaDon
+            btnInHoaDon = new Button();
+            btnInHoaDon.Text = "🖨 IN HÓA ĐƠN";
+            btnInHoaDon.Size = new Size(255, 42);
+            btnInHoaDon.Location = new System.Drawing.Point(10, btnThanhToan.Location.Y + 45);
+            btnInHoaDon.BackColor = System.Drawing.Color.RoyalBlue;
+            btnInHoaDon.ForeColor = System.Drawing.Color.White;
+            btnInHoaDon.Font = new System.Drawing.Font("Segoe UI", 11, System.Drawing.FontStyle.Bold);
+            btnInHoaDon.Enabled = false;
+            btnInHoaDon.Click += (s, ev) => 
+            {
+                if (lastOrder != null) 
+                {
+                    try {
+                        DoAnQuanLyBanHang.Helpers.InvoiceHelper.GenerateAndShowInvoice(lastOrder, lastOrderDetails, lastCustomerName, lastEmployeeName);
+                    } catch (Exception ex) {
+                        MessageBox.Show("Lỗi in PDF: " + ex.Message);
+                    }
+                }
+            };
+            grpThanhToan.Height += 50; 
+            grpThanhToan.Controls.Add(btnInHoaDon);
+
             NapSanPham();
             cbPhuongThucTT.Items.AddRange(new string[] { "Tiền mặt", "Thẻ ngân hàng", "Chuyển khoản" });
             cbPhuongThucTT.SelectedIndex = 0;
@@ -165,6 +198,16 @@ namespace DoAnQuanLyBanHang
             {
                 MessageBox.Show($"✅ Thanh toán thành công!\nMã đơn: {donHang.OrderCode}\nThành tiền: {thanhToan:N0} VNĐ",
                     "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
+                // Lưu lại thông tin đơn hàng vừa thanh toán để in hóa đơn
+                lastOrder = donHang;
+                lastOrderDetails = new List<OrderDetailDTO>(danhSachChiTiet);
+                lastCustomerName = lblTenKhachHang.Text;
+                lastEmployeeName = SessionUser.CurrentUser?.FullName ?? "N/A";
+                
+                // Mở khóa nút In
+                if (btnInHoaDon != null) btnInHoaDon.Enabled = true;
+
                 LamMoiDonHang();
             }
             else

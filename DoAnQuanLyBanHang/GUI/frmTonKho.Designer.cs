@@ -20,6 +20,9 @@ namespace DoAnQuanLyBanHang
             btnTatCa    = new System.Windows.Forms.Button();
             btnSapHet   = new System.Windows.Forms.Button();
             btnNhapKho  = new System.Windows.Forms.Button();
+            btnExcel    = new System.Windows.Forms.Button();
+            lblTimKiem  = new System.Windows.Forms.Label();
+            txtTimKiem  = new System.Windows.Forms.TextBox();
 
             ((System.ComponentModel.ISupportInitialize)dgvTonKho).BeginInit();
             pnlLegend.SuspendLayout(); pnlButtons.SuspendLayout(); SuspendLayout();
@@ -32,6 +35,10 @@ namespace DoAnQuanLyBanHang
             lblLegend2.Text = "  🟡 Sắp hết   "; lblLegend2.Location = new System.Drawing.Point(130, 5); lblLegend2.Size = new System.Drawing.Size(120, 20); lblLegend2.BackColor = System.Drawing.Color.FromArgb(255, 240, 180);
             lblLegend3.Text = "  🔴 Hết hàng  "; lblLegend3.Location = new System.Drawing.Point(260, 5); lblLegend3.Size = new System.Drawing.Size(120, 20); lblLegend3.BackColor = System.Drawing.Color.FromArgb(255, 200, 200);
             pnlLegend.Controls.AddRange(new System.Windows.Forms.Control[] { lblLegend1, lblLegend2, lblLegend3 });
+            
+            lblTimKiem.Text = "🔍 Tìm kiếm:"; lblTimKiem.Location = new Point(450, 16); lblTimKiem.AutoSize = true;
+            txtTimKiem.Location = new Point(530, 14); txtTimKiem.Size = new Size(200, 26);
+            txtTimKiem.KeyUp += new System.Windows.Forms.KeyEventHandler(txtTimKiem_KeyUp);
 
             dgvTonKho.Location = new System.Drawing.Point(12, 80); dgvTonKho.Size = new System.Drawing.Size(850, 420);
             dgvTonKho.AllowUserToAddRows = false; dgvTonKho.ReadOnly = true;
@@ -46,17 +53,19 @@ namespace DoAnQuanLyBanHang
             btnTatCa.Text   = "📋 Tất cả";   btnTatCa.Location   = new System.Drawing.Point(0, 4);   btnTatCa.Size   = new System.Drawing.Size(115, bh); btnTatCa.BackColor   = System.Drawing.Color.SteelBlue;  btnTatCa.ForeColor   = System.Drawing.Color.White; btnTatCa.Click   += new System.EventHandler(btnTatCa_Click);
             btnSapHet.Text  = "⚠ Sắp hết";   btnSapHet.Location  = new System.Drawing.Point(123, 4); btnSapHet.Size  = new System.Drawing.Size(115, bh); btnSapHet.BackColor  = System.Drawing.Color.DarkOrange; btnSapHet.ForeColor  = System.Drawing.Color.White; btnSapHet.Click  += new System.EventHandler(btnSapHet_Click);
             btnNhapKho.Text = "📦 Nhập kho"; btnNhapKho.Location = new System.Drawing.Point(246, 4); btnNhapKho.Size = new System.Drawing.Size(130, bh); btnNhapKho.BackColor = System.Drawing.Color.SeaGreen;   btnNhapKho.ForeColor = System.Drawing.Color.White; btnNhapKho.Click += new System.EventHandler(btnNhapKho_Click);
-            pnlButtons.Controls.AddRange(new System.Windows.Forms.Control[] { btnTatCa, btnSapHet, btnNhapKho });
+            btnExcel.Text = "📊 Xuất Excel"; btnExcel.Location = new System.Drawing.Point(385, 4); btnExcel.Size = new System.Drawing.Size(120, bh); btnExcel.BackColor = System.Drawing.Color.FromArgb(33, 115, 70); btnExcel.ForeColor = System.Drawing.Color.White; btnExcel.Click += new System.EventHandler(btnExcel_Click);
+            pnlButtons.Controls.AddRange(new System.Windows.Forms.Control[] { btnTatCa, btnSapHet, btnNhapKho, btnExcel });
 
             ClientSize = new System.Drawing.Size(882, 590); Text = "Quản Lý Tồn Kho"; StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Load += new System.EventHandler(frmTonKho_Load);
-            Controls.AddRange(new System.Windows.Forms.Control[] { lblTitle, pnlLegend, dgvTonKho, lblThongKe, pnlButtons });
+            Controls.AddRange(new System.Windows.Forms.Control[] { lblTitle, pnlLegend, dgvTonKho, lblThongKe, pnlButtons, lblTimKiem, txtTimKiem });
             ((System.ComponentModel.ISupportInitialize)dgvTonKho).EndInit();
             pnlLegend.ResumeLayout(false); pnlButtons.ResumeLayout(false); ResumeLayout(false);
         }
-        private System.Windows.Forms.Label lblTitle, lblLegend1, lblLegend2, lblLegend3, lblThongKe;
+        private System.Windows.Forms.Label lblTitle, lblLegend1, lblLegend2, lblLegend3, lblThongKe, lblTimKiem;
         private System.Windows.Forms.Panel pnlLegend, pnlButtons;
         private System.Windows.Forms.DataGridView dgvTonKho;
-        private System.Windows.Forms.Button btnTatCa, btnSapHet, btnNhapKho;
+        private System.Windows.Forms.Button btnTatCa, btnSapHet, btnNhapKho, btnExcel;
+        private System.Windows.Forms.TextBox txtTimKiem;
     }
 }
