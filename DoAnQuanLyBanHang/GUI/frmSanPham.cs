@@ -3,6 +3,8 @@ using System.Data;
 using System.Windows.Forms;
 using DoAnQuanLyBanHang.BUS;
 using DoAnQuanLyBanHang.DTO;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace DoAnQuanLyBanHang
 {
@@ -11,9 +13,16 @@ namespace DoAnQuanLyBanHang
         private readonly ProductBUS productBUS = new ProductBUS();
         private int bien = 0; // 1 = Thêm, 2 = Sửa
 
+        private string searchKeyword = "";
+
         public frmSanPham()
         {
             InitializeComponent();
+        }
+
+        public frmSanPham(string keyword) : this()
+        {
+            this.searchKeyword = keyword;
         }
 
         private void frmSanPham_Load(object sender, EventArgs e)
@@ -21,6 +30,74 @@ namespace DoAnQuanLyBanHang
             NapComboBox();
             HienThiDanhSach();
             SetControls(false);
+
+            if (!string.IsNullOrEmpty(searchKeyword))
+            {
+                txtTimKiem.Text = searchKeyword;
+                ThucHienTimKiem(searchKeyword);
+            }
+        }
+
+        private void ThucHienTimKiem(string kw)
+        {
+            dgvSanPham.DataSource = productBUS.TimKiemSanPham(kw);
+        }
+
+        private void btnExcel_Click(object sender, EventArgs e)
+        {
+            if (dgvSanPham.Rows.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu để xuất!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.Filter = "Excel Workbook|*.xlsx";
+                sfd.FileName = "DanhSachSanPham_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".xlsx";
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        using (var workbook = new XLWorkbook())
+                        {
+                            var worksheet = workbook.Worksheets.Add("Products");
+
+                            // Xuất tiêu đề cột
+                            for (int i = 0; i < dgvSanPham.Columns.Count; i++)
+                            {
+                                if (dgvSanPham.Columns[i].Visible)
+                                {
+                                    worksheet.Cell(1, i + 1).Value = dgvSanPham.Columns[i].HeaderText;
+                                    worksheet.Cell(1, i + 1).Style.Font.Bold = true;
+                                    worksheet.Cell(1, i + 1).Style.Fill.BackgroundColor = XLColor.LightGray;
+                                }
+                            }
+
+                            // Xuất dữ liệu
+                            for (int i = 0; i < dgvSanPham.Rows.Count; i++)
+                            {
+                                for (int j = 0; j < dgvSanPham.Columns.Count; j++)
+                                {
+                                    if (dgvSanPham.Columns[j].Visible)
+                                    {
+                                        worksheet.Cell(i + 2, j + 1).Value = dgvSanPham.Rows[i].Cells[j].Value?.ToString();
+                                    }
+                                }
+                            }
+
+                            worksheet.Columns().AdjustToContents();
+                            workbook.SaveAs(sfd.FileName);
+                        }
+                        MessageBox.Show("Xuất Excel thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi khi xuất Excel: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
         }
 
         // ──────────────── Hiển thị ────────────────
@@ -65,6 +142,7 @@ namespace DoAnQuanLyBanHang
             btnXoa.Enabled    = !edit;
             btnLuu.Enabled    = edit;
             btnHuy.Enabled    = edit;
+            btnExcel.Enabled  = !edit;
         }
 
         private void XoaForm()
@@ -191,7 +269,6 @@ namespace DoAnQuanLyBanHang
             SetControls(false);
         }
 
-        // Khi chọn dòng trên DataGridView → nạp vào form
         private void dgvSanPham_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             int r = e.RowIndex;
@@ -212,7 +289,6 @@ namespace DoAnQuanLyBanHang
             catch { }
         }
 
-        // Tìm kiếm real-time
         private void txtTimKiem_KeyUp(object sender, KeyEventArgs e)
         {
             string kw = txtTimKiem.Text.Trim();

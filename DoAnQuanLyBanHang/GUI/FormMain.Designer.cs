@@ -40,6 +40,7 @@ namespace DoAnQuanLyBanHang
             btnProduct = new Button();
             btnSales = new Button();
             btnDashboard = new Button();
+            btnSupplier = new Button();
             pnTop = new Panel();
             lblAdminName = new Label();
             btnLogout = new Button();
@@ -59,12 +60,32 @@ namespace DoAnQuanLyBanHang
             tssUser = new ToolStripStatusLabel();
             tssRole = new ToolStripStatusLabel();
             tssClock = new ToolStripStatusLabel();
+            pnlKPIContainer = new Panel();
+            pnlCardRevenue = new Panel();
+            lblCardRevVal = new Label();
+            lblCardRevTitle = new Label();
+            pnlCardOrders = new Panel();
+            lblCardOrdersVal = new Label();
+            lblCardOrdersTitle = new Label();
+            pnlCardCustomers = new Panel();
+            lblCardCustVal = new Label();
+            lblCardCustTitle = new Label();
+            pnlCardStock = new Panel();
+            lblCardStockVal = new Label();
+            lblCardStockTitle = new Label();
+            pnlChartContainer = new Panel();
+            lblChartTitle = new Label();
+            crtRevenue = new LiveCharts.WinForms.CartesianChart();
             pnSidebar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             pnTop.SuspendLayout();
             pnContent.SuspendLayout();
-            pnRevenue.SuspendLayout();
-            pnAlertStock.SuspendLayout();
+            pnlKPIContainer.SuspendLayout();
+            pnlCardRevenue.SuspendLayout();
+            pnlCardOrders.SuspendLayout();
+            pnlCardCustomers.SuspendLayout();
+            pnlCardStock.SuspendLayout();
+            pnlChartContainer.SuspendLayout();
             stsMain.SuspendLayout();
             SuspendLayout();
             // 
@@ -80,13 +101,25 @@ namespace DoAnQuanLyBanHang
             pnSidebar.Controls.Add(btnCategory);
             pnSidebar.Controls.Add(btnProduct);
             pnSidebar.Controls.Add(btnSales);
+            pnSidebar.Controls.Add(btnSupplier);
             pnSidebar.Controls.Add(btnDashboard);
             pnSidebar.Dock = DockStyle.Left;
             pnSidebar.Location = new Point(0, 0);
             pnSidebar.Name = "pnSidebar";
             pnSidebar.Size = new Size(157, 450);
             pnSidebar.TabIndex = 0;
-            pnSidebar.DockChanged += panel1_DockChanged;
+
+            // 
+            // btnSupplier
+            // 
+            btnSupplier.Location = new Point(17, 360);
+            btnSupplier.Name = "btnSupplier";
+            btnSupplier.Size = new Size(130, 29);
+            btnSupplier.TabIndex = 13;
+            btnSupplier.Text = "NHÀ CUNG CẤP";
+            btnSupplier.UseVisualStyleBackColor = true;
+            btnSupplier.Click += btnSupplier_Click;
+
             // 
             // pictureBox1
             // 
@@ -96,7 +129,7 @@ namespace DoAnQuanLyBanHang
             pictureBox1.Size = new Size(125, 62);
             pictureBox1.TabIndex = 10;
             pictureBox1.TabStop = false;
-            pictureBox1.Click += pictureBox1_Click;
+
             // 
             // label1
             // 
@@ -125,7 +158,8 @@ namespace DoAnQuanLyBanHang
             btnInventory.TabIndex = 7;
             btnInventory.Text = "KHO HÀNG";
             btnInventory.UseVisualStyleBackColor = true;
-            btnInventory.Click += button7_Click;
+            btnInventory.Click += btnInventory_Click;
+
             // 
             // btnUser
             // 
@@ -241,6 +275,7 @@ namespace DoAnQuanLyBanHang
             btnSearch.TabIndex = 11;
             btnSearch.Text = "TÌM";
             btnSearch.UseVisualStyleBackColor = true;
+            btnSearch.Click += btnSearch_Click;
             // 
             // lblSearch
             // 
@@ -261,8 +296,9 @@ namespace DoAnQuanLyBanHang
             // 
             // pnContent
             // 
-            pnContent.Controls.Add(pnRevenue);
-            pnContent.Controls.Add(pnAlertStock);
+            pnContent.BackColor = Color.FromArgb(244, 246, 249);
+            pnContent.Controls.Add(pnlChartContainer);
+            pnContent.Controls.Add(pnlKPIContainer);
             pnContent.Controls.Add(lblDashboardTitle);
             pnContent.Controls.Add(stsMain);
             pnContent.Dock = DockStyle.Fill;
@@ -271,73 +307,194 @@ namespace DoAnQuanLyBanHang
             pnContent.Size = new Size(643, 405);
             pnContent.TabIndex = 2;
             // 
-            // pnRevenue
+            // pnlKPIContainer
             // 
-            pnRevenue.Controls.Add(lblTodayRevenue);
-            pnRevenue.Controls.Add(lblRevTitle);
-            pnRevenue.Location = new Point(325, 78);
-            pnRevenue.Name = "pnRevenue";
-            pnRevenue.Size = new Size(228, 80);
-            pnRevenue.TabIndex = 9;
+            pnlKPIContainer.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            pnlKPIContainer.Controls.Add(pnlCardStock);
+            pnlKPIContainer.Controls.Add(pnlCardCustomers);
+            pnlKPIContainer.Controls.Add(pnlCardOrders);
+            pnlKPIContainer.Controls.Add(pnlCardRevenue);
+            pnlKPIContainer.Location = new Point(20, 65);
+            pnlKPIContainer.Name = "pnlKPIContainer";
+            pnlKPIContainer.Size = new Size(600, 100);
+            pnlKPIContainer.TabIndex = 8;
             // 
-            // lblTodayRevenue
+            // pnlCardRevenue
             // 
-            lblTodayRevenue.AutoSize = true;
-            lblTodayRevenue.Location = new Point(161, 33);
-            lblTodayRevenue.Name = "lblTodayRevenue";
-            lblTodayRevenue.Size = new Size(49, 20);
-            lblTodayRevenue.TabIndex = 1;
-            lblTodayRevenue.Text = "15000";
+            pnlCardRevenue.BackColor = Color.White;
+            pnlCardRevenue.BorderStyle = BorderStyle.FixedSingle;
+            pnlCardRevenue.Controls.Add(lblCardRevVal);
+            pnlCardRevenue.Controls.Add(lblCardRevTitle);
+            pnlCardRevenue.Location = new Point(0, 0);
+            pnlCardRevenue.Name = "pnlCardRevenue";
+            pnlCardRevenue.Size = new Size(140, 90);
+            pnlCardRevenue.TabIndex = 0;
             // 
-            // lblRevTitle
+            // lblCardRevVal
             // 
-            lblRevTitle.AutoSize = true;
-            lblRevTitle.Location = new Point(19, 33);
-            lblRevTitle.Name = "lblRevTitle";
-            lblRevTitle.Size = new Size(114, 20);
-            lblRevTitle.TabIndex = 0;
-            lblRevTitle.Text = "Doanh thu ngày";
+            lblCardRevVal.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblCardRevVal.ForeColor = Color.SeaGreen;
+            lblCardRevVal.Location = new Point(5, 40);
+            lblCardRevVal.Name = "lblCardRevVal";
+            lblCardRevVal.Size = new Size(130, 30);
+            lblCardRevVal.TabIndex = 1;
+            lblCardRevVal.Text = "0";
+            lblCardRevVal.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // pnAlertStock
+            // lblCardRevTitle
             // 
-            pnAlertStock.Controls.Add(lblLowStockCount);
-            pnAlertStock.Controls.Add(lblAlertTitle);
-            pnAlertStock.Location = new Point(33, 78);
-            pnAlertStock.Name = "pnAlertStock";
-            pnAlertStock.Size = new Size(228, 80);
-            pnAlertStock.TabIndex = 8;
+            lblCardRevTitle.AutoSize = true;
+            lblCardRevTitle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            lblCardRevTitle.ForeColor = Color.Gray;
+            lblCardRevTitle.Location = new Point(10, 10);
+            lblCardRevTitle.Name = "lblCardRevTitle";
+            lblCardRevTitle.Size = new Size(92, 19);
+            lblCardRevTitle.TabIndex = 0;
+            lblCardRevTitle.Text = "DOANH THU";
             // 
-            // lblLowStockCount
+            // pnlCardOrders
             // 
-            lblLowStockCount.AutoSize = true;
-            lblLowStockCount.Location = new Point(161, 33);
-            lblLowStockCount.Name = "lblLowStockCount";
-            lblLowStockCount.Size = new Size(33, 20);
-            lblLowStockCount.TabIndex = 1;
-            lblLowStockCount.Text = "5SP";
-            lblLowStockCount.Click += lblLowStockCount_Click;
+            pnlCardOrders.BackColor = Color.White;
+            pnlCardOrders.BorderStyle = BorderStyle.FixedSingle;
+            pnlCardOrders.Controls.Add(lblCardOrdersVal);
+            pnlCardOrders.Controls.Add(lblCardOrdersTitle);
+            pnlCardOrders.Location = new Point(155, 0);
+            pnlCardOrders.Name = "pnlCardOrders";
+            pnlCardOrders.Size = new Size(140, 90);
+            pnlCardOrders.TabIndex = 1;
             // 
-            // lblAlertTitle
+            // lblCardOrdersVal
             // 
-            lblAlertTitle.AutoSize = true;
-            lblAlertTitle.Location = new Point(3, 29);
-            lblAlertTitle.Name = "lblAlertTitle";
-            lblAlertTitle.Size = new Size(127, 20);
-            lblAlertTitle.TabIndex = 0;
-            lblAlertTitle.Text = "Sản phẩm sắp hết";
+            lblCardOrdersVal.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblCardOrdersVal.ForeColor = Color.RoyalBlue;
+            lblCardOrdersVal.Location = new Point(5, 40);
+            lblCardOrdersVal.Name = "lblCardOrdersVal";
+            lblCardOrdersVal.Size = new Size(130, 30);
+            lblCardOrdersVal.TabIndex = 1;
+            lblCardOrdersVal.Text = "0";
+            lblCardOrdersVal.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblCardOrdersTitle
+            // 
+            lblCardOrdersTitle.AutoSize = true;
+            lblCardOrdersTitle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            lblCardOrdersTitle.ForeColor = Color.Gray;
+            lblCardOrdersTitle.Location = new Point(10, 10);
+            lblCardOrdersTitle.Name = "lblCardOrdersTitle";
+            lblCardOrdersTitle.Size = new Size(84, 19);
+            lblCardOrdersTitle.TabIndex = 0;
+            lblCardOrdersTitle.Text = "ĐƠN HÀNG";
+            // 
+            // pnlCardCustomers
+            // 
+            pnlCardCustomers.BackColor = Color.White;
+            pnlCardCustomers.BorderStyle = BorderStyle.FixedSingle;
+            pnlCardCustomers.Controls.Add(lblCardCustVal);
+            pnlCardCustomers.Controls.Add(lblCardCustTitle);
+            pnlCardCustomers.Location = new Point(310, 0);
+            pnlCardCustomers.Name = "pnlCardCustomers";
+            pnlCardCustomers.Size = new Size(140, 90);
+            pnlCardCustomers.TabIndex = 2;
+            // 
+            // lblCardCustVal
+            // 
+            lblCardCustVal.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblCardCustVal.ForeColor = Color.DarkOrange;
+            lblCardCustVal.Location = new Point(5, 40);
+            lblCardCustVal.Name = "lblCardCustVal";
+            lblCardCustVal.Size = new Size(130, 30);
+            lblCardCustVal.TabIndex = 1;
+            lblCardCustVal.Text = "0";
+            lblCardCustVal.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblCardCustTitle
+            // 
+            lblCardCustTitle.AutoSize = true;
+            lblCardCustTitle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            lblCardCustTitle.ForeColor = Color.Gray;
+            lblCardCustTitle.Location = new Point(10, 10);
+            lblCardCustTitle.Name = "lblCardCustTitle";
+            lblCardCustTitle.Size = new Size(103, 19);
+            lblCardCustTitle.TabIndex = 0;
+            lblCardCustTitle.Text = "KHÁCH HÀNG";
+            // 
+            // pnlCardStock
+            // 
+            pnlCardStock.BackColor = Color.White;
+            pnlCardStock.BorderStyle = BorderStyle.FixedSingle;
+            pnlCardStock.Controls.Add(lblCardStockVal);
+            pnlCardStock.Controls.Add(lblCardStockTitle);
+            pnlCardStock.Location = new Point(465, 0);
+            pnlCardStock.Name = "pnlCardStock";
+            pnlCardStock.Size = new Size(140, 90);
+            pnlCardStock.TabIndex = 3;
+            // 
+            // lblCardStockVal
+            // 
+            lblCardStockVal.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblCardStockVal.ForeColor = Color.Crimson;
+            lblCardStockVal.Location = new Point(5, 40);
+            lblCardStockVal.Name = "lblCardStockVal";
+            lblCardStockVal.Size = new Size(130, 30);
+            lblCardStockVal.TabIndex = 1;
+            lblCardStockVal.Text = "0";
+            lblCardStockVal.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblCardStockTitle
+            // 
+            lblCardStockTitle.AutoSize = true;
+            lblCardStockTitle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            lblCardStockTitle.ForeColor = Color.Gray;
+            lblCardStockTitle.Location = new Point(10, 10);
+            lblCardStockTitle.Name = "lblCardStockTitle";
+            lblCardStockTitle.Size = new Size(71, 19);
+            lblCardStockTitle.TabIndex = 0;
+            lblCardStockTitle.Text = "SẮP HẾT";
+            // 
+            // pnlChartContainer
+            // 
+            pnlChartContainer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            pnlChartContainer.BackColor = Color.White;
+            pnlChartContainer.BorderStyle = BorderStyle.FixedSingle;
+            pnlChartContainer.Controls.Add(crtRevenue);
+            pnlChartContainer.Controls.Add(lblChartTitle);
+            pnlChartContainer.Location = new Point(20, 180);
+            pnlChartContainer.Name = "pnlChartContainer";
+            pnlChartContainer.Size = new Size(600, 180);
+            pnlChartContainer.TabIndex = 10;
+            // 
+            // crtRevenue
+            // 
+            crtRevenue.Dock = DockStyle.Fill;
+            crtRevenue.Location = new Point(0, 40);
+            crtRevenue.Name = "crtRevenue";
+            crtRevenue.Size = new Size(600, 140);
+            crtRevenue.TabIndex = 1;
+            // 
+            // lblChartTitle
+            // 
+            lblChartTitle.AutoSize = true;
+            lblChartTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblChartTitle.Location = new Point(15, 10);
+            lblChartTitle.Name = "lblChartTitle";
+            lblChartTitle.Size = new Size(224, 23);
+            lblChartTitle.TabIndex = 0;
+            lblChartTitle.Text = "Doanh thu 7 ngày gần nhất";
             // 
             // lblDashboardTitle
             // 
             lblDashboardTitle.AutoSize = true;
-            lblDashboardTitle.Location = new Point(215, 29);
+            lblDashboardTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lblDashboardTitle.ForeColor = Color.FromArgb(64, 64, 64);
+            lblDashboardTitle.Location = new Point(20, 20);
             lblDashboardTitle.Name = "lblDashboardTitle";
-            lblDashboardTitle.Size = new Size(172, 20);
+            lblDashboardTitle.Size = new Size(295, 32);
             lblDashboardTitle.TabIndex = 7;
-            lblDashboardTitle.Text = "WELCOME DASHBOARD";
+            lblDashboardTitle.Text = "TỔNG QUAN HỆ THỐNG";
             // 
             // stsMain
             // 
-            stsMain.BackColor = Color.LightSteelBlue;
+            stsMain.BackColor = Color.FromArgb(233, 236, 239);
             stsMain.ImageScalingSize = new Size(20, 20);
             stsMain.Items.AddRange(new ToolStripItem[] { tssUser, tssRole, tssClock });
             stsMain.Location = new Point(0, 379);
@@ -345,7 +502,7 @@ namespace DoAnQuanLyBanHang
             stsMain.Size = new Size(643, 26);
             stsMain.TabIndex = 0;
             stsMain.Text = "statusStrip1";
-            stsMain.ItemClicked += stsMain_ItemClicked;
+
             // 
             // tssUser
             // 
@@ -374,7 +531,8 @@ namespace DoAnQuanLyBanHang
             Controls.Add(pnTop);
             Controls.Add(pnSidebar);
             Name = "FormMain";
-            Text = "FormMain";
+            Text = "Hệ Thống Quản Lý Bán Hàng Presitge";
+            Load += FormMain_Load;
             pnSidebar.ResumeLayout(false);
             pnSidebar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -382,10 +540,17 @@ namespace DoAnQuanLyBanHang
             pnTop.PerformLayout();
             pnContent.ResumeLayout(false);
             pnContent.PerformLayout();
-            pnRevenue.ResumeLayout(false);
-            pnRevenue.PerformLayout();
-            pnAlertStock.ResumeLayout(false);
-            pnAlertStock.PerformLayout();
+            pnlKPIContainer.ResumeLayout(false);
+            pnlCardRevenue.ResumeLayout(false);
+            pnlCardRevenue.PerformLayout();
+            pnlCardOrders.ResumeLayout(false);
+            pnlCardOrders.PerformLayout();
+            pnlCardCustomers.ResumeLayout(false);
+            pnlCardCustomers.PerformLayout();
+            pnlCardStock.ResumeLayout(false);
+            pnlCardStock.PerformLayout();
+            pnlChartContainer.ResumeLayout(false);
+            pnlChartContainer.PerformLayout();
             stsMain.ResumeLayout(false);
             stsMain.PerformLayout();
             ResumeLayout(false);
@@ -395,8 +560,27 @@ namespace DoAnQuanLyBanHang
 
         private Panel pnSidebar;
         private Panel pnTop;
-        private Panel pnContent;
-        private StatusStrip stsMain;
+        private Label lblDashboardTitle;
+        private Panel pnlKPIContainer;
+        private Panel pnlCardRevenue;
+        private Label lblCardRevVal;
+        private Label lblCardRevTitle;
+        private Panel pnlCardOrders;
+        private Label lblCardOrdersVal;
+        private Label lblCardOrdersTitle;
+        private Panel pnlCardCustomers;
+        private Label lblCardCustVal;
+        private Label lblCardCustTitle;
+        private Panel pnlCardStock;
+        private Label lblCardStockVal;
+        private Label lblCardStockTitle;
+        private Panel pnlChartContainer;
+        private Label lblChartTitle;
+        private ToolStripStatusLabel tssUser;
+        private ToolStripStatusLabel tssRole;
+        private ToolStripStatusLabel tssClock;
+        private PictureBox pictureBox1;
+        private Label label1;
         private Button btnReport;
         private Button btnInventory;
         private Button btnUser;
@@ -405,23 +589,21 @@ namespace DoAnQuanLyBanHang
         private Button btnProduct;
         private Button btnSales;
         private Button btnDashboard;
-        private Label lblSearch;
-        private Label label1;
-        private PictureBox pictureBox1;
+        private Button btnSupplier;
         private Label lblAdminName;
         private Button btnLogout;
         private Label lblWelcome;
         private Button btnSearch;
+        private Label lblSearch;
         private TextBox txtSearch;
-        private Label lblDashboardTitle;
+        private Panel pnContent;
         private Panel pnRevenue;
         private Label lblTodayRevenue;
         private Label lblRevTitle;
         private Panel pnAlertStock;
         private Label lblLowStockCount;
         private Label lblAlertTitle;
-        private ToolStripStatusLabel tssUser;
-        private ToolStripStatusLabel tssRole;
-        private ToolStripStatusLabel tssClock;
+        private StatusStrip stsMain;
+        private LiveCharts.WinForms.CartesianChart crtRevenue;
     }
 }

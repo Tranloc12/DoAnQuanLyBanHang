@@ -19,20 +19,21 @@ namespace DoAnQuanLyBanHang.DAL
             }
         }
 
-        public DataTable LayDoanhThu7Ngay()
+        public DataTable LayDoanhThu30Ngay()
         {
             using (SqlConnection conn = KetNoiChung.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"
                     WITH DateList AS (
-                        SELECT CAST(GETDATE() - 6 AS DATE) AS Ngay
+                        SELECT CAST(GETDATE() - 29 AS DATE) AS Ngay
                         UNION ALL
                         SELECT DATEADD(DAY, 1, Ngay) FROM DateList WHERE Ngay < CAST(GETDATE() AS DATE)
                     )
                     SELECT 
                         d.Ngay, 
-                        ISNULL(SUM(o.FinalAmount), 0) AS DoanhThu
+                        ISNULL(SUM(o.FinalAmount), 0) AS DoanhThu,
+                        (SELECT ISNULL(SUM(od.Quantity), 0) FROM OrderDetails od JOIN Orders od_o ON od.OrderID = od_o.OrderID WHERE CAST(od_o.OrderDate AS DATE) = d.Ngay AND od_o.OrderStatus = N'Hoàn thành') AS SoLuong
                     FROM DateList d
                     LEFT JOIN Orders o ON CAST(o.OrderDate AS DATE) = d.Ngay AND o.OrderStatus = N'Hoàn thành'
                     GROUP BY d.Ngay
@@ -79,6 +80,45 @@ namespace DoAnQuanLyBanHang.DAL
                 conn.Open();
                 SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Customers", conn);
                 return (int)cmd.ExecuteScalar();
+            }
+        }
+
+        // Lấy Top 5 sản phẩm bán chạy
+        public DataTable LayTopSanPham()
+        {
+            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            {
+                conn.Open();
+                string query = @"
+                    SELECT TOP 5 p.ProductName, SUM(od.Quantity) as TotalQty
+                    FROM OrderDetails od
+                    JOIN Products p ON od.ProductID = p.ProductID
+                    JOIN Orders o ON od.OrderID = o.OrderID
+                    WHERE o.OrderStatus = N'Hoàn thành'
+                    GROUP BY p.ProductName
+                    ORDER BY TotalQty DESC";
+                SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+            }
+        }
+
+        // Lấy 5 đơn hàng mới nhất
+        public DataTable LayDonHangGanDay()
+        {
+            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            {
+                conn.Open();
+                string query = @"
+                    SELECT TOP 5 o.OrderCode, c.CustomerName, o.FinalAmount, o.OrderDate
+                    FROM Orders o
+                    LEFT JOIN Customers c ON o.CustomerID = c.CustomerID
+                    ORDER BY o.OrderDate DESC";
+                SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
             }
         }
     }

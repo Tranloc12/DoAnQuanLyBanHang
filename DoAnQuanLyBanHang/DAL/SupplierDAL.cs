@@ -11,7 +11,7 @@ namespace DoAnQuanLyBanHang.DAL
             {
                 conn.Open();
                 SqlDataAdapter da = new SqlDataAdapter(
-                    "SELECT SupplierID, SupplierName, Phone, Email, Address FROM Suppliers ORDER BY SupplierName", conn);
+                    "SELECT SupplierID, SupplierName, Phone, Address FROM Suppliers ORDER BY SupplierName", conn);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
                 return dt;
@@ -30,32 +30,30 @@ namespace DoAnQuanLyBanHang.DAL
             }
         }
 
-        public bool ThemNhaCungCap(string name, string phone, string email, string address)
+        public bool ThemNhaCungCap(string name, string phone, string address)
         {
             using (SqlConnection conn = KetNoiChung.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(
-                    "INSERT INTO Suppliers (SupplierName, Phone, Email, Address) VALUES (@name, @phone, @email, @addr)", conn);
+                    "INSERT INTO Suppliers (SupplierName, Phone, Address) VALUES (@name, @phone, @addr)", conn);
                 cmd.Parameters.AddWithValue("@name",  name);
                 cmd.Parameters.AddWithValue("@phone", (object)phone   ?? System.DBNull.Value);
-                cmd.Parameters.AddWithValue("@email", (object)email   ?? System.DBNull.Value);
                 cmd.Parameters.AddWithValue("@addr",  (object)address ?? System.DBNull.Value);
                 return cmd.ExecuteNonQuery() > 0;
             }
         }
 
-        public bool SuaNhaCungCap(int id, string name, string phone, string email, string address)
+        public bool SuaNhaCungCap(int id, string name, string phone, string address)
         {
             using (SqlConnection conn = KetNoiChung.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(
-                    "UPDATE Suppliers SET SupplierName=@name, Phone=@phone, Email=@email, Address=@addr WHERE SupplierID=@id", conn);
+                    "UPDATE Suppliers SET SupplierName=@name, Phone=@phone, Address=@addr WHERE SupplierID=@id", conn);
                 cmd.Parameters.AddWithValue("@id",    id);
                 cmd.Parameters.AddWithValue("@name",  name);
                 cmd.Parameters.AddWithValue("@phone", (object)phone   ?? System.DBNull.Value);
-                cmd.Parameters.AddWithValue("@email", (object)email   ?? System.DBNull.Value);
                 cmd.Parameters.AddWithValue("@addr",  (object)address ?? System.DBNull.Value);
                 return cmd.ExecuteNonQuery() > 0;
             }

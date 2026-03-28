@@ -17,9 +17,19 @@ namespace DoAnQuanLyBanHang.BUS
             return dashboardDAL.LayDoanhThuHomNay().ToString("N0") + " VNĐ";
         }
 
-        public System.Data.DataTable LayDoanhThu7Ngay()
+        public System.Data.DataTable LayDoanhThu30Ngay()
         {
-            return dashboardDAL.LayDoanhThu7Ngay();
+            return dashboardDAL.LayDoanhThu30Ngay();
+        }
+
+        public System.Data.DataTable LayTopSanPham()
+        {
+            return dashboardDAL.LayTopSanPham();
+        }
+
+        public System.Data.DataTable LayDonHangGanDay()
+        {
+            return dashboardDAL.LayDonHangGanDay();
         }
     }
 }

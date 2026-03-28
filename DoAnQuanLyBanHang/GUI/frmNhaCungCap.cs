@@ -22,14 +22,14 @@ namespace DoAnQuanLyBanHang
 
         private void SetControls(bool edit)
         {
-            txtTen.Enabled = txtSDT.Enabled = txtEmail.Enabled = txtDiaChi.Enabled = edit;
+            txtTen.Enabled = txtSDT.Enabled = txtDiaChi.Enabled = edit;
             btnThem.Enabled = btnSua.Enabled = btnXoa.Enabled = !edit;
             btnLuu.Enabled  = btnHuy.Enabled = edit;
         }
 
         private void btnThem_Click(object sender, EventArgs e)
         {
-            txtTen.Clear(); txtSDT.Clear(); txtEmail.Clear(); txtDiaChi.Clear();
+            txtTen.Clear(); txtSDT.Clear(); txtDiaChi.Clear();
             bien = 1; SetControls(true); txtTen.Focus();
         }
 
@@ -58,13 +58,13 @@ namespace DoAnQuanLyBanHang
             bool ketQua = false;
             if (bien == 1)
             {
-                ketQua = supplierBUS.ThemNhaCungCap(txtTen.Text.Trim(), txtSDT.Text.Trim(), txtEmail.Text.Trim(), txtDiaChi.Text.Trim());
+                ketQua = supplierBUS.ThemNhaCungCap(txtTen.Text.Trim(), txtSDT.Text.Trim(), txtDiaChi.Text.Trim());
                 if (!ketQua) { MessageBox.Show("Tên NCC đã tồn tại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
             }
             else if (bien == 2)
             {
                 int id = Convert.ToInt32(dgvNCC.CurrentRow.Cells["SupplierID"].Value);
-                ketQua = supplierBUS.SuaNhaCungCap(id, txtTen.Text.Trim(), txtSDT.Text.Trim(), txtEmail.Text.Trim(), txtDiaChi.Text.Trim());
+                ketQua = supplierBUS.SuaNhaCungCap(id, txtTen.Text.Trim(), txtSDT.Text.Trim(), txtDiaChi.Text.Trim());
             }
             if (ketQua) { MessageBox.Show("Lưu thành công!"); HienThiDanhSach(); SetControls(false); }
             else MessageBox.Show("Lưu thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -80,7 +80,6 @@ namespace DoAnQuanLyBanHang
             {
                 txtTen.Text    = dgvNCC.Rows[r].Cells["SupplierName"].Value?.ToString();
                 txtSDT.Text    = dgvNCC.Rows[r].Cells["Phone"].Value?.ToString();
-                txtEmail.Text  = dgvNCC.Rows[r].Cells["Email"].Value?.ToString();
                 txtDiaChi.Text = dgvNCC.Rows[r].Cells["Address"].Value?.ToString();
             }
             catch { }

@@ -9,17 +9,17 @@ namespace DoAnQuanLyBanHang.BUS
 
         public DataTable LayDanhSachNhaCungCap() => supplierDAL.LayDanhSachNhaCungCap();
 
-        public bool ThemNhaCungCap(string name, string phone, string email, string address)
+        public bool ThemNhaCungCap(string name, string phone, string address)
         {
             if (string.IsNullOrWhiteSpace(name)) return false;
             if (supplierDAL.KiemTraTenNCC(name)) return false;
-            return supplierDAL.ThemNhaCungCap(name, phone, email, address);
+            return supplierDAL.ThemNhaCungCap(name, phone, address);
         }
 
-        public bool SuaNhaCungCap(int id, string name, string phone, string email, string address)
+        public bool SuaNhaCungCap(int id, string name, string phone, string address)
         {
             if (string.IsNullOrWhiteSpace(name)) return false;
-            return supplierDAL.SuaNhaCungCap(id, name, phone, email, address);
+            return supplierDAL.SuaNhaCungCap(id, name, phone, address);
         }
 
         public bool XoaNhaCungCap(int id) => supplierDAL.XoaNhaCungCap(id);
