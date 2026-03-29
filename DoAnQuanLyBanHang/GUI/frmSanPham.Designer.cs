@@ -132,7 +132,7 @@ namespace DoAnQuanLyBanHang
             // Form
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize    = new System.Drawing.Size(800, 690);
+            ClientSize    = new System.Drawing.Size(800, 720);
             Text          = "Quản Lý Sản Phẩm";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Load         += new System.EventHandler(frmSanPham_Load);

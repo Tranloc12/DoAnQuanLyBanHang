@@ -10,6 +10,7 @@ namespace DoAnQuanLyBanHang.BUS
         public decimal LayDoanhThuHomNay()        => dashboardDAL.LayDoanhThuHomNay();
         public int LayTongDonHangHomNay()          => dashboardDAL.LayTongDonHangHomNay();
         public int LayTongKhachHang()              => dashboardDAL.LayTongKhachHang();
+        public int LayTongDonHangTheoNgay(int days) => dashboardDAL.LayTongDonHangKhoangNgay(days);
 
         // Định dạng doanh thu để hiển thị
         public string LayDoanhThuDinhDang()
@@ -17,10 +18,8 @@ namespace DoAnQuanLyBanHang.BUS
             return dashboardDAL.LayDoanhThuHomNay().ToString("N0") + " VNĐ";
         }
 
-        public System.Data.DataTable LayDoanhThu30Ngay()
-        {
-            return dashboardDAL.LayDoanhThu30Ngay();
-        }
+        public System.Data.DataTable LayDoanhThu30Ngay() => dashboardDAL.LayDoanhThuKhoangNgay(30);
+        public System.Data.DataTable LayDoanhThuTheoNgay(int days) => dashboardDAL.LayDoanhThuKhoangNgay(days);
 
         public System.Data.DataTable LayTopSanPham()
         {

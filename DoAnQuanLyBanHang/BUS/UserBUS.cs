@@ -55,5 +55,13 @@ namespace DoAnQuanLyBanHang.BUS
         {
             return userDAL.XoaNhanVien(userId);
         }
+
+        // Quên mật khẩu
+        public string QuenMatKhau(string username, string email)
+        {
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(email))
+                return null;
+            return userDAL.LayMatKhau(username, email);
+        }
     }
 }

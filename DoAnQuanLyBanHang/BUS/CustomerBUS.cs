@@ -43,5 +43,11 @@ namespace DoAnQuanLyBanHang.BUS
         {
             return customerDAL.XoaKhachHang(customerId);
         }
+
+        public bool TruDiemKhachHang(int customerId, int soDiemDung)
+        {
+            if (soDiemDung <= 0) return false;
+            return customerDAL.TruDiemKhachHang(customerId, soDiemDung);
+        }
     }
 }

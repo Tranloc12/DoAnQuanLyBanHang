@@ -19,14 +19,16 @@ namespace DoAnQuanLyBanHang.DAL
             }
         }
 
-        public DataTable LayDoanhThu30Ngay()
+        public DataTable LayDoanhThu30Ngay() => LayDoanhThuKhoangNgay(30);
+
+        public DataTable LayDoanhThuKhoangNgay(int days)
         {
             using (SqlConnection conn = KetNoiChung.TaoKetNoi())
             {
                 conn.Open();
-                string query = @"
+                string query = $@"
                     WITH DateList AS (
-                        SELECT CAST(GETDATE() - 29 AS DATE) AS Ngay
+                        SELECT CAST(GETDATE() - {days - 1} AS DATE) AS Ngay
                         UNION ALL
                         SELECT DATEADD(DAY, 1, Ngay) FROM DateList WHERE Ngay < CAST(GETDATE() AS DATE)
                     )
@@ -79,6 +81,20 @@ namespace DoAnQuanLyBanHang.DAL
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Customers", conn);
+                return (int)cmd.ExecuteScalar();
+            }
+        }
+
+        // Tổng số đơn hàng trong khoảng ngày
+        public int LayTongDonHangKhoangNgay(int days)
+        {
+            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(
+                    $@"SELECT COUNT(*) FROM Orders 
+                       WHERE OrderDate >= DATEADD(DAY, -{days - 1}, CAST(GETDATE() AS DATE))
+                         AND OrderStatus = N'Hoàn thành'", conn);
                 return (int)cmd.ExecuteScalar();
             }
         }

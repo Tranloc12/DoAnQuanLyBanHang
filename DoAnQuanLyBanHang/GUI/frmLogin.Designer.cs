@@ -1,4 +1,4 @@
-﻿namespace DoAnQuanLyBanHang
+namespace DoAnQuanLyBanHang
 {
     partial class frmLogin
     {
@@ -100,7 +100,7 @@
             label3.TabIndex = 0;
             label3.Text = "HỆ THỐNG QUẢN LÝ BÁN HÀNG CHO CỬA HÀNG TIỆN LỢI ";
             label3.TextAlign = ContentAlignment.MiddleCenter;
-            label3.Click += label3_Click;
+            // label3.Click += label3_Click;
             // 
             // pictureBox1
             // 
@@ -110,7 +110,7 @@
             pictureBox1.Size = new Size(806, 425);
             pictureBox1.TabIndex = 6;
             pictureBox1.TabStop = false;
-            pictureBox1.Click += pictureBox1_Click;
+            // pictureBox1.Click += pictureBox1_Click;
             // 
             // groupBox1
             // 
@@ -136,6 +136,7 @@
             linkLabel1.TabIndex = 0;
             linkLabel1.TabStop = true;
             linkLabel1.Text = "Quên Mật Khẩu";
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // frmLogin
             // 

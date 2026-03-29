@@ -88,13 +88,6 @@ namespace DoAnQuanLyBanHang.DAL
                                     (@code, @custId, @userId, @total, @discount, @final,
                                      @payment, @status, @notes);
                                  
-                                 IF @custId IS NOT NULL
-                                 BEGIN
-                                     UPDATE Customers 
-                                     SET LoyaltyPoints = LoyaltyPoints + CAST((@final / 100000) AS int)
-                                     WHERE CustomerID = @custId
-                                 END
-                                 
                                  SELECT SCOPE_IDENTITY();";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@code",     donHang.OrderCode);
