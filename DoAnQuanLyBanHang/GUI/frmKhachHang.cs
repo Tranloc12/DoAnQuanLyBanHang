@@ -25,8 +25,9 @@ namespace DoAnQuanLyBanHang
         private void HienThiDanhSach()
         {
             dgvKhachHang.DataSource = customerBUS.LayDanhSachKhachHang();
-            if (dgvKhachHang.Columns["CustomerID"] != null)
-                dgvKhachHang.Columns["CustomerID"].Visible = false;
+            if (dgvKhachHang.Columns["CustomerID"] != null) dgvKhachHang.Columns["CustomerID"].Visible = false;
+            if (dgvKhachHang.Columns["LoyaltyPoints"] != null) dgvKhachHang.Columns["LoyaltyPoints"].HeaderText = "Điểm tích lũy";
+            if (dgvKhachHang.Columns["TotalSpent"] != null) dgvKhachHang.Columns["TotalSpent"].HeaderText = "Tổng chi tiêu";
         }
 
         private void SetControls(bool edit)
@@ -150,6 +151,7 @@ namespace DoAnQuanLyBanHang
                 txtSDT.Text    = row.Cells["Phone"].Value?.ToString();
                 txtEmail.Text  = row.Cells["Email"].Value?.ToString();
                 txtDiaChi.Text = row.Cells["Address"].Value?.ToString();
+                lblDiemValue.Text = row.Cells["LoyaltyPoints"].Value?.ToString() ?? "0";
             }
             catch { }
         }

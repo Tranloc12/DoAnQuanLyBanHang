@@ -41,13 +41,14 @@ namespace DoAnQuanLyBanHang
         private void SetControls(bool edit)
         {
             txtTenDangNhap.Enabled = edit && (bien == 1);
-            txtMatKhau.Enabled     = edit && (bien == 1);
+            txtMatKhau.Enabled     = edit;
             txtHoTen.Enabled       = edit;
             txtEmail.Enabled       = edit;
             txtSDT.Enabled         = edit;
             cbQuyen.Enabled        = edit;
 
             btnThem.Enabled = !edit;
+            btnSua.Enabled  = !edit;
             btnXoa.Enabled  = !edit;
             btnLuu.Enabled  = edit;
             btnHuy.Enabled  = edit;
@@ -65,6 +66,12 @@ namespace DoAnQuanLyBanHang
             XoaForm(); bien = 1; SetControls(true); txtTenDangNhap.Focus();
         }
 
+        private void btnSua_Click(object sender, EventArgs e)
+        {
+            if (dgvNhanVien.CurrentRow == null) return;
+            bien = 2; SetControls(true); txtHoTen.Focus();
+        }
+
         private void btnXoa_Click(object sender, EventArgs e)
         {
             if (dgvNhanVien.CurrentRow == null) return;
@@ -74,15 +81,15 @@ namespace DoAnQuanLyBanHang
                 MessageBox.Show("Không thể xóa tài khoản đang đăng nhập!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (MessageBox.Show("Bạn có chắc muốn vô hiệu hóa nhân viên này?", "Xác nhận",
+            if (MessageBox.Show("Bạn có chắc muốn xóa nhân viên này khỏi hệ thống?", "Xác nhận",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 if (userBUS.XoaNhanVien(id))
                 {
-                    MessageBox.Show("Vô hiệu hóa thành công!");
+                    MessageBox.Show("Xóa thành công!");
                     HienThiDanhSach();
                 }
-                else MessageBox.Show("Thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                else MessageBox.Show("Không thể xóa hoàn toàn (đã có dữ liệu liên quan), nhân viên sẽ bị vô hiệu hóa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -107,6 +114,24 @@ namespace DoAnQuanLyBanHang
                 };
                 ketQua = userBUS.ThemNhanVien(user, txtMatKhau.Text.Trim());
                 if (!ketQua) { MessageBox.Show("Tên đăng nhập đã tồn tại hoặc thêm thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
+            }
+            else if (bien == 2) // Sửa
+            {
+                UserDTO user = new UserDTO
+                {
+                    UserID   = Convert.ToInt32(dgvNhanVien.CurrentRow.Cells["UserID"].Value),
+                    FullName = txtHoTen.Text.Trim(),
+                    Email    = txtEmail.Text.Trim(),
+                    Phone    = txtSDT.Text.Trim(),
+                    Role     = cbQuyen.Text
+                };
+                ketQua = userBUS.SuaNhanVien(user);
+
+                // Nếu có nhập mật khẩu mới vào ô mật khẩu thì tiến hành đổi luôn
+                if (ketQua && !string.IsNullOrWhiteSpace(txtMatKhau.Text))
+                {
+                    userBUS.DoiMatKhau(user.UserID, txtMatKhau.Text.Trim());
+                }
             }
 
             if (ketQua)

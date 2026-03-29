@@ -18,6 +18,7 @@ namespace DoAnQuanLyBanHang
             lblQuyen     = new System.Windows.Forms.Label();   cbQuyen        = new System.Windows.Forms.ComboBox();
             pnlButtons   = new System.Windows.Forms.Panel();
             btnThem      = new System.Windows.Forms.Button();
+            btnSua       = new System.Windows.Forms.Button();
             btnXoa       = new System.Windows.Forms.Button();
             btnLuu       = new System.Windows.Forms.Button();
             btnHuy       = new System.Windows.Forms.Button();
@@ -49,10 +50,11 @@ namespace DoAnQuanLyBanHang
             pnlButtons.Location = new System.Drawing.Point(12, 562); pnlButtons.Size = new System.Drawing.Size(760, 45);
             int bw = 100, bh = 35;
             btnThem.Text = "➕ Thêm"; btnThem.Location = new System.Drawing.Point(5, 5);   btnThem.Size = new System.Drawing.Size(bw, bh); btnThem.BackColor = System.Drawing.Color.SeaGreen;   btnThem.ForeColor = System.Drawing.Color.White; btnThem.Click += new System.EventHandler(btnThem_Click);
-            btnXoa.Text  = "🗑 Vô hiệu"; btnXoa.Location = new System.Drawing.Point(115, 5); btnXoa.Size  = new System.Drawing.Size(bw, bh); btnXoa.BackColor  = System.Drawing.Color.Crimson;    btnXoa.ForeColor  = System.Drawing.Color.White; btnXoa.Click  += new System.EventHandler(btnXoa_Click);
-            btnLuu.Text  = "💾 Lưu";  btnLuu.Location  = new System.Drawing.Point(225, 5); btnLuu.Size  = new System.Drawing.Size(bw, bh); btnLuu.BackColor  = System.Drawing.Color.DarkOrange; btnLuu.ForeColor  = System.Drawing.Color.White; btnLuu.Click  += new System.EventHandler(btnLuu_Click);
-            btnHuy.Text  = "✖ Hủy";   btnHuy.Location  = new System.Drawing.Point(335, 5); btnHuy.Size  = new System.Drawing.Size(bw, bh); btnHuy.BackColor  = System.Drawing.Color.Gray;       btnHuy.ForeColor  = System.Drawing.Color.White; btnHuy.Click  += new System.EventHandler(btnHuy_Click);
-            pnlButtons.Controls.AddRange(new System.Windows.Forms.Control[] { btnThem, btnXoa, btnLuu, btnHuy });
+            btnSua.Text  = "✏ Sửa";   btnSua.Location  = new System.Drawing.Point(115, 5); btnSua.Size  = new System.Drawing.Size(bw, bh); btnSua.BackColor  = System.Drawing.Color.SteelBlue;  btnSua.ForeColor  = System.Drawing.Color.White; btnSua.Click  += new System.EventHandler(btnSua_Click);
+            btnXoa.Text  = "🗑 Xóa"; btnXoa.Location = new System.Drawing.Point(225, 5); btnXoa.Size  = new System.Drawing.Size(bw, bh); btnXoa.BackColor  = System.Drawing.Color.Crimson;    btnXoa.ForeColor  = System.Drawing.Color.White; btnXoa.Click  += new System.EventHandler(btnXoa_Click);
+            btnLuu.Text  = "💾 Lưu";  btnLuu.Location  = new System.Drawing.Point(335, 5); btnLuu.Size  = new System.Drawing.Size(bw, bh); btnLuu.BackColor  = System.Drawing.Color.DarkOrange; btnLuu.ForeColor  = System.Drawing.Color.White; btnLuu.Click  += new System.EventHandler(btnLuu_Click);
+            btnHuy.Text  = "✖ Hủy";   btnHuy.Location  = new System.Drawing.Point(445, 5); btnHuy.Size  = new System.Drawing.Size(bw, bh); btnHuy.BackColor  = System.Drawing.Color.Gray;       btnHuy.ForeColor  = System.Drawing.Color.White; btnHuy.Click  += new System.EventHandler(btnHuy_Click);
+            pnlButtons.Controls.AddRange(new System.Windows.Forms.Control[] { btnThem, btnSua, btnXoa, btnLuu, btnHuy });
 
             ClientSize = new System.Drawing.Size(800, 620); Text = "Quản Lý Nhân Viên"; StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Load += new System.EventHandler(frmNhanVien_Load);
@@ -68,6 +70,6 @@ namespace DoAnQuanLyBanHang
         private System.Windows.Forms.DataGridView dgvNhanVien;
         private System.Windows.Forms.GroupBox grpThongTin;
         private System.Windows.Forms.Panel pnlButtons;
-        private System.Windows.Forms.Button btnThem, btnXoa, btnLuu, btnHuy;
+        private System.Windows.Forms.Button btnThem, btnSua, btnXoa, btnLuu, btnHuy;
     }
 }

@@ -109,6 +109,22 @@ namespace DoAnQuanLyBanHang.DAL
             }
         }
 
+        // Trừ điểm khi khách dùng điểm
+        public bool TruDiemKhachHang(int customerId, int soDiemDung)
+        {
+            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            {
+                conn.Open();
+                string query = @"UPDATE Customers
+                                 SET LoyaltyPoints = LoyaltyPoints - @diem
+                                 WHERE CustomerID = @id AND LoyaltyPoints >= @diem";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id",   customerId);
+                cmd.Parameters.AddWithValue("@diem", soDiemDung);
+                return cmd.ExecuteNonQuery() > 0;
+            }
+        }
+
         // Kiểm tra số điện thoại đã tồn tại chưa
         public bool KiemTraSoDienThoai(string phone)
         {
