@@ -297,10 +297,6 @@ namespace DoAnQuanLyBanHang
             OpenChildForm(new frmDoiMatKhau());
         }
 
-        private void btnDonHang_Click(object sender, EventArgs e)
-        {
-            OpenChildForm(new frmDonHang());
-        }
 
         private void btnNhaCungCap_Click(object sender, EventArgs e)
         {
@@ -343,22 +339,25 @@ namespace DoAnQuanLyBanHang
                 }
 
                 int buttonHeight = 45;
-                int currentY = 135; // Nhích xuống thêm tí do logo to hơn
+                int currentY = 135; 
 
                 var sidebarColor = System.Drawing.Color.FromArgb(4, 78, 39);
 
-                // Danh sách các nút theo thứ tự muốn hiển thị
+                pnSidebar.Controls.Clear();
+                if (pictureBox1 != null) pnSidebar.Controls.Add(pictureBox1);
+
+                // Danh sách các nút theo thứ tự sử dụng (Báo cáo nằm cuối)
                 var menuItems = new (Button btn, string text)[]
                 {
                     (btnDashboard, "  TRANG CHỦ"),
                     (btnSales,     "  BÁN HÀNG (POS)"),
+                    (btnCustomer,  "  KHÁCH HÀNG"),
                     (btnProduct,   "  SẢN PHẨM"),
                     (btnCategory,  "  LOẠI HÀNG"),
-                    (btnCustomer,  "  KHÁCH HÀNG"),
-                    (btnInventory, "  KHO HÀNG"),
                     (btnSupplier,  "  NHÀ CUNG CẤP"),
-                    (btnReport,    "  BÁO CÁO"),
+                    (btnInventory, "  KHO HÀNG"),
                     (btnUser,      "  NHÂN VIÊN"),
+                    (btnReport,    "  BÁO CÁO"),
                 };
 
                 foreach (var (btn, text) in menuItems)
@@ -368,18 +367,17 @@ namespace DoAnQuanLyBanHang
                     btn.Text      = text;
                     btn.FlatStyle = FlatStyle.Flat;
                     btn.FlatAppearance.BorderSize  = 0;
-                    btn.FlatAppearance.BorderColor = sidebarColor;
                     btn.ForeColor = System.Drawing.Color.White;
-                    btn.BackColor = sidebarColor;           // màu cụ thể, không dùng Transparent
+                    btn.BackColor = sidebarColor;
                     btn.Font      = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
                     btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-                    btn.Padding   = new Padding(0, 0, 0, 0);
                     btn.Cursor    = Cursors.Hand;
                     btn.Size      = new System.Drawing.Size(pnSidebar.Width, buttonHeight);
                     btn.Location  = new System.Drawing.Point(0, currentY);
+                    pnSidebar.Controls.Add(btn);
+
                     currentY += buttonHeight + 2;
 
-                    // Re-bind hover events
                     btn.MouseEnter -= Button_MouseEnter;
                     btn.MouseLeave -= Button_MouseLeave;
                     btn.MouseEnter += Button_MouseEnter;
@@ -387,7 +385,7 @@ namespace DoAnQuanLyBanHang
                 }
             }
 
-            // 3. Top bar (User's Green Theme)
+            // 3. Top bar
             if (pnTop != null)
             {
                 var myGreen = System.Drawing.Color.FromArgb(4, 78, 39);

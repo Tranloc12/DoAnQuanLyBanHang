@@ -146,5 +146,62 @@ namespace DoAnQuanLyBanHang.DAL
                 return $"HD-{dateStr}-{seq:000}";
             }
         }
+
+        public OrderDTO? LayDonHangTheoID(int orderId)
+        {
+            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            {
+                conn.Open();
+                string query = @"SELECT OrderID, OrderCode, CustomerID, UserID, OrderDate, 
+                                        TotalAmount, Discount, FinalAmount, PaymentMethod, 
+                                        OrderStatus, Notes
+                                 FROM Orders WHERE OrderID = @id";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", orderId);
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    return new OrderDTO
+                    {
+                        OrderID = (int)reader["OrderID"],
+                        OrderCode = reader["OrderCode"].ToString(),
+                        CustomerID = reader["CustomerID"] == DBNull.Value ? null : (int?)reader["CustomerID"],
+                        UserID = (int)reader["UserID"],
+                        OrderDate = (DateTime)reader["OrderDate"],
+                        TotalAmount = (decimal)reader["TotalAmount"],
+                        Discount = (decimal)reader["Discount"],
+                        FinalAmount = (decimal)reader["FinalAmount"],
+                        PaymentMethod = reader["PaymentMethod"].ToString(),
+                        OrderStatus = reader["OrderStatus"].ToString(),
+                        Notes = reader["Notes"] == DBNull.Value ? "" : reader["Notes"].ToString()
+                    };
+                }
+            }
+            return null;
+        }
+
+        // Tìm kiếm đơn hàng theo mã đơn hoặc tên khách hàng
+        public DataTable TimKiemDonHang(string tuKhoa)
+        {
+            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            {
+                conn.Open();
+                string query = @"SELECT o.OrderID, o.OrderCode,
+                                        o.CustomerID, ISNULL(c.CustomerName, N'Khách lẻ') AS CustomerName,
+                                        o.UserID,     u.FullName AS UserName,
+                                        o.OrderDate,  o.TotalAmount, o.Discount, o.FinalAmount,
+                                        o.PaymentMethod, o.OrderStatus, o.Notes
+                                 FROM Orders o
+                                 LEFT JOIN Customers c ON o.CustomerID = c.CustomerID
+                                 INNER JOIN Users    u ON o.UserID     = u.UserID
+                                 WHERE o.OrderCode LIKE @kw OR c.CustomerName LIKE @kw
+                                 ORDER BY o.OrderDate DESC";
+                SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                da.SelectCommand.Parameters.AddWithValue("@kw", "%" + tuKhoa + "%");
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+            }
+        }
     }
 }

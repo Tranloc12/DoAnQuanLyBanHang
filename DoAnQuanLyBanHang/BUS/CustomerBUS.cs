@@ -18,7 +18,7 @@ namespace DoAnQuanLyBanHang.BUS
             return customerDAL.TimKiemKhachHang(tuKhoa);
         }
 
-        public CustomerDTO TimTheoSoDienThoai(string phone)
+        public CustomerDTO? TimTheoSoDienThoai(string phone)
         {
             return customerDAL.TimTheoSoDienThoai(phone);
         }
@@ -35,6 +35,9 @@ namespace DoAnQuanLyBanHang.BUS
         public bool SuaKhachHang(CustomerDTO kh)
         {
             if (string.IsNullOrWhiteSpace(kh.CustomerName) || string.IsNullOrWhiteSpace(kh.Phone))
+                return false;
+            // Kiểm tra trùng SĐT với người khác
+            if (customerDAL.KiemTraSoDienThoai(kh.Phone, kh.CustomerID))
                 return false;
             return customerDAL.SuaKhachHang(kh);
         }

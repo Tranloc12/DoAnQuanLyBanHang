@@ -1,0 +1,96 @@
+<mxfile version="21.3.7">
+  <diagram id="dfd1_3" name="DFD Mức 1 - Bán Hàng">
+    <mxGraphModel dx="1200" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Agents -->
+        <mxCell id="kh" value="KHÁCH HÀNG" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="80" y="260" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nv" value="NHÂN VIÊN" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="80" y="100" width="120" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Data Stores -->
+        <mxCell id="ds2" value="D2. HÀNG HÓA" style="shape=partialRectangle;html=1;whiteSpace=wrap;right=0;top=1;bottom=1;left=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="100" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ds3" value="D3. HÓA ĐƠN" style="shape=partialRectangle;html=1;whiteSpace=wrap;right=0;top=1;bottom=1;left=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="360" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ds4" value="D4. KHÁCH HÀNG" style="shape=partialRectangle;html=1;whiteSpace=wrap;right=0;top=1;bottom=1;left=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="240" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ds5" value="D5. KHO (LOG)" style="shape=partialRectangle;html=1;whiteSpace=wrap;right=0;top=1;bottom=1;left=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="480" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Processes -->
+        <mxCell id="p31" value="3.1 Yêu cầu&lt;br&gt;lập hóa đơn" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="160" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p32" value="3.2 Tra cứu&lt;br&gt;sản phẩm" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="80" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p33" value="3.3 Xử lý&lt;br&gt;thanh toán" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="360" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p34" value="3.4 Cập nhật&lt;br&gt;dữ liệu" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="360" width="120" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Edges -->
+        <!-- NV, KH -> p31, p32, p33 -->
+        <mxCell id="e1" value="Mua hàng" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.25;entryX=0;entryY=0.75;labelBackgroundColor=none;" edge="1" parent="1" source="kh" target="p31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="Tạo HD" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.25;labelBackgroundColor=none;" edge="1" parent="1" source="nv" target="p31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="Tìm hàng đồ uống" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.25;entryX=0;entryY=0.5;labelBackgroundColor=none;" edge="1" parent="1" source="nv" target="p32">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="Giao tiền" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.75;entryX=0;entryY=0.5;labelBackgroundColor=none;" edge="1" parent="1" source="kh" target="p33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- p32 <-> ds2 -->
+        <mxCell id="e5" value="Lấy mã vạch / Tồn" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;labelBackgroundColor=none;" edge="1" parent="1" source="ds2" target="p32">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- p31 <-> p33 -->
+        <mxCell id="e6" value="List sản phẩm mua" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;labelBackgroundColor=none;" edge="1" parent="1" source="p31" target="p33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- p33 <-> KH -->
+        <mxCell id="e7" value="In hóa đơn, Thối tiền" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.75;entryX=1;entryY=0.75;labelBackgroundColor=none;" edge="1" parent="1" source="p33" target="kh">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- p33 -> p34 -->
+        <mxCell id="e8" value="Đơn chốt OK" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;labelBackgroundColor=none;" edge="1" parent="1" source="p33" target="p34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- p34 -> Data stores -->
+        <mxCell id="e9" value="Lưu Hóa đơn" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;labelBackgroundColor=none;" edge="1" parent="1" source="p34" target="ds3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="Trừ trực tiếp DB Kho" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=0;entryX=0.5;entryY=1;labelBackgroundColor=none;" edge="1" parent="1" source="p34" target="ds2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" value="Ghi ID Trigger" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.75;entryX=0;entryY=0.5;labelBackgroundColor=none;" edge="1" parent="1" source="p34" target="ds5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" value="Tăng điểm khách" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.25;entryX=0;entryY=0.5;labelBackgroundColor=none;" edge="1" parent="1" source="p34" target="ds4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

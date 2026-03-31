@@ -57,5 +57,15 @@ namespace DoAnQuanLyBanHang.BUS
         {
             return orderDAL.SinhMaDonHang();
         }
+
+        public OrderDTO? LayDonHangTheoID(int orderId)
+        {
+            return orderDAL.LayDonHangTheoID(orderId);
+        }
+
+        public DataTable TimKiemDonHang(string tuKhoa)
+        {
+            return orderDAL.TimKiemDonHang(tuKhoa);
+        }
     }
 }

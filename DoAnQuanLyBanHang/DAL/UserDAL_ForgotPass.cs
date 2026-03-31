@@ -6,18 +6,19 @@ namespace DoAnQuanLyBanHang.DAL
 {
     public partial class UserDAL
     {
-        // Kiểm tra Username + Email để khôi phục mật khẩu
-        public string LayMatKhau(string username, string email)
+        // Kiểm tra UserName + (Email hoặc Phone) để lấy UserID phục vụ việc reset mật khẩu
+        public int LayUserIdByEmail(string username, string contact)
         {
             using (SqlConnection conn = KetNoiChung.TaoKetNoi())
             {
-                string query = "SELECT PasswordHash FROM Users WHERE UserName = @u AND Email = @e AND IsActive = 1";
+                // Cho phép dùng Email hoặc Số điện thoại để xác minh
+                string query = "SELECT UserID FROM Users WHERE UserName = @u AND (Email = @c OR Phone = @c) AND IsActive = 1";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@u", username);
-                cmd.Parameters.AddWithValue("@e", email);
+                cmd.Parameters.AddWithValue("@c", contact);
                 conn.Open();
                 object result = cmd.ExecuteScalar();
-                return result?.ToString();
+                return result != null ? (int)result : 0;
             }
         }
     }

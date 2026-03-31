@@ -51,13 +51,5 @@ namespace DoAnQuanLyBanHang
             txtUsername.Focus();
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            frmQuenMatKhau f = new frmQuenMatKhau();
-            f.ShowDialog();
-        }
-
-        // Handlers được Designer wire — để trống
-        private void textBox1_TextChanged(object sender, EventArgs e) { }
     }
 }

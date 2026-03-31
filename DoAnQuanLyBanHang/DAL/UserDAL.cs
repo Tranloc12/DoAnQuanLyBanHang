@@ -9,7 +9,7 @@ namespace DoAnQuanLyBanHang.DAL
     public partial class UserDAL
     {
         // Kiểm tra đăng nhập — trả về UserDTO hoặc null
-        public UserDTO KiemTraDangNhap(string userName, string matKhau)
+        public UserDTO? KiemTraDangNhap(string userName, string matKhau)
         {
             using (SqlConnection conn = KetNoiChung.TaoKetNoi())
             {
@@ -61,6 +61,36 @@ namespace DoAnQuanLyBanHang.DAL
                 string query = "SELECT COUNT(*) FROM Users WHERE UserName = @user";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@user", userName);
+                return (int)cmd.ExecuteScalar() > 0;
+            }
+        }
+
+        // Kiểm tra Email đã tồn tại chưa (tránh trùng email cho nhân viên khác)
+        public bool KiemTraEmail(string email, int excludeUserId = 0)
+        {
+            if (string.IsNullOrWhiteSpace(email)) return false;
+            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            {
+                conn.Open();
+                string query = "SELECT COUNT(*) FROM Users WHERE Email = @email AND UserID <> @id AND IsActive = 1";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@email", email.Trim());
+                cmd.Parameters.AddWithValue("@id",    excludeUserId);
+                return (int)cmd.ExecuteScalar() > 0;
+            }
+        }
+
+        // Kiểm tra Số điện thoại đã tồn tại chưa
+        public bool KiemTraPhone(string phone, int excludeUserId = 0)
+        {
+            if (string.IsNullOrWhiteSpace(phone)) return false;
+            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            {
+                conn.Open();
+                string query = "SELECT COUNT(*) FROM Users WHERE Phone = @phone AND UserID <> @id AND IsActive = 1";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@phone", phone.Trim());
+                cmd.Parameters.AddWithValue("@id",    excludeUserId);
                 return (int)cmd.ExecuteScalar() > 0;
             }
         }

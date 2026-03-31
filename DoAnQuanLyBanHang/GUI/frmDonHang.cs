@@ -77,5 +77,13 @@ namespace DoAnQuanLyBanHang
             }
             catch { }
         }
+
+        private void txtTimKiem_KeyUp(object sender, KeyEventArgs e)
+        {
+            string kw = txtTimKiem.Text.Trim();
+            dgvDonHang.DataSource = string.IsNullOrEmpty(kw)
+                ? orderBUS.LayDanhSachDonHang()
+                : orderBUS.TimKiemDonHang(kw);
+        }
     }
 }

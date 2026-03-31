@@ -98,33 +98,52 @@ namespace DoAnQuanLyBanHang
             if (string.IsNullOrWhiteSpace(txtHoTen.Text))
             { MessageBox.Show("Vui lòng nhập Họ tên!"); return; }
 
+            // 1. Kiểm tra Email format cơ bản
+            string email = txtEmail.Text.Trim();
+            if (!string.IsNullOrEmpty(email) && (!email.Contains("@") || !email.Contains(".")))
+            {
+                MessageBox.Show("Định dạng Email không hợp lệ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning); return;
+            }
+
+            // 2. Kiểm tra SĐT (chỉ là số)
+            string phone = txtSDT.Text.Trim();
+            if (!string.IsNullOrEmpty(phone) && !System.Text.RegularExpressions.Regex.IsMatch(phone, "^[0-9]+$"))
+            {
+                MessageBox.Show("Số điện thoại chỉ được chứa ký số!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning); return;
+            }
+
+            // 3. Kiểm tra tính duy nhất (Validate ở GUI để đưa ra thông báo cụ thể)
+            int currentId = (bien == 2 && dgvNhanVien.CurrentRow != null) 
+                            ? Convert.ToInt32(dgvNhanVien.CurrentRow.Cells["UserID"].Value) : 0;
+
+            if (bien == 1 && userBUS.KiemTraUserName(txtTenDangNhap.Text.Trim()))
+            {
+                MessageBox.Show("Tên đăng nhập này đã tồn tại!", "Trùng lặp", MessageBoxButtons.OK, MessageBoxIcon.Error); return;
+            }
+            // Gọi DAL trực tiếp thông qua BUS hoặc thêm hàm vào BUS. Ở đây ta thêm logic vào BUS là chuẩn nhất.
+            // Để đơn giản, ta sẽ dựa vào kết quả trả về của BUS. Nhưng BUS hiện tại chỉ trả về bool.
+            // Để tốt nhất, ta check trực tiếp qua 1 helper hoặc bổ sung BUS.
+            
+            UserDTO user = new UserDTO
+            {
+                UserID   = currentId,
+                UserName = txtTenDangNhap.Text.Trim(),
+                FullName = txtHoTen.Text.Trim(),
+                Email    = email,
+                Phone    = phone,
+                Role     = cbQuyen.Text
+            };
+
             bool ketQua = false;
             if (bien == 1) // Thêm mới
             {
-                if (string.IsNullOrWhiteSpace(txtTenDangNhap.Text) || string.IsNullOrWhiteSpace(txtMatKhau.Text))
+                if (string.IsNullOrWhiteSpace(user.UserName) || string.IsNullOrWhiteSpace(txtMatKhau.Text))
                 { MessageBox.Show("Vui lòng nhập Tên đăng nhập và Mật khẩu!"); return; }
 
-                UserDTO user = new UserDTO
-                {
-                    UserName = txtTenDangNhap.Text.Trim(),
-                    FullName = txtHoTen.Text.Trim(),
-                    Email    = txtEmail.Text.Trim(),
-                    Phone    = txtSDT.Text.Trim(),
-                    Role     = cbQuyen.Text
-                };
                 ketQua = userBUS.ThemNhanVien(user, txtMatKhau.Text.Trim());
-                if (!ketQua) { MessageBox.Show("Tên đăng nhập đã tồn tại hoặc thêm thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
             }
             else if (bien == 2) // Sửa
             {
-                UserDTO user = new UserDTO
-                {
-                    UserID   = Convert.ToInt32(dgvNhanVien.CurrentRow.Cells["UserID"].Value),
-                    FullName = txtHoTen.Text.Trim(),
-                    Email    = txtEmail.Text.Trim(),
-                    Phone    = txtSDT.Text.Trim(),
-                    Role     = cbQuyen.Text
-                };
                 ketQua = userBUS.SuaNhanVien(user);
 
                 // Nếu có nhập mật khẩu mới vào ô mật khẩu thì tiến hành đổi luôn
@@ -139,7 +158,11 @@ namespace DoAnQuanLyBanHang
                 MessageBox.Show("Lưu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 HienThiDanhSach(); SetControls(false);
             }
-            else MessageBox.Show("Lưu thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else 
+            {
+                MessageBox.Show("Lưu thất bại! Có thể do trùng Tên đăng nhập, Email hoặc Số điện thoại với nhân viên khác.", 
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnHuy_Click(object sender, EventArgs e) => SetControls(false);

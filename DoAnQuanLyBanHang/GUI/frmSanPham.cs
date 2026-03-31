@@ -228,8 +228,8 @@ namespace DoAnQuanLyBanHang
             {
                 ProductCode = txtMaSP.Text.Trim(),
                 ProductName = txtTenSP.Text.Trim(),
-                CategoryID  = (int)cbDanhMuc.SelectedValue,
-                SupplierID  = (int)cbNhaCungCap.SelectedValue,
+                CategoryID  = Convert.ToInt32(cbDanhMuc.SelectedValue),
+                SupplierID  = Convert.ToInt32(cbNhaCungCap.SelectedValue),
                 CostPrice   = decimal.Parse(txtGiaNhap.Text),
                 SellPrice   = decimal.Parse(txtGiaBan.Text),
                 Quantity    = int.Parse(txtSoLuong.Text),

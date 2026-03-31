@@ -18,14 +18,30 @@ namespace DoAnQuanLyBanHang.DAL
             }
         }
 
-        public bool KiemTraTenNCC(string name)
+        // Kiểm tra Tên NCC đã tồn tại chưa
+        public bool KiemTraTenNCC(string name, int excludeSupplierId = 0)
         {
             using (SqlConnection conn = KetNoiChung.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(
-                    "SELECT COUNT(*) FROM Suppliers WHERE SupplierName = @name", conn);
+                    "SELECT COUNT(*) FROM Suppliers WHERE SupplierName = @name AND SupplierID <> @id", conn);
                 cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@id",   excludeSupplierId);
+                return (int)cmd.ExecuteScalar() > 0;
+            }
+        }
+
+        // Kiểm tra số điện thoại NCC đã tồn tại chưa
+        public bool KiemTraSoDienThoai(string phone, int excludeSupplierId = 0)
+        {
+            if (string.IsNullOrWhiteSpace(phone)) return false;
+            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Suppliers WHERE Phone = @phone AND SupplierID <> @id", conn);
+                cmd.Parameters.AddWithValue("@phone", phone.Trim());
+                cmd.Parameters.AddWithValue("@id",    excludeSupplierId);
                 return (int)cmd.ExecuteScalar() > 0;
             }
         }

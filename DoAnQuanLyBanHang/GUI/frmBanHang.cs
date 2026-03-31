@@ -1,35 +1,30 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Windows.Forms;
 using DoAnQuanLyBanHang.BUS;
 using DoAnQuanLyBanHang.DTO;
+using DoAnQuanLyBanHang.Helpers;
 
 namespace DoAnQuanLyBanHang
 {
     public partial class frmBanHang : Form
     {
-        private readonly ProductBUS  productBUS  = new ProductBUS();
+        private readonly ProductBUS productBUS = new ProductBUS();
         private readonly CustomerBUS customerBUS = new CustomerBUS();
-        private readonly OrderBUS    orderBUS    = new OrderBUS();
+        private readonly OrderBUS orderBUS = new OrderBUS();
 
-        // Danh sách các dòng đang chờ
-        // Danh sách các dòng đang chờ
+        private CustomerDTO? khachHangHienTai = null;
         private readonly List<OrderDetailDTO> danhSachChiTiet = new List<OrderDetailDTO>();
 
         // Lưu thông tin đơn lùi để in lại
-        private OrderDTO lastOrder = null;
-        private List<OrderDetailDTO> lastOrderDetails = null;
+        private OrderDTO? lastOrder = null;
+        private List<OrderDetailDTO>? lastOrderDetails = null;
         private string lastCustomerName = "";
         private string lastEmployeeName = "";
-        
-        // Nút in hóa đơn động
-        private Button btnInHoaDon;
 
-        // Khách hàng hiện tại (dùng để kiểm tra điểm)
-        private CustomerDTO khachHangHienTai = null;
-        // Quy đổi: 1 điểm = 1.000 VNĐ
-        private const decimal GIA_TRI_MOT_DIEM = 1000m;
+        private const decimal GIA_TRI_MOT_DIEM = 1000; // 1 điểm = 1000 VNĐ
 
         public frmBanHang()
         {
@@ -38,45 +33,50 @@ namespace DoAnQuanLyBanHang
 
         private void frmBanHang_Load(object sender, EventArgs e)
         {
-            // Inject btnInHoaDon bên dưới btnThanhToan trong grpThanhToan
-            btnInHoaDon = new Button();
-            btnInHoaDon.Text = "🖨 IN HÓA ĐƠN";
-            btnInHoaDon.Size = new Size(255, 38);
-            btnInHoaDon.Location = new System.Drawing.Point(10, 285); // Y = 235+42+8
-            btnInHoaDon.BackColor = System.Drawing.Color.RoyalBlue;
-            btnInHoaDon.ForeColor = System.Drawing.Color.White;
-            btnInHoaDon.Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold);
-            btnInHoaDon.Enabled = false;
-            btnInHoaDon.Click += (s, ev) =>
-            {
-                if (lastOrder != null)
-                {
-                    try {
-                        DoAnQuanLyBanHang.Helpers.InvoiceHelper.GenerateAndShowInvoice(lastOrder, lastOrderDetails, lastCustomerName, lastEmployeeName);
-                    } catch (Exception ex) {
-                        MessageBox.Show("Lỗi in PDF: " + ex.Message);
-                    }
-                }
-            };
-            grpThanhToan.Controls.Add(btnInHoaDon);
-
-            NapSanPham();
-            cbPhuongThucTT.Items.AddRange(new string[] { "Tiền mặt", "Thẻ ngân hàng", "Chuyển khoản" });
-            cbPhuongThucTT.SelectedIndex = 0;
+            LoadComboboxSanPham();
+            LoadComboboxPTTT();
             LamMoiDonHang();
+            
+            // Khóa nút in khi mới mở
+            if (btnInHoaDon != null) btnInHoaDon.Enabled = false;
         }
 
-        // ─── Nạp sản phẩm vào ComboBox ───
-        private void NapSanPham()
+        private void LoadComboboxSanPham()
         {
             DataTable dt = productBUS.LayDanhSachSanPham();
-            cbSanPham.DataSource    = dt;
+            cbSanPham.DataSource = dt;
             cbSanPham.DisplayMember = "ProductName";
-            cbSanPham.ValueMember   = "ProductID";
+            cbSanPham.ValueMember = "ProductID";
+            cbSanPham.SelectedIndex = -1;
         }
 
-        // ─── Tìm khách hàng theo SĐT ───
-        private void btnTimKH_Click(object sender, EventArgs e)
+        private void LoadComboboxPTTT()
+        {
+            cbPhuongThucTT.Items.Clear();
+            cbPhuongThucTT.Items.Add("Tiền mặt");
+            cbPhuongThucTT.Items.Add("Thẻ ngân hàng");
+            cbPhuongThucTT.Items.Add("Chuyển khoản / Ví điện tử");
+            cbPhuongThucTT.SelectedIndex = 0;
+        }
+
+        private void cbSanPham_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbSanPham.SelectedValue != null && cbSanPham.SelectedValue is int)
+            {
+                int productId = (int)cbSanPham.SelectedValue;
+                DataRowView drv = (DataRowView)cbSanPham.SelectedItem;
+                txtDonGia.Text = Convert.ToDecimal(drv["SellPrice"]).ToString("N0");
+            }
+        }
+
+        private void btnTimKH_Click(object sender, EventArgs e) => TimKhachHang();
+
+        private void txtSDTKhachHang_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) { TimKhachHang(); e.SuppressKeyPress = true; }
+        }
+
+        private void TimKhachHang()
         {
             string sdt = txtSDTKhachHang.Text.Trim();
             if (string.IsNullOrEmpty(sdt)) return;
@@ -85,25 +85,137 @@ namespace DoAnQuanLyBanHang
             if (kh != null)
             {
                 khachHangHienTai = kh;
-                lblTenKhachHang.Text = kh.CustomerName + $"  (⭐ {kh.LoyaltyPoints} điểm)";
-                lblTenKhachHang.Tag  = kh.CustomerID;
-                // Bật checkbox dùng điểm nếu có điểm
+                txtTenKhachHang.Text = kh.CustomerName;
+                txtTenKhachHang.ReadOnly = true; 
+                txtTenKhachHang.BackColor = System.Drawing.Color.LightGray;
+                
                 chkDungDiem.Enabled = kh.LoyaltyPoints > 0;
                 chkDungDiem.Checked = false;
                 txtSoDiem.Text = "0";
                 lblQuyDoi.Text = "= 0 VNĐ";
+                lblTenKhachHang.Text = $"Tên khách (⭐ {kh.LoyaltyPoints}):";
             }
             else
             {
                 khachHangHienTai = null;
-                lblTenKhachHang.Text = "Khách lẻ (không tìm thấy)";
-                lblTenKhachHang.Tag  = null;
+                txtTenKhachHang.Text = "";
+                txtTenKhachHang.ReadOnly = false;
+                txtTenKhachHang.BackColor = System.Drawing.Color.White;
+                txtTenKhachHang.Focus();
+
+                lblTenKhachHang.Text = "Khách mới (nhập tên):";
                 chkDungDiem.Enabled = false;
                 chkDungDiem.Checked = false;
             }
         }
 
-        // ─── Checkbox dùng điểm ───
+        private void txtTimSanPham_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Ngăn tiếng beep
+                string kw = txtTimSanPham.Text.Trim();
+                if (string.IsNullOrEmpty(kw)) return;
+
+                DataTable dt = productBUS.TimKiemSanPham(kw);
+                if (dt.Rows.Count > 0)
+                {
+                    // Nếu tìm thấy, lấy sản phẩm đầu tiên (ưu tiên khớp chính xác hoặc khớp top)
+                    int firstProductId = (int)dt.Rows[0]["ProductID"];
+                    cbSanPham.SelectedValue = firstProductId;
+                    
+                    // Nếu gõ đúng mã SP (giống như quét mã vạch), thêm luôn vào giỏ
+                    if (dt.Rows[0]["ProductCode"].ToString().Equals(kw, StringComparison.OrdinalIgnoreCase))
+                    {
+                        btnThemVaoGio_Click(null, null);
+                        txtTimSanPham.Clear();
+                        txtTimSanPham.Focus();
+                    }
+                    else {
+                        txtSoLuong.Focus();
+                        txtSoLuong.SelectAll();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Không tìm thấy sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    txtTimSanPham.Focus();
+                    txtTimSanPham.SelectAll();
+                }
+            }
+        }
+
+        private void btnThemVaoGio_Click(object sender, EventArgs e)
+        {
+            if (cbSanPham.SelectedValue == null) return;
+            int productId = (int)cbSanPham.SelectedValue;
+            string productName = cbSanPham.Text;
+            int soLuong = int.Parse(txtSoLuong.Text);
+            decimal donGia = decimal.Parse(txtDonGia.Text.Replace(",", ""));
+
+            // Kiểm tra xem sản phẩm đã có trong giỏ chưa
+            var existing = danhSachChiTiet.Find(x => x.ProductID == productId);
+            if (existing != null)
+            {
+                existing.Quantity += soLuong;
+            }
+            else
+            {
+                danhSachChiTiet.Add(new OrderDetailDTO
+                {
+                    ProductID = productId,
+                    ProductName = productName,
+                    Quantity = soLuong,
+                    UnitPrice = donGia
+                });
+            }
+
+            CapNhatBangGioHang();
+            TinhTongTien();
+        }
+
+        private void CapNhatBangGioHang()
+        {
+            dgvGioHang.Rows.Clear();
+            foreach (var item in danhSachChiTiet)
+            {
+                dgvGioHang.Rows.Add(item.ProductID, item.ProductName, item.Quantity, item.UnitPrice.ToString("N0"), (item.Quantity * item.UnitPrice).ToString("N0"));
+            }
+        }
+
+        private void btnXoaDong_Click(object sender, EventArgs e)
+        {
+            if (dgvGioHang.CurrentRow != null)
+            {
+                int productId = (int)dgvGioHang.CurrentRow.Cells[0].Value;
+                danhSachChiTiet.RemoveAll(x => x.ProductID == productId);
+                CapNhatBangGioHang();
+                TinhTongTien();
+            }
+        }
+
+        private void TinhTongTien()
+        {
+            decimal tongTien = 0;
+            foreach (var item in danhSachChiTiet) tongTien += item.Quantity * item.UnitPrice;
+            lblTongTien.Text = tongTien.ToString("N0") + " VNĐ";
+            
+            decimal giamGia = string.IsNullOrEmpty(txtGiamGia.Text) ? 0 : decimal.Parse(txtGiamGia.Text.Replace(",", ""));
+            
+            int soDiemDung = 0;
+            decimal giamDiem = 0;
+            if (chkDungDiem.Checked && int.TryParse(txtSoDiem.Text, out soDiemDung))
+            {
+                giamDiem = soDiemDung * GIA_TRI_MOT_DIEM;
+            }
+
+            decimal thanhToan = tongTien - giamGia - giamDiem;
+            if (thanhToan < 0) thanhToan = 0;
+            lblThanhToan.Text = thanhToan.ToString("N0") + " VNĐ";
+        }
+
+        private void txtGiamGia_TextChanged(object sender, EventArgs e) => TinhTongTien();
+
         private void chkDungDiem_CheckedChanged(object sender, EventArgs e)
         {
             txtSoDiem.Enabled = chkDungDiem.Checked;
@@ -112,209 +224,137 @@ namespace DoAnQuanLyBanHang
                 txtSoDiem.Text = "0";
                 lblQuyDoi.Text = "= 0 VNĐ";
             }
-            else if (khachHangHienTai != null)
-            {
-                // Gợi ý nhập tất cả điểm sẫn có
-                txtSoDiem.Text = khachHangHienTai.LoyaltyPoints.ToString();
-            }
-            TinhToanThanhToan();
+            TinhTongTien();
         }
 
-        // ─── Khi nhập số điểm ───
         private void txtSoDiem_TextChanged(object sender, EventArgs e)
         {
-            if (int.TryParse(txtSoDiem.Text, out int diem) && diem > 0)
+            if (int.TryParse(txtSoDiem.Text, out int diem))
             {
-                // Giới hạn không vượt quá số điểm khách đang có
-                int toiDa = khachHangHienTai?.LoyaltyPoints ?? 0;
-                if (diem > toiDa)
+                if (khachHangHienTai != null && diem > khachHangHienTai.LoyaltyPoints)
                 {
-                    diem = toiDa;
+                    diem = khachHangHienTai.LoyaltyPoints;
                     txtSoDiem.Text = diem.ToString();
-                    return;
                 }
-                decimal quyDoi = diem * GIA_TRI_MOT_DIEM;
-                lblQuyDoi.Text = $"= {quyDoi:N0} VNĐ";
+                lblQuyDoi.Text = "= " + (diem * GIA_TRI_MOT_DIEM).ToString("N0") + " VNĐ";
             }
-            else
-                lblQuyDoi.Text = "= 0 VNĐ";
-            TinhToanThanhToan();
+            TinhTongTien();
         }
 
-        // ─── Khi chọn SP → cập nhật đơn giá ───
-        private void cbSanPham_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cbSanPham.SelectedItem is DataRowView row)
-            {
-                txtDonGia.Text  = row["SellPrice"].ToString();
-                txtSoLuong.Text = "1";
-            }
-        }
-
-        // ─── Thêm vào giỏ hàng ───
-        private void btnThemVaoGio_Click(object sender, EventArgs e)
-        {
-            if (cbSanPham.SelectedValue == null) return;
-            if (!decimal.TryParse(txtDonGia.Text, out decimal gia) || gia <= 0) { MessageBox.Show("Đơn giá không hợp lệ!"); return; }
-            if (!int.TryParse(txtSoLuong.Text, out int sl) || sl <= 0) { MessageBox.Show("Số lượng phải > 0!"); return; }
-
-            if (cbSanPham.SelectedItem is DataRowView row)
-            {
-                int    productID   = (int)cbSanPham.SelectedValue;
-                string productName = row["ProductName"].ToString();
-                string productCode = row["ProductCode"].ToString();
-                int    tonKho      = Convert.ToInt32(row["Quantity"]);
-
-                if (sl > tonKho) { MessageBox.Show($"Tồn kho chỉ còn {tonKho}!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
-
-                // Kiểm tra nếu SP đã có trong giỏ thì cộng thêm SL
-                var existing = danhSachChiTiet.Find(x => x.ProductID == productID);
-                if (existing != null)
-                    existing.Quantity += sl;
-                else
-                    danhSachChiTiet.Add(new OrderDetailDTO
-                    {
-                        ProductID   = productID,
-                        ProductCode = productCode,
-                        ProductName = productName,
-                        Quantity    = sl,
-                        UnitPrice   = gia
-                    });
-
-                CapNhatGioHang();
-            }
-        }
-
-        // ─── Xóa dòng khỏi giỏ ───
-        private void btnXoaDong_Click(object sender, EventArgs e)
-        {
-            if (dgvGioHang.CurrentRow == null) return;
-            int idx = dgvGioHang.CurrentRow.Index;
-            if (idx >= 0 && idx < danhSachChiTiet.Count)
-            {
-                danhSachChiTiet.RemoveAt(idx);
-                CapNhatGioHang();
-            }
-        }
-
-        // ─── Cập nhật hiển thị giỏ hàng & tổng tiền ───
-        private void CapNhatGioHang()
-        {
-            dgvGioHang.Rows.Clear();
-            decimal tongTien = 0;
-            foreach (var ct in danhSachChiTiet)
-            {
-                decimal thanhtien = ct.Quantity * ct.UnitPrice;
-                tongTien += thanhtien;
-                dgvGioHang.Rows.Add(ct.ProductCode, ct.ProductName, ct.Quantity, ct.UnitPrice.ToString("N0"), thanhtien.ToString("N0"));
-            }
-            lblTongTien.Text    = tongTien.ToString("N0") + " VNĐ";
-            TinhToanThanhToan();
-        }
-
-        private void TinhToanThanhToan()
-        {
-            if (!decimal.TryParse(lblTongTien.Text.Replace(" VNĐ", "").Replace(",", ""), out decimal tong)) return;
-            if (!decimal.TryParse(txtGiamGia.Text, out decimal giam)) giam = 0;
-
-            // Giá trị điểm được dùng
-            decimal giamDiem = 0;
-            if (chkDungDiem.Checked && int.TryParse(txtSoDiem.Text, out int diem) && diem > 0)
-                giamDiem = diem * GIA_TRI_MOT_DIEM;
-
-            decimal cuoiCung = tong - giam - giamDiem;
-            if (cuoiCung < 0) cuoiCung = 0;
-            lblThanhToan.Text = cuoiCung.ToString("N0") + " VNĐ";
-        }
-
-        private void txtGiamGia_TextChanged(object sender, EventArgs e) => TinhToanThanhToan();
-
-        // ─── Thanh toán ───
         private void btnThanhToan_Click(object sender, EventArgs e)
         {
-            if (danhSachChiTiet.Count == 0) { MessageBox.Show("Giỏ hàng trống!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
+            if (danhSachChiTiet.Count == 0)
+            {
+                MessageBox.Show("Giỏ hàng trống!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             decimal tongTien = 0;
-            foreach (var ct in danhSachChiTiet) tongTien += ct.Quantity * ct.UnitPrice;
-            decimal giamGia = decimal.TryParse(txtGiamGia.Text, out decimal g) ? g : 0;
-
-            // Tính giá trị điểm dùng
-            int    soDiemDung = 0;
-            decimal giamDiem   = 0;
-            if (chkDungDiem.Checked && int.TryParse(txtSoDiem.Text, out int dp) && dp > 0)
+            foreach (var item in danhSachChiTiet) tongTien += item.Quantity * item.UnitPrice;
+            decimal giamGia = string.IsNullOrEmpty(txtGiamGia.Text) ? 0 : decimal.Parse(txtGiamGia.Text.Replace(",", ""));
+            
+            int soDiemDung = 0;
+            decimal giamDiem = 0;
+            if (chkDungDiem.Checked && int.TryParse(txtSoDiem.Text, out soDiemDung))
             {
-                // Kiểm tra khách còn đủ điểm không
-                if (khachHangHienTai == null || dp > khachHangHienTai.LoyaltyPoints)
-                {
-                    MessageBox.Show("Số điểm sử dụng vượt quá điểm hiện có!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                soDiemDung = dp;
-                giamDiem   = soDiemDung * GIA_TRI_MOT_DIEM;
+                giamDiem = soDiemDung * GIA_TRI_MOT_DIEM;
             }
 
             decimal thanhToan = tongTien - giamGia - giamDiem;
             if (thanhToan < 0) thanhToan = 0;
 
+            // --- XỬ LÝ TỰ ĐỘNG PHÁT HIỆN HOẶC THÊM KHÁCH HÀNG ---
+            int? customerId = null;
+            string sdtLuu = txtSDTKhachHang.Text.Trim();
+            string tenLuu = txtTenKhachHang.Text.Trim();
+
+            if (khachHangHienTai != null)
+            {
+                customerId = khachHangHienTai.CustomerID;
+            }
+            else if (!string.IsNullOrEmpty(sdtLuu))
+            {
+                var khCheck = customerBUS.TimTheoSoDienThoai(sdtLuu);
+                if (khCheck != null)
+                {
+                    customerId = khCheck.CustomerID;
+                    khachHangHienTai = khCheck;
+                }
+                else if (!string.IsNullOrEmpty(tenLuu))
+                {
+                    CustomerDTO newKH = new CustomerDTO { CustomerName = tenLuu, Phone = sdtLuu };
+                    if (customerBUS.ThemKhachHang(newKH))
+                    {
+                        var createdKH = customerBUS.TimTheoSoDienThoai(sdtLuu);
+                        if (createdKH != null) 
+                        {
+                            customerId = createdKH.CustomerID;
+                            khachHangHienTai = createdKH;
+                        }
+                    }
+                }
+            }
+
             OrderDTO donHang = new OrderDTO
             {
-                CustomerID    = lblTenKhachHang.Tag != null ? (int?)Convert.ToInt32(lblTenKhachHang.Tag) : null,
+                CustomerID    = customerId,
                 UserID        = SessionUser.CurrentUser?.UserID ?? 1,
                 TotalAmount   = tongTien,
-                Discount      = giamGia + giamDiem,  // tổng giảm = tiền giảm + giá trị điểm
+                Discount      = giamGia + giamDiem,
                 FinalAmount   = thanhToan,
                 PaymentMethod = cbPhuongThucTT.Text,
-                Notes         = txtGhiChu.Text.Trim()
-                    + (soDiemDung > 0 ? $" [Dùng {soDiemDung} điểm]" : "")
+                Notes         = txtGhiChu.Text.Trim() + (soDiemDung > 0 ? $" [Dùng {soDiemDung} điểm]" : "")
             };
 
             int orderId = orderBUS.TaoDonHang(donHang, danhSachChiTiet);
             if (orderId > 0)
             {
-                // Nếu khách dùng điểm → trừ điểm
-                if (soDiemDung > 0 && donHang.CustomerID.HasValue)
+                if (soDiemDung > 0 && customerId.HasValue)
                 {
-                    customerBUS.TruDiemKhachHang(donHang.CustomerID.Value, soDiemDung);
+                    customerBUS.TruDiemKhachHang(customerId.Value, soDiemDung);
                 }
 
-                // Tính điểm tích lũy được (1 điểm / 100,000 VND)
                 int diemTich = (int)(thanhToan / 100000);
-                string thongBaoDiem = donHang.CustomerID.HasValue && diemTich > 0
-                    ? $"\n⭐ Điểm tích lũy: +{diemTich} điểm"
-                    : "";
-                string thongBaoDungDiem = soDiemDung > 0
-                    ? $"\n🎯 Đã dùng {soDiemDung} điểm ({giamDiem:N0} VNĐ)"
-                    : "";
+                string thongBaoDiem = customerId.HasValue && diemTich > 0 ? $"\n⭐ Điểm tích lũy: +{diemTich} điểm" : "";
+                string thongBaoDungDiem = soDiemDung > 0 ? $"\n✨ Đã dùng: {soDiemDung} điểm (-{giamDiem:N0} VNĐ)" : "";
+
+                var dhFull = orderBUS.LayDonHangTheoID(orderId);
+                if (dhFull != null) donHang = dhFull;
 
                 MessageBox.Show(
                     $"✅ Thanh toán thành công!\nMã đơn: {donHang.OrderCode}\nThành tiền: {thanhToan:N0} VNĐ{thongBaoDungDiem}{thongBaoDiem}",
                     "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Lưu lại thông tin đơn hàng vừa thanh toán để in hóa đơn
                 lastOrder = donHang;
                 lastOrderDetails = new List<OrderDetailDTO>(danhSachChiTiet);
-                lastCustomerName = lblTenKhachHang.Text;
-                lastEmployeeName = SessionUser.CurrentUser?.FullName ?? "N/A";
+                lastCustomerName = txtTenKhachHang.Text.Trim();
+                lastEmployeeName = SessionUser.CurrentUser?.FullName ?? "POS System";
 
-                // Nếu có khách hàng → cập nhật lại thông tin điểm trên label
                 if (donHang.CustomerID.HasValue)
                 {
-                    string sdt = txtSDTKhachHang.Text.Trim();
-                    CustomerDTO khCapNhat = customerBUS.TimTheoSoDienThoai(sdt);
+                    CustomerDTO? khCapNhat = customerBUS.TimTheoSoDienThoai(sdtLuu);
                     if (khCapNhat != null)
-                        lblTenKhachHang.Text = khCapNhat.CustomerName + $"  (Điểm: {khCapNhat.LoyaltyPoints})";
+                    {
+                        khachHangHienTai = khCapNhat;
+                        txtTenKhachHang.Text = khCapNhat.CustomerName;
+                        txtTenKhachHang.ReadOnly = true;
+                        lblTenKhachHang.Text = $"Tên khách (⭐ {khCapNhat.LoyaltyPoints}):";
+                    }
                 }
 
-                // Mở khóa nút In
                 if (btnInHoaDon != null) btnInHoaDon.Enabled = true;
-
                 LamMoiDonHang();
             }
-            else
-                MessageBox.Show("Thanh toán thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        // ─── Làm mới toàn bộ đơn hàng ───
+        private void btnInHoaDon_Click(object sender, EventArgs e)
+        {
+            if (lastOrder != null && lastOrderDetails != null)
+            {
+                InvoiceHelper.GenerateAndShowInvoice(lastOrder!, lastOrderDetails!, lastCustomerName, lastEmployeeName);
+            }
+        }
+
         private void btnLamMoi_Click(object sender, EventArgs e) => LamMoiDonHang();
 
         private void LamMoiDonHang()
@@ -325,9 +365,12 @@ namespace DoAnQuanLyBanHang
             lblThanhToan.Text         = "0 VNĐ";
             txtGiamGia.Text           = "0";
             txtSDTKhachHang.Clear();
+            txtTimSanPham.Clear();
+            txtTenKhachHang.Clear();
+            txtTenKhachHang.ReadOnly = false;
+            txtTenKhachHang.BackColor = System.Drawing.Color.White;
             txtGhiChu.Clear();
-            lblTenKhachHang.Text      = "Khách lẻ";
-            lblTenKhachHang.Tag       = null;
+            lblTenKhachHang.Text      = "Tên khách hàng:";
             khachHangHienTai          = null;
             chkDungDiem.Checked       = false;
             chkDungDiem.Enabled       = false;

@@ -10,6 +10,7 @@ namespace DoAnQuanLyBanHang
             lblTitle = new Label();
             dgvGioHang = new DataGridView();
             grpChonSP = new GroupBox();
+            txtTimSanPham = new TextBox();
             lblSanPham = new Label();
             cbSanPham = new ComboBox();
             lblDonGia = new Label();
@@ -23,6 +24,7 @@ namespace DoAnQuanLyBanHang
             txtSDTKhachHang = new TextBox();
             btnTimKH = new Button();
             lblTenKhachHang = new Label();
+            txtTenKhachHang = new TextBox();
             chkDungDiem = new CheckBox();
             txtSoDiem = new TextBox();
             lblQuyDoi = new Label();
@@ -38,6 +40,7 @@ namespace DoAnQuanLyBanHang
             lblGhiChu = new Label();
             txtGhiChu = new TextBox();
             btnThanhToan = new Button();
+            btnInHoaDon = new Button();
             btnLamMoi = new Button();
             dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
@@ -75,6 +78,7 @@ namespace DoAnQuanLyBanHang
             // 
             // grpChonSP
             // 
+            grpChonSP.Controls.Add(txtTimSanPham);
             grpChonSP.Controls.Add(lblSanPham);
             grpChonSP.Controls.Add(cbSanPham);
             grpChonSP.Controls.Add(lblDonGia);
@@ -90,21 +94,30 @@ namespace DoAnQuanLyBanHang
             grpChonSP.TabStop = false;
             grpChonSP.Text = "Chọn sản phẩm";
             // 
+            // txtTimSanPham
+            // 
+            txtTimSanPham.Location = new Point(10, 25);
+            txtTimSanPham.Name = "txtTimSanPham";
+            txtTimSanPham.Size = new Size(100, 27);
+            txtTimSanPham.TabIndex = 0;
+            txtTimSanPham.PlaceholderText = "Mã/Tên SP";
+            txtTimSanPham.KeyDown += txtTimSanPham_KeyDown;
+            // 
             // lblSanPham
             // 
-            lblSanPham.Location = new Point(10, 28);
+            lblSanPham.Location = new Point(115, 28);
             lblSanPham.Name = "lblSanPham";
-            lblSanPham.Size = new Size(80, 22);
-            lblSanPham.TabIndex = 0;
+            lblSanPham.Size = new Size(70, 22);
+            lblSanPham.TabIndex = 1;
             lblSanPham.Text = "Sản phẩm:";
             // 
             // cbSanPham
             // 
             cbSanPham.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbSanPham.Location = new Point(95, 25);
+            cbSanPham.Location = new Point(185, 25);
             cbSanPham.Name = "cbSanPham";
-            cbSanPham.Size = new Size(280, 28);
-            cbSanPham.TabIndex = 1;
+            cbSanPham.Size = new Size(195, 28);
+            cbSanPham.TabIndex = 2;
             cbSanPham.SelectedIndexChanged += cbSanPham_SelectedIndexChanged;
             // 
             // lblDonGia
@@ -168,6 +181,7 @@ namespace DoAnQuanLyBanHang
             grpKhachHang.Controls.Add(txtSDTKhachHang);
             grpKhachHang.Controls.Add(btnTimKH);
             grpKhachHang.Controls.Add(lblTenKhachHang);
+            grpKhachHang.Controls.Add(txtTenKhachHang); // Thêm ô nhập tên
             grpKhachHang.Controls.Add(chkDungDiem);
             grpKhachHang.Controls.Add(txtSoDiem);
             grpKhachHang.Controls.Add(lblQuyDoi);
@@ -208,13 +222,21 @@ namespace DoAnQuanLyBanHang
             // 
             // lblTenKhachHang
             // 
-            lblTenKhachHang.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
-            lblTenKhachHang.ForeColor = Color.Navy;
-            lblTenKhachHang.Location = new Point(10, 60);
+            lblTenKhachHang.Font = new Font("Segoe UI", 8.5F, FontStyle.Italic);
+            lblTenKhachHang.ForeColor = Color.DarkSlateGray;
+            lblTenKhachHang.Location = new Point(10, 58);
             lblTenKhachHang.Name = "lblTenKhachHang";
-            lblTenKhachHang.Size = new Size(255, 22);
+            lblTenKhachHang.Size = new Size(130, 22);
             lblTenKhachHang.TabIndex = 3;
-            lblTenKhachHang.Text = "Khách lẻ";
+            lblTenKhachHang.Text = "Tên khách hàng:";
+            // 
+            // txtTenKhachHang
+            // 
+            txtTenKhachHang.Location = new Point(140, 55);
+            txtTenKhachHang.Name = "txtTenKhachHang";
+            txtTenKhachHang.Size = new Size(130, 27);
+            txtTenKhachHang.TabIndex = 4;
+            txtTenKhachHang.PlaceholderText = "Tên khách mới";
             //
             // chkDungDiem  (Row 3: Y=88)
             //
@@ -261,6 +283,7 @@ namespace DoAnQuanLyBanHang
             grpThanhToan.Controls.Add(lblGhiChu);
             grpThanhToan.Controls.Add(txtGhiChu);
             grpThanhToan.Controls.Add(btnThanhToan);
+            grpThanhToan.Controls.Add(btnInHoaDon); // Thêm nút in hóa đơn
             grpThanhToan.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             grpThanhToan.Location = new Point(720, 160);
             grpThanhToan.Name = "grpThanhToan";
@@ -366,6 +389,20 @@ namespace DoAnQuanLyBanHang
             btnThanhToan.UseVisualStyleBackColor = false;
             btnThanhToan.Click += btnThanhToan_Click;
             // 
+            // btnInHoaDon
+            // 
+            btnInHoaDon.BackColor = Color.SteelBlue;
+            btnInHoaDon.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnInHoaDon.ForeColor = Color.White;
+            btnInHoaDon.Location = new Point(10, 282);
+            btnInHoaDon.Name = "btnInHoaDon";
+            btnInHoaDon.Size = new Size(255, 38);
+            btnInHoaDon.TabIndex = 11;
+            btnInHoaDon.Text = "🖨 IN HÓA ĐƠN";
+            btnInHoaDon.UseVisualStyleBackColor = false;
+            btnInHoaDon.Click += btnInHoaDon_Click;
+            btnInHoaDon.Enabled = false; 
+            // 
             // btnLamMoi
             // 
             btnLamMoi.BackColor = Color.DimGray;
@@ -449,15 +486,16 @@ namespace DoAnQuanLyBanHang
         private System.Windows.Forms.GroupBox grpChonSP, grpKhachHang, grpThanhToan;
         private System.Windows.Forms.Label lblSanPham, lblDonGia, lblSoLuong;
         private System.Windows.Forms.ComboBox cbSanPham;
-        private System.Windows.Forms.TextBox txtDonGia, txtSoLuong;
+        private System.Windows.Forms.TextBox txtDonGia, txtSoLuong, txtTimSanPham;
         private System.Windows.Forms.Button btnThemVaoGio, btnXoaDong;
         private System.Windows.Forms.Label lblSDTKH, lblTenKhachHang;
         private System.Windows.Forms.TextBox txtSDTKhachHang;
+        private System.Windows.Forms.TextBox txtTenKhachHang;
         private System.Windows.Forms.Button btnTimKH;
         private System.Windows.Forms.Label lblTongTienTitle, lblTongTien, lblGiamGia, lblThanhToanTitle, lblThanhToan, lblPTTT, lblGhiChu;
         private System.Windows.Forms.TextBox txtGiamGia, txtGhiChu;
         private System.Windows.Forms.ComboBox cbPhuongThucTT;
-        private System.Windows.Forms.Button btnThanhToan, btnLamMoi;
+        private System.Windows.Forms.Button btnThanhToan, btnInHoaDon, btnLamMoi;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;

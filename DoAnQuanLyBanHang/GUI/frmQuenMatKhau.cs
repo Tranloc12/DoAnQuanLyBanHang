@@ -24,16 +24,18 @@ namespace DoAnQuanLyBanHang
                 return;
             }
 
-            string pass = userBUS.QuenMatKhau(username, email);
-            if (pass != null)
+            bool thanhCong = userBUS.QuenMatKhau(username, email);
+            if (thanhCong)
             {
-                lblKetQua.Text = "Mật khẩu của bạn là: " + pass;
-                MessageBox.Show("Tìm thấy mật khẩu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                lblKetQua.Text = "Mật khẩu đã reset về: 123456";
+                lblKetQua.ForeColor = System.Drawing.Color.Green;
+                MessageBox.Show("Mật khẩu của bạn đã được đặt lại thành '123456'.\nVui lòng đăng nhập và đổi mật khẩu ngay!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                lblKetQua.Text = "Sai thông tin hoặc tài khoản bị khóa!";
-                MessageBox.Show("Thông tin không chính xác!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                lblKetQua.Text = "Thông tin không chính xác!";
+                lblKetQua.ForeColor = System.Drawing.Color.Red;
+                MessageBox.Show("Tên đăng nhập hoặc Email/SĐT không đúng!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

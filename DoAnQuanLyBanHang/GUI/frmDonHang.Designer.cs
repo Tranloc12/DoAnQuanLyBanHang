@@ -15,6 +15,7 @@ namespace DoAnQuanLyBanHang
             dtpDenNgay      = new System.Windows.Forms.DateTimePicker();
             btnLoc          = new System.Windows.Forms.Button();
             btnTatCa        = new System.Windows.Forms.Button();
+            txtTimKiem      = new System.Windows.Forms.TextBox();
             dgvDonHang      = new System.Windows.Forms.DataGridView();
             lblChiTiet      = new System.Windows.Forms.Label();
             dgvChiTiet      = new System.Windows.Forms.DataGridView();
@@ -36,7 +37,10 @@ namespace DoAnQuanLyBanHang
             dtpDenNgay.Location = new System.Drawing.Point(310, 20); dtpDenNgay.Size = new System.Drawing.Size(140, 27); dtpDenNgay.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             btnLoc.Text = "🔍 Lọc"; btnLoc.Location = new System.Drawing.Point(460, 18); btnLoc.Size = new System.Drawing.Size(85, 30); btnLoc.BackColor = System.Drawing.Color.SteelBlue; btnLoc.ForeColor = System.Drawing.Color.White; btnLoc.Click += new System.EventHandler(btnLoc_Click);
             btnTatCa.Text = "📋 Tất cả"; btnTatCa.Location = new System.Drawing.Point(555, 18); btnTatCa.Size = new System.Drawing.Size(90, 30); btnTatCa.BackColor = System.Drawing.Color.SlateGray; btnTatCa.ForeColor = System.Drawing.Color.White; btnTatCa.Click += new System.EventHandler(btnTatCa_Click);
-            grpLoc.Controls.AddRange(new System.Windows.Forms.Control[] { lblTuNgay, dtpTuNgay, lblDenNgay, dtpDenNgay, btnLoc, btnTatCa });
+            
+            txtTimKiem.Location = new System.Drawing.Point(650, 18); txtTimKiem.Size = new System.Drawing.Size(100, 30); txtTimKiem.PlaceholderText = "Mã/Tên KH"; txtTimKiem.KeyUp += new System.Windows.Forms.KeyEventHandler(txtTimKiem_KeyUp);
+
+            grpLoc.Controls.AddRange(new System.Windows.Forms.Control[] { lblTuNgay, dtpTuNgay, lblDenNgay, dtpDenNgay, btnLoc, btnTatCa, txtTimKiem });
 
             dgvDonHang.Location = new System.Drawing.Point(12, 112); dgvDonHang.Size = new System.Drawing.Size(760, 240);
             dgvDonHang.AllowUserToAddRows = false; dgvDonHang.ReadOnly = true;
@@ -66,6 +70,7 @@ namespace DoAnQuanLyBanHang
         private System.Windows.Forms.Label lblTitle, lblTuNgay, lblDenNgay, lblChiTiet;
         private System.Windows.Forms.DateTimePicker dtpTuNgay, dtpDenNgay;
         private System.Windows.Forms.Button btnLoc, btnTatCa, btnXemChiTiet, btnHuyDon;
+        private System.Windows.Forms.TextBox txtTimKiem;
         private System.Windows.Forms.DataGridView dgvDonHang, dgvChiTiet;
         private System.Windows.Forms.GroupBox grpLoc;
         private System.Windows.Forms.Panel pnlButtons;

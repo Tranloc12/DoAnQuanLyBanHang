@@ -130,96 +130,142 @@ namespace DoAnQuanLyBanHang
             label1.TabIndex = 9;
             label1.Text = "label1";
             // 
-            // btnReport
+            // btnDashboard
             // 
-            btnReport.Location = new Point(32, 280);
-            btnReport.Name = "btnReport";
-            btnReport.Size = new Size(94, 29);
-            btnReport.TabIndex = 8;
-            btnReport.Text = "BÁO CÁO";
-            btnReport.UseVisualStyleBackColor = true;
-            btnReport.Click += btnReport_Click;
-            // 
-            // btnInventory
-            // 
-            btnInventory.Location = new Point(32, 245);
-            btnInventory.Name = "btnInventory";
-            btnInventory.Size = new Size(94, 29);
-            btnInventory.TabIndex = 7;
-            btnInventory.Text = "KHO HÀNG";
-            btnInventory.UseVisualStyleBackColor = true;
-            btnInventory.Click += btnInventory_Click;
-            // 
-            // btnUser
-            // 
-            btnUser.Location = new Point(17, 327);
-            btnUser.Name = "btnUser";
-            btnUser.Size = new Size(130, 29);
-            btnUser.TabIndex = 6;
-            btnUser.Text = "NHÂN VIÊN";
-            btnUser.UseVisualStyleBackColor = true;
-            btnUser.Click += btnUser_Click;
-            // 
-            // btnCustomer
-            // 
-            btnCustomer.Location = new Point(12, 212);
-            btnCustomer.Name = "btnCustomer";
-            btnCustomer.Size = new Size(125, 29);
-            btnCustomer.TabIndex = 5;
-            btnCustomer.Text = "KHÁCH HÀNG";
-            btnCustomer.UseVisualStyleBackColor = true;
-            btnCustomer.Click += btnCustomer_Click;
-            // 
-            // btnCategory
-            // 
-            btnCategory.Location = new Point(32, 181);
-            btnCategory.Name = "btnCategory";
-            btnCategory.Size = new Size(94, 29);
-            btnCategory.TabIndex = 4;
-            btnCategory.Text = "LOẠI HÀNG";
-            btnCategory.UseVisualStyleBackColor = true;
-            btnCategory.Click += btnCategory_Click;
-            // 
-            // btnProduct
-            // 
-            btnProduct.Location = new Point(32, 152);
-            btnProduct.Name = "btnProduct";
-            btnProduct.Size = new Size(94, 29);
-            btnProduct.TabIndex = 3;
-            btnProduct.Text = "SẢN PHẨM";
-            btnProduct.UseVisualStyleBackColor = true;
-            btnProduct.Click += btnProduct_Click;
+            btnDashboard.BackColor = Color.ForestGreen;
+            btnDashboard.FlatAppearance.BorderSize = 0;
+            btnDashboard.FlatStyle = FlatStyle.Flat;
+            btnDashboard.ForeColor = Color.White;
+            btnDashboard.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnDashboard.Location = new Point(0, 85);
+            btnDashboard.Name = "btnDashboard";
+            btnDashboard.Size = new Size(157, 40);
+            btnDashboard.TabIndex = 1;
+            btnDashboard.Text = "  TRANG CHỦ";
+            btnDashboard.TextAlign = ContentAlignment.MiddleLeft;
+            btnDashboard.UseVisualStyleBackColor = false;
+            btnDashboard.Click += btnDashboard_Click;
             // 
             // btnSales
             // 
-            btnSales.Location = new Point(32, 123);
+            btnSales.BackColor = Color.ForestGreen;
+            btnSales.FlatAppearance.BorderSize = 0;
+            btnSales.FlatStyle = FlatStyle.Flat;
+            btnSales.ForeColor = Color.White;
+            btnSales.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnSales.Location = new Point(0, 125);
             btnSales.Name = "btnSales";
-            btnSales.Size = new Size(94, 29);
+            btnSales.Size = new Size(157, 40);
             btnSales.TabIndex = 2;
-            btnSales.Text = "BÁN HÀNG (POS)";
-            btnSales.TextAlign = ContentAlignment.BottomLeft;
-            btnSales.UseVisualStyleBackColor = true;
+            btnSales.Text = "  BÁN HÀNG (POS)";
+            btnSales.TextAlign = ContentAlignment.MiddleLeft;
+            btnSales.UseVisualStyleBackColor = false;
             btnSales.Click += btnSales_Click;
+            // 
+            // btnProduct
+            // 
+            btnProduct.BackColor = Color.Transparent;
+            btnProduct.FlatAppearance.BorderSize = 0;
+            btnProduct.FlatStyle = FlatStyle.Flat;
+            btnProduct.ForeColor = Color.White;
+            btnProduct.Location = new Point(0, 165);
+            btnProduct.Name = "btnProduct";
+            btnProduct.Size = new Size(157, 35);
+            btnProduct.TabIndex = 3;
+            btnProduct.Text = "   Sản Phẩm";
+            btnProduct.TextAlign = ContentAlignment.MiddleLeft;
+            btnProduct.UseVisualStyleBackColor = false;
+            btnProduct.Click += btnProduct_Click;
+            // 
+            // btnCategory
+            // 
+            btnCategory.BackColor = Color.Transparent;
+            btnCategory.FlatAppearance.BorderSize = 0;
+            btnCategory.FlatStyle = FlatStyle.Flat;
+            btnCategory.ForeColor = Color.White;
+            btnCategory.Location = new Point(0, 200);
+            btnCategory.Name = "btnCategory";
+            btnCategory.Size = new Size(157, 35);
+            btnCategory.TabIndex = 4;
+            btnCategory.Text = "   Loại Hàng";
+            btnCategory.TextAlign = ContentAlignment.MiddleLeft;
+            btnCategory.UseVisualStyleBackColor = false;
+            btnCategory.Click += btnCategory_Click;
             // 
             // btnSupplier
             // 
-            btnSupplier.Location = new Point(17, 360);
+            btnSupplier.BackColor = Color.Transparent;
+            btnSupplier.FlatAppearance.BorderSize = 0;
+            btnSupplier.FlatStyle = FlatStyle.Flat;
+            btnSupplier.ForeColor = Color.White;
+            btnSupplier.Location = new Point(0, 235);
             btnSupplier.Name = "btnSupplier";
-            btnSupplier.Size = new Size(130, 29);
+            btnSupplier.Size = new Size(157, 35);
             btnSupplier.TabIndex = 13;
-            btnSupplier.Text = "NHÀ CUNG CẤP";
-            btnSupplier.UseVisualStyleBackColor = true;
+            btnSupplier.Text = "   Nhà Cung Cấp";
+            btnSupplier.TextAlign = ContentAlignment.MiddleLeft;
+            btnSupplier.UseVisualStyleBackColor = false;
             btnSupplier.Click += btnSupplier_Click;
             // 
-            // btnDashboard
+            // btnInventory
             // 
-            btnDashboard.Location = new Point(12, 88);
-            btnDashboard.Name = "btnDashboard";
-            btnDashboard.Size = new Size(135, 29);
-            btnDashboard.TabIndex = 1;
-            btnDashboard.Text = "TRANG CHỦ";
-            btnDashboard.UseVisualStyleBackColor = true;
-            btnDashboard.Click += btnDashboard_Click;
+            btnInventory.BackColor = Color.Transparent;
+            btnInventory.FlatAppearance.BorderSize = 0;
+            btnInventory.FlatStyle = FlatStyle.Flat;
+            btnInventory.ForeColor = Color.White;
+            btnInventory.Location = new Point(0, 270);
+            btnInventory.Name = "btnInventory";
+            btnInventory.Size = new Size(157, 35);
+            btnInventory.TabIndex = 7;
+            btnInventory.Text = "   Kho Hàng";
+            btnInventory.TextAlign = ContentAlignment.MiddleLeft;
+            btnInventory.UseVisualStyleBackColor = false;
+            btnInventory.Click += btnInventory_Click;
+            // 
+            // btnCustomer
+            // 
+            btnCustomer.BackColor = Color.Transparent;
+            btnCustomer.FlatAppearance.BorderSize = 0;
+            btnCustomer.FlatStyle = FlatStyle.Flat;
+            btnCustomer.ForeColor = Color.White;
+            btnCustomer.Location = new Point(0, 305);
+            btnCustomer.Name = "btnCustomer";
+            btnCustomer.Size = new Size(157, 35);
+            btnCustomer.TabIndex = 5;
+            btnCustomer.Text = "   Khách Hàng";
+            btnCustomer.TextAlign = ContentAlignment.MiddleLeft;
+            btnCustomer.UseVisualStyleBackColor = false;
+            btnCustomer.Click += btnCustomer_Click;
+            // 
+            // btnUser
+            // 
+            btnUser.BackColor = Color.Transparent;
+            btnUser.FlatAppearance.BorderSize = 0;
+            btnUser.FlatStyle = FlatStyle.Flat;
+            btnUser.ForeColor = Color.White;
+            btnUser.Location = new Point(0, 340);
+            btnUser.Name = "btnUser";
+            btnUser.Size = new Size(157, 35);
+            btnUser.TabIndex = 6;
+            btnUser.Text = "   Nhân Viên";
+            btnUser.TextAlign = ContentAlignment.MiddleLeft;
+            btnUser.UseVisualStyleBackColor = false;
+            btnUser.Click += btnUser_Click;
+            // 
+            // btnReport
+            // 
+            btnReport.BackColor = Color.Transparent;
+            btnReport.FlatAppearance.BorderSize = 0;
+            btnReport.FlatStyle = FlatStyle.Flat;
+            btnReport.ForeColor = Color.White;
+            btnReport.Location = new Point(0, 375);
+            btnReport.Name = "btnReport";
+            btnReport.Size = new Size(157, 35);
+            btnReport.TabIndex = 8;
+            btnReport.Text = "   Báo Cáo";
+            btnReport.TextAlign = ContentAlignment.MiddleLeft;
+            btnReport.UseVisualStyleBackColor = false;
+            btnReport.Click += btnReport_Click;
             // 
             // pnTop
             // 

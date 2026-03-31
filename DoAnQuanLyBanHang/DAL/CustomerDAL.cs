@@ -126,13 +126,15 @@ namespace DoAnQuanLyBanHang.DAL
         }
 
         // Kiểm tra số điện thoại đã tồn tại chưa
-        public bool KiemTraSoDienThoai(string phone)
+        public bool KiemTraSoDienThoai(string phone, int excludeCustomerId = 0)
         {
+            if (string.IsNullOrWhiteSpace(phone)) return false;
             using (SqlConnection conn = KetNoiChung.TaoKetNoi())
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Customers WHERE Phone = @phone", conn);
-                cmd.Parameters.AddWithValue("@phone", phone);
+                SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Customers WHERE Phone = @phone AND CustomerID <> @id", conn);
+                cmd.Parameters.AddWithValue("@phone", phone.Trim());
+                cmd.Parameters.AddWithValue("@id",    excludeCustomerId);
                 return (int)cmd.ExecuteScalar() > 0;
             }
         }
