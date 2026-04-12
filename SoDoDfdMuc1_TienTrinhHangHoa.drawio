@@ -1,0 +1,52 @@
+<mxfile version="21.3.7">
+  <diagram id="dfd1_2" name="DFD Mức 1 - QL Hàng Hóa">
+    <mxGraphModel dx="1200" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="ad" value="ADMIN" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="80" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Processes -->
+        <mxCell id="p21" value="2.1 Tiếp nhận&lt;br&gt;sản phẩm mới" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="230" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p22" value="2.2 So khớp &amp;amp;&lt;br&gt;Cập nhật giá" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="230" width="120" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Data Stores -->
+        <mxCell id="ds_cat" value="D2. THỂ LOẠI / NCC" style="shape=partialRectangle;html=1;whiteSpace=wrap;right=0;top=1;bottom=1;left=1;" vertex="1" parent="1">
+          <mxGeometry x="545" y="100" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ds2" value="D2. HÀNG HÓA" style="shape=partialRectangle;html=1;whiteSpace=wrap;right=0;top=1;bottom=1;left=1;" vertex="1" parent="1">
+          <mxGeometry x="840" y="250" width="150" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Edges -->
+        <mxCell id="e1" value="Khai báo Hàng, Giá" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;labelBackgroundColor=none;" edge="1" parent="1" source="ad" target="p21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="e2" value="Form C# check lỗi" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;labelBackgroundColor=none;" edge="1" parent="1" source="p21" target="p22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e3" value="List Category ID" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;entryX=0.25;entryY=0;labelBackgroundColor=none;entryDx=0;entryDy=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="ds_cat" target="p22">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="490" y="120" />
+              <mxPoint x="490" y="250" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" value="Lưu mặt hàng chuẩn" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;labelBackgroundColor=none;" edge="1" parent="1" source="p22" target="ds2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

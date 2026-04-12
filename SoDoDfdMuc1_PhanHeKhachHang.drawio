@@ -1,0 +1,57 @@
+<mxfile version="21.3.7">
+  <diagram id="dfd1_kh" name="DFD Mức 1 - Khách Hàng">
+    <mxGraphModel dx="1200" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="kh" value="KHÁCH HÀNG" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="60" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Processes -->
+        <mxCell id="p1" value="3.1 Đăng ký&lt;br&gt;Hội viên" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="100" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p2" value="3.2 Mua hàng&lt;br&gt;&amp;amp; Thanh toán" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="230" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p3" value="3.3 Tích điểm&lt;br&gt;Loyalty" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="360" width="120" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Data Stores -->
+        <mxCell id="ds1" value="D4. KHÁCH HÀNG" style="shape=partialRectangle;html=1;whiteSpace=wrap;right=0;top=1;bottom=1;left=1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="120" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ds2" value="D3. HÓA ĐƠN" style="shape=partialRectangle;html=1;whiteSpace=wrap;right=0;top=1;bottom=1;left=1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="250" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ds3" value="D4. KHÁCH HÀNG" style="shape=partialRectangle;html=1;whiteSpace=wrap;right=0;top=1;bottom=1;left=1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="380" width="150" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Edges -->
+        <mxCell id="e1" value="Đọc SĐT" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.25;entryX=0;entryY=0.5;labelBackgroundColor=none;" edge="1" parent="1" source="kh" target="p1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="Cung cấp Tiền mặt/Thẻ" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;labelBackgroundColor=none;" edge="1" parent="1" source="kh" target="p2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="Yêu cầu thẻ tích điểm" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.75;entryX=0;entryY=0.5;labelBackgroundColor=none;" edge="1" parent="1" source="kh" target="p3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e5" value="Lưu Profile (Tên, SDT)" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;labelBackgroundColor=none;" edge="1" parent="1" source="p1" target="ds1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="Khởi tạo biên lai (Bill)" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;labelBackgroundColor=none;" edge="1" parent="1" source="p2" target="ds2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="Cộng TotalSpent &amp; Điểm" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;labelBackgroundColor=none;" edge="1" parent="1" source="p3" target="ds3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
