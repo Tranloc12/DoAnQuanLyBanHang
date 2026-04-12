@@ -1,6 +1,10 @@
 USE master;
 GO
 
+SET QUOTED_IDENTIFIER ON;
+SET ANSI_NULLS ON;
+GO
+
 -- 1. XỬ LÝ DATABASE CŨ (Đảm bảo không bị kẹt kết nối)
 IF EXISTS (SELECT name FROM sys.databases WHERE name = N'Quanlybanhang')
 BEGIN
@@ -17,7 +21,6 @@ GO
 
 -- 2. TẠO CẤU TRÚC BẢNG (TABLES)
 
--- Bảng Users (tích hợp Role trực tiếp để khớp với UserDAL.cs và UserDTO.cs)
 CREATE TABLE Users (
     UserID      INT PRIMARY KEY IDENTITY(1,1),
     UserName    NVARCHAR(50)  NOT NULL UNIQUE,
@@ -25,7 +28,7 @@ CREATE TABLE Users (
     FullName    NVARCHAR(100) NOT NULL,
     Email       NVARCHAR(100) NULL,
     Phone       NVARCHAR(15)  NULL,
-    Role        NVARCHAR(20)  NOT NULL DEFAULT N'Staff',   -- 'Admin' hoặc 'Staff'
+    Role        NVARCHAR(20)  NOT NULL DEFAULT N'Staff',   
     IsActive    BIT           NOT NULL DEFAULT 1,
     CreatedDate DATETIME      NOT NULL DEFAULT GETDATE()
 );
@@ -43,7 +46,6 @@ CREATE TABLE Suppliers (
     Address      NVARCHAR(255) NULL
 );
 
--- Bảng Products (có IsActive, CreatedDate để khớp với ProductDTO.cs)
 CREATE TABLE Products (
     ProductID   INT PRIMARY KEY IDENTITY(1,1),
     ProductCode NVARCHAR(50)   NOT NULL UNIQUE,
@@ -55,13 +57,12 @@ CREATE TABLE Products (
     Quantity    INT            NOT NULL DEFAULT 0 CHECK (Quantity >= 0),
     MinQuantity INT            NOT NULL DEFAULT 10,
     Unit        NVARCHAR(20)   NULL,
-    IsActive    BIT            NOT NULL DEFAULT 1,           -- Xóa mềm
+    IsActive    BIT            NOT NULL DEFAULT 1,         
     CreatedDate DATETIME       NOT NULL DEFAULT GETDATE(),
     CONSTRAINT FK_Products_Category FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID),
     CONSTRAINT FK_Products_Supplier FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
 );
 
--- Bảng Customers (có Email, Address, LoyaltyPoints để khớp với CustomerDTO.cs)
 CREATE TABLE Customers (
     CustomerID   INT PRIMARY KEY IDENTITY(1,1),
     CustomerName NVARCHAR(100) NOT NULL,
@@ -70,10 +71,10 @@ CREATE TABLE Customers (
     Address      NVARCHAR(255) NULL,
     TotalSpent   DECIMAL(18,2) NOT NULL DEFAULT 0,
     LoyaltyPoints INT          NOT NULL DEFAULT 0,
+    CustomerRank  NVARCHAR(20)  NOT NULL DEFAULT N'Đồng', 
     CreatedDate  DATETIME      NOT NULL DEFAULT GETDATE()
 );
 
--- Bảng Orders (có PaymentMethod, OrderStatus, Notes để khớp với OrderDTO.cs)
 CREATE TABLE Orders (
     OrderID       INT PRIMARY KEY IDENTITY(1,1),
     OrderCode     NVARCHAR(50)   NOT NULL UNIQUE,
@@ -83,8 +84,8 @@ CREATE TABLE Orders (
     TotalAmount   DECIMAL(18,2)  NOT NULL DEFAULT 0,
     Discount      DECIMAL(18,2)  NOT NULL DEFAULT 0,
     FinalAmount   DECIMAL(18,2)  NOT NULL DEFAULT 0,
-    PaymentMethod NVARCHAR(50)   NULL DEFAULT N'Tiền mặt',  -- 'Tiền mặt', 'Thẻ', 'Chuyển khoản'
-    OrderStatus   NVARCHAR(20)   NOT NULL DEFAULT N'Hoàn thành', -- 'Hoàn thành', 'Hủy'
+    PaymentMethod NVARCHAR(50)   NULL DEFAULT N'Tiền mặt',  
+    OrderStatus   NVARCHAR(20)   NOT NULL DEFAULT N'Hoàn thành', 
     Notes         NVARCHAR(500)  NULL,
     CONSTRAINT FK_Orders_Customer FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
     CONSTRAINT FK_Orders_User     FOREIGN KEY (UserID)     REFERENCES Users(UserID)
@@ -105,9 +106,11 @@ CREATE TABLE InventoryLogs (
     LogID          INT PRIMARY KEY IDENTITY(1,1),
     ProductID      INT         NOT NULL,
     OrderID        INT         NULL,
-    ChangeType     NVARCHAR(20) NULL,  -- 'BanHang', 'NhapKho', 'DieuChinh'
+    ChangeType     NVARCHAR(20) NULL,  
     QuantityChange INT         NOT NULL,
-    LogDate        DATETIME    NOT NULL DEFAULT GETDATE()
+    LogDate        DATETIME    NOT NULL DEFAULT GETDATE(),
+    CONSTRAINT FK_InventoryLogs_Product FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+    CONSTRAINT FK_InventoryLogs_Order   FOREIGN KEY (OrderID)   REFERENCES Orders(OrderID) ON DELETE SET NULL
 );
 GO
 
@@ -136,6 +139,19 @@ BEGIN
     FROM Customers C
     INNER JOIN Orders O ON C.CustomerID = O.CustomerID
     INNER JOIN (SELECT DISTINCT OrderID FROM inserted) I ON O.OrderID = I.OrderID;
+
+    -- Tự động thăng hạng (Ranking) cho khách hàng
+    UPDATE C
+    SET C.CustomerRank = 
+        CASE 
+            WHEN C.LoyaltyPoints >= 1000 THEN N'Kim Cương'
+            WHEN C.LoyaltyPoints >= 300  THEN N'Vàng'
+            WHEN C.LoyaltyPoints >= 100  THEN N'Bạc'
+            ELSE N'Đồng'
+        END
+    FROM Customers C
+    INNER JOIN Orders O ON C.CustomerID = O.CustomerID
+    INNER JOIN (SELECT DISTINCT OrderID FROM inserted) I ON O.OrderID = I.OrderID;
 END;
 GO
 
@@ -143,8 +159,8 @@ GO
 
 INSERT INTO Users (UserName, PasswordHash, FullName, Email, Phone, Role)
 VALUES
-    (N'admin',  N'admin123',  N'Quan Tri Vien', N'admin@shop.com',  N'0901234567', N'Admin'),
-    (N'staff1', N'staff123',  N'Nhan Vien 1',   N'staff1@shop.com', N'0912345678', N'Staff');
+    (N'admin',  N'0192023a7bbd73250516f069df18b500',  N'Quan Tri Vien', N'admin@shop.com',  N'0901234567', N'Admin'),
+    (N'staff1', N'912759885e3a35fd54c935ee573fa533',  N'Nhan Vien 1',   N'staff1@shop.com', N'0912345678', N'Staff');
 
 INSERT INTO Categories (CategoryName, Description)
 VALUES
