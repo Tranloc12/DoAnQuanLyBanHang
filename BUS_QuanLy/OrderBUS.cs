@@ -26,8 +26,8 @@ namespace BUS_QuanLy
         }
 
         /// <summary>
-        /// Tạo đơn hàng hoàn chỉnh (header + các dòng chi tiết).
-        /// Trả về OrderID nếu thành công, -1 nếu thất bại.
+        /// Tạo đơn hàng hoàn chỉnh (header + các dòng chi tiết) với Transaction.
+        /// Trả về OrderID nếu thành công, -1 nếu thất bại (hết hàng, lỗi data).
         /// </summary>
         public int TaoDonHang(OrderDTO donHang, List<OrderDetailDTO> danhSachChiTiet)
         {
@@ -37,15 +37,8 @@ namespace BUS_QuanLy
             donHang.OrderCode   = orderDAL.SinhMaDonHang();
             donHang.OrderStatus = "Hoàn thành";
 
-            int orderId = orderDAL.TaoDonHang(donHang);
-            if (orderId <= 0) return -1;
-
-            foreach (var chiTiet in danhSachChiTiet)
-            {
-                chiTiet.OrderID = orderId;
-                orderDAL.ThemChiTietDonHang(chiTiet);
-            }
-            return orderId;
+            // Thay vì loop gọi từng cái dễ bị nửa vời, ta gọi thẳng hàm Transaction
+            return orderDAL.TaoDonHangGiaoDich(donHang, danhSachChiTiet);
         }
 
         public bool HuyDonHang(int orderId)

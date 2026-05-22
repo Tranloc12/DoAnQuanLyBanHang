@@ -10,5 +10,6 @@ namespace DTO_QuanLy
         public decimal TotalSpent   { get; set; }
         public int     LoyaltyPoints { get; set; }
         public string  CustomerRank  { get; set; } = "Đồng";
+        public System.DateTime CreatedDate { get; set; } = System.DateTime.Now;
     }
 }

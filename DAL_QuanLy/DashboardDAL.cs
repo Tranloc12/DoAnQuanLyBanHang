@@ -8,7 +8,7 @@ namespace DAL_QuanLy
         // Số sản phẩm sắp hết hàng
         public int LaySoSanPhamSapHet()
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(@"
@@ -23,7 +23,7 @@ namespace DAL_QuanLy
 
         public DataTable LayDoanhThuKhoangNgay(int days)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = $@"
@@ -50,7 +50,7 @@ namespace DAL_QuanLy
         // Doanh thu hôm nay
         public decimal LayDoanhThuHomNay()
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(
@@ -65,7 +65,7 @@ namespace DAL_QuanLy
         // Số đơn hàng hôm nay
         public int LayTongDonHangHomNay()
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(
@@ -77,7 +77,7 @@ namespace DAL_QuanLy
         // Tổng số khách hàng
         public int LayTongKhachHang()
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Customers", conn);
@@ -88,7 +88,7 @@ namespace DAL_QuanLy
         // Tổng số đơn hàng trong khoảng ngày
         public int LayTongDonHangKhoangNgay(int days)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(
@@ -102,7 +102,7 @@ namespace DAL_QuanLy
         // Lấy Top 5 sản phẩm bán chạy
         public DataTable LayTopSanPham()
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"
@@ -123,7 +123,7 @@ namespace DAL_QuanLy
         // Lấy 5 đơn hàng mới nhất
         public DataTable LayDonHangGanDay()
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"

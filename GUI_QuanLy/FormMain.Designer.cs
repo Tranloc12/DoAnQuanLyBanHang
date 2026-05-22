@@ -108,7 +108,7 @@ namespace GUI_QuanLy
             pnSidebar.Dock = DockStyle.Left;
             pnSidebar.Location = new Point(0, 0);
             pnSidebar.Name = "pnSidebar";
-            pnSidebar.Size = new Size(200, 924);
+            pnSidebar.Size = new Size(200, 877);
             pnSidebar.TabIndex = 0;
             // 
             // pictureBox1
@@ -287,7 +287,7 @@ namespace GUI_QuanLy
             pnTop.Dock = DockStyle.Top;
             pnTop.Location = new Point(200, 0);
             pnTop.Name = "pnTop";
-            pnTop.Size = new Size(1080, 60);
+            pnTop.Size = new Size(1062, 60);
             pnTop.TabIndex = 1;
             // 
             // lblAdminName
@@ -307,7 +307,7 @@ namespace GUI_QuanLy
             btnLogout.FlatStyle = FlatStyle.Flat;
             btnLogout.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnLogout.ForeColor = Color.White;
-            btnLogout.Location = new Point(540, 16);
+            btnLogout.Location = new Point(522, 11);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(80, 28);
             btnLogout.TabIndex = 12;
@@ -380,7 +380,7 @@ namespace GUI_QuanLy
             pnContent.Location = new Point(200, 60);
             pnContent.Name = "pnContent";
             pnContent.Padding = new Padding(15);
-            pnContent.Size = new Size(1080, 864);
+            pnContent.Size = new Size(1062, 817);
             pnContent.TabIndex = 2;
             // 
             // lblDashboardTitle
@@ -403,7 +403,7 @@ namespace GUI_QuanLy
             pnlKPIContainer.Controls.Add(pnlCardRevenue);
             pnlKPIContainer.Location = new Point(20, 65);
             pnlKPIContainer.Name = "pnlKPIContainer";
-            pnlKPIContainer.Size = new Size(600, 100);
+            pnlKPIContainer.Size = new Size(582, 100);
             pnlKPIContainer.TabIndex = 8;
             // 
             // pnlCardStock
@@ -546,7 +546,7 @@ namespace GUI_QuanLy
             pnlChartContainer.Controls.Add(lblChartTitle);
             pnlChartContainer.Location = new Point(20, 180);
             pnlChartContainer.Name = "pnlChartContainer";
-            pnlChartContainer.Size = new Size(600, 154);
+            pnlChartContainer.Size = new Size(582, 107);
             pnlChartContainer.TabIndex = 10;
             // 
             // crtRevenue
@@ -554,7 +554,7 @@ namespace GUI_QuanLy
             crtRevenue.Dock = DockStyle.Fill;
             crtRevenue.Location = new Point(0, 0);
             crtRevenue.Name = "crtRevenue";
-            crtRevenue.Size = new Size(598, 152);
+            crtRevenue.Size = new Size(580, 105);
             crtRevenue.TabIndex = 1;
             // 
             // lblChartTitle
@@ -579,9 +579,9 @@ namespace GUI_QuanLy
             stsMain.BackColor = Color.FromArgb(233, 236, 239);
             stsMain.ImageScalingSize = new Size(20, 20);
             stsMain.Items.AddRange(new ToolStripItem[] { tssUser, tssRole, tssClock });
-            stsMain.Location = new Point(0, 924);
+            stsMain.Location = new Point(0, 877);
             stsMain.Name = "stsMain";
-            stsMain.Size = new Size(1280, 26);
+            stsMain.Size = new Size(1262, 26);
             stsMain.TabIndex = 0;
             stsMain.Text = "statusStrip1";
             // 
@@ -649,7 +649,7 @@ namespace GUI_QuanLy
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1280, 950);
+            ClientSize = new Size(1262, 903);
             Controls.Add(pnContent);
             Controls.Add(pnTop);
             Controls.Add(pnSidebar);

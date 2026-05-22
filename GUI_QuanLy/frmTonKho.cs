@@ -49,7 +49,7 @@ namespace GUI_QuanLy
                 }
 
                 lblThongKe.Text = $"📊 Tổng: {dt.Rows.Count} SP | Trị giá tồn kho ước tính: {tongGiaTri:N0} VNĐ";
-            } catch (Exception ex) { }
+            } catch (Exception) { }
         }
 
         private void ToCauHinhMauHang()
@@ -57,7 +57,7 @@ namespace GUI_QuanLy
             foreach (DataGridViewRow row in dgvTonKho.Rows)
             {
                 if (row.Cells["TrangThai"] != null) {
-                    string tt = row.Cells["TrangThai"].Value?.ToString();
+                    string? tt = row.Cells["TrangThai"].Value?.ToString();
                     if (tt == "Hết hàng")
                         row.DefaultCellStyle.BackColor = Color.FromArgb(255, 200, 200);
                     else if (tt == "Sắp hết")
@@ -118,7 +118,7 @@ namespace GUI_QuanLy
         {
             if (dgvTonKho.CurrentRow == null) return;
             int productId   = Convert.ToInt32(dgvTonKho.CurrentRow.Cells["ProductID"].Value);
-            string tenSP    = dgvTonKho.CurrentRow.Cells["ProductName"].Value?.ToString();
+            string? tenSP    = dgvTonKho.CurrentRow.Cells["ProductName"].Value?.ToString();
             int tonHienTai  = Convert.ToInt32(dgvTonKho.CurrentRow.Cells["TonKho"].Value);
 
             string input = Microsoft.VisualBasic.Interaction.InputBox(

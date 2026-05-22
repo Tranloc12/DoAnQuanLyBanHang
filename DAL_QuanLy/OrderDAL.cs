@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using DTO_QuanLy;
 using System.Data;
+using System.Transactions;
 
 namespace DAL_QuanLy
 {
@@ -11,7 +12,7 @@ namespace DAL_QuanLy
         // Lấy tất cả đơn hàng
         public DataTable LayDanhSachDonHang()
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"SELECT o.OrderID, o.OrderCode,
@@ -33,7 +34,7 @@ namespace DAL_QuanLy
         // Lấy chi tiết đơn hàng theo OrderID
         public DataTable LayChiTietDonHang(int orderId)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"SELECT od.OrderDetailID, od.OrderID,
@@ -53,7 +54,7 @@ namespace DAL_QuanLy
         // Lấy đơn hàng theo ngày
         public DataTable LayDonHangTheoNgay(DateTime tuNgay, DateTime denNgay)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"SELECT o.OrderID, o.OrderCode,
@@ -78,7 +79,7 @@ namespace DAL_QuanLy
         // Tạo đơn hàng — trả về OrderID vừa tạo
         public int TaoDonHang(OrderDTO donHang)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"INSERT INTO Orders
@@ -103,10 +104,39 @@ namespace DAL_QuanLy
             }
         }
 
+        // Tạo đơn hàng và chi tiết MỘT CÁCH TỐI ƯU (Tái sử dụng code cũ với TransactionScope)
+        public int TaoDonHangGiaoDich(OrderDTO donHang, List<OrderDetailDTO> danhSachChiTiet)
+        {
+            try
+            {
+                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
+                {
+                    // 1. Tạo đơn hàng header
+                    int orderId = TaoDonHang(donHang);
+                    if (orderId <= 0) return -1;
+
+                    // 2. Thêm từng dòng chi tiết
+                    foreach (var chiTiet in danhSachChiTiet)
+                    {
+                        chiTiet.OrderID = orderId;
+                        if (!ThemChiTietDonHang(chiTiet))
+                            throw new Exception("Lỗi khi thêm chi tiết đơn hàng");
+                    }
+
+                    scope.Complete();
+                    return orderId;
+                }
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+        }
+
         // Thêm chi tiết đơn hàng (trigger sẽ tự trừ kho)
         public bool ThemChiTietDonHang(OrderDetailDTO chiTiet)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"INSERT INTO OrderDetails (OrderID, ProductID, Quantity, UnitPrice)
@@ -123,7 +153,7 @@ namespace DAL_QuanLy
         // Hủy đơn hàng
         public bool HuyDonHang(int orderId)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = "UPDATE Orders SET OrderStatus = N'Hủy' WHERE OrderID = @id";
@@ -136,7 +166,7 @@ namespace DAL_QuanLy
         // Sinh mã đơn hàng tự động: HD-yyyyMMdd-001
         public string SinhMaDonHang()
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string dateStr = DateTime.Now.ToString("yyyyMMdd");
@@ -149,7 +179,7 @@ namespace DAL_QuanLy
 
         public OrderDTO? LayDonHangTheoID(int orderId)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"SELECT OrderID, OrderCode, CustomerID, UserID, OrderDate, 
@@ -183,7 +213,7 @@ namespace DAL_QuanLy
         // Tìm kiếm đơn hàng theo mã đơn hoặc tên khách hàng
         public DataTable TimKiemDonHang(string tuKhoa)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"SELECT o.OrderID, o.OrderCode,
@@ -205,3 +235,4 @@ namespace DAL_QuanLy
         }
     }
 }
+

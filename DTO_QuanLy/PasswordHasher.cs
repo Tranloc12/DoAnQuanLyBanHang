@@ -7,7 +7,7 @@ namespace DTO_QuanLy
     public static class PasswordHasher
     {
         /// <summary>
-        /// Băm mật khẩu bằng thuật toán MD5
+        /// Băm mật khẩu bằng thuật toán SHA-256
         /// </summary>
         /// <param name="password">Mật khẩu thô</param>
         /// <returns>Chuỗi hex đã băm</returns>
@@ -15,10 +15,10 @@ namespace DTO_QuanLy
         {
             if (string.IsNullOrEmpty(password)) return "";
 
-            using (MD5 md5 = MD5.Create())
+            using (SHA256 sha256 = SHA256.Create())
             {
                 byte[] inputBytes = Encoding.UTF8.GetBytes(password);
-                byte[] hashBytes = md5.ComputeHash(inputBytes);
+                byte[] hashBytes = sha256.ComputeHash(inputBytes);
 
                 // Chuyển byte array sang chuỗi Hexadecimal
                 StringBuilder sb = new StringBuilder();

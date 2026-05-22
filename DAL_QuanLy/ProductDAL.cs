@@ -10,7 +10,7 @@ namespace DAL_QuanLy
         // Lấy danh sách tất cả sản phẩm đang hoạt động
         public DataTable LayDanhSachSanPham()
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"SELECT p.ProductID, p.ProductCode, p.ProductName,
@@ -33,7 +33,7 @@ namespace DAL_QuanLy
         // Lấy sản phẩm theo ID — trả về DTO
         public ProductDTO LaySanPhamTheoID(int productId)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 string query = @"SELECT p.ProductID, p.ProductCode, p.ProductName,
                                         p.CategoryID, c.CategoryName,
@@ -57,7 +57,7 @@ namespace DAL_QuanLy
         // Tìm kiếm theo tên hoặc mã sản phẩm
         public DataTable TimKiemSanPham(string tuKhoa)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"SELECT p.ProductID, p.ProductCode, p.ProductName,
@@ -82,7 +82,7 @@ namespace DAL_QuanLy
         // Thêm sản phẩm — nhận DTO
         public bool ThemSanPham(ProductDTO sp)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"INSERT INTO Products
@@ -108,7 +108,7 @@ namespace DAL_QuanLy
         // Sửa sản phẩm — nhận DTO
         public bool SuaSanPham(ProductDTO sp)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"UPDATE Products
@@ -133,7 +133,7 @@ namespace DAL_QuanLy
         // Xóa mềm sản phẩm
         public bool XoaSanPham(int productId)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = "UPDATE Products SET IsActive = 0 WHERE ProductID = @id";
@@ -146,7 +146,7 @@ namespace DAL_QuanLy
         // Kiểm tra mã sản phẩm đã tồn tại chưa
         public bool KiemTraMaSanPham(string productCode)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = "SELECT COUNT(*) FROM Products WHERE ProductCode = @code";
@@ -159,7 +159,7 @@ namespace DAL_QuanLy
         // Lấy sản phẩm sắp hết hàng
         public DataTable LayDanhSachSapHet()
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"SELECT p.ProductID, p.ProductCode, p.ProductName,
@@ -182,7 +182,7 @@ namespace DAL_QuanLy
         // Lấy danh mục (cho ComboBox)
         public DataTable LayDanhMuc()
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlDataAdapter da = new SqlDataAdapter("SELECT CategoryID, CategoryName FROM Categories ORDER BY CategoryName", conn);
@@ -195,7 +195,7 @@ namespace DAL_QuanLy
         // Lấy nhà cung cấp (cho ComboBox)
         public DataTable LayNhaCungCap()
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlDataAdapter da = new SqlDataAdapter("SELECT SupplierID, SupplierName FROM Suppliers ORDER BY SupplierName", conn);

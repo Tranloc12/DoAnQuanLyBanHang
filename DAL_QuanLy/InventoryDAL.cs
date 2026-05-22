@@ -9,7 +9,7 @@ namespace DAL_QuanLy
         // Toàn bộ tồn kho hiện tại
         public DataTable LayTonKho()
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"
@@ -38,21 +38,22 @@ namespace DAL_QuanLy
         // Sản phẩm bán chạy theo khoảng ngày
         public DataTable LayBanChay(DateTime tuNgay, DateTime denNgay, int topN = 10)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = $@"
                     SELECT TOP {topN}
                            p.ProductCode, p.ProductName,
-                           SUM(od.Quantity)              AS TongBan,
-                           SUM(od.Quantity * od.UnitPrice) AS DoanhThu
+                           SUM(od.Quantity)              AS TongSoLuong,
+                           SUM(od.Quantity * od.UnitPrice) AS DoanhThu,
+                           SUM(od.Quantity * (od.UnitPrice - p.CostPrice)) AS LoiNhuan
                     FROM OrderDetails od
                     INNER JOIN Products p ON od.ProductID = p.ProductID
                     INNER JOIN Orders   o ON od.OrderID   = o.OrderID
                     WHERE o.OrderStatus = N'Hoàn thành'
                       AND CAST(o.OrderDate AS DATE) BETWEEN @tu AND @den
                     GROUP BY p.ProductCode, p.ProductName
-                    ORDER BY TongBan DESC";
+                    ORDER BY TongSoLuong DESC";
                 SqlDataAdapter da = new SqlDataAdapter(query, conn);
                 da.SelectCommand.Parameters.AddWithValue("@tu",  tuNgay.Date);
                 da.SelectCommand.Parameters.AddWithValue("@den", denNgay.Date);
@@ -65,7 +66,7 @@ namespace DAL_QuanLy
         // Nhập thêm hàng vào kho
         public bool NhapKho(int productId, int soLuongNhap)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(

@@ -8,7 +8,7 @@ namespace GUI_QuanLy
 {
     public class PayPalHelper
     {
-        public static Bitmap TaoMaQRPayPal(string email, decimal amountVnd, string orderCode)
+        public static Bitmap? TaoMaQRPayPal(string email, decimal amountVnd, string orderCode)
         {
             try
             {

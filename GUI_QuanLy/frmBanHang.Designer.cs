@@ -9,6 +9,11 @@ namespace GUI_QuanLy
         {
             lblTitle = new Label();
             dgvGioHang = new DataGridView();
+            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn3 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn4 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn5 = new DataGridViewTextBoxColumn();
             grpChonSP = new GroupBox();
             txtTimSanPham = new TextBox();
             lblSanPham = new Label();
@@ -42,11 +47,8 @@ namespace GUI_QuanLy
             btnThanhToan = new Button();
             btnInHoaDon = new Button();
             btnLamMoi = new Button();
-            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
-            dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
-            dataGridViewTextBoxColumn3 = new DataGridViewTextBoxColumn();
-            dataGridViewTextBoxColumn4 = new DataGridViewTextBoxColumn();
-            dataGridViewTextBoxColumn5 = new DataGridViewTextBoxColumn();
+            btnTangSL = new Button();
+            btnGiamSL = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvGioHang).BeginInit();
             grpChonSP.SuspendLayout();
             grpKhachHang.SuspendLayout();
@@ -76,6 +78,46 @@ namespace GUI_QuanLy
             dgvGioHang.Size = new Size(700, 270);
             dgvGioHang.TabIndex = 2;
             // 
+            // dataGridViewTextBoxColumn1
+            // 
+            dataGridViewTextBoxColumn1.HeaderText = "Mã SP";
+            dataGridViewTextBoxColumn1.MinimumWidth = 6;
+            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            dataGridViewTextBoxColumn1.ReadOnly = true;
+            dataGridViewTextBoxColumn1.Width = 125;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            dataGridViewTextBoxColumn2.HeaderText = "Tên sản phẩm";
+            dataGridViewTextBoxColumn2.MinimumWidth = 6;
+            dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            dataGridViewTextBoxColumn2.ReadOnly = true;
+            dataGridViewTextBoxColumn2.Width = 125;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            dataGridViewTextBoxColumn3.HeaderText = "SL";
+            dataGridViewTextBoxColumn3.MinimumWidth = 6;
+            dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            dataGridViewTextBoxColumn3.ReadOnly = true;
+            dataGridViewTextBoxColumn3.Width = 125;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            dataGridViewTextBoxColumn4.HeaderText = "Đơn giá";
+            dataGridViewTextBoxColumn4.MinimumWidth = 6;
+            dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            dataGridViewTextBoxColumn4.ReadOnly = true;
+            dataGridViewTextBoxColumn4.Width = 125;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            dataGridViewTextBoxColumn5.HeaderText = "Thành tiền";
+            dataGridViewTextBoxColumn5.MinimumWidth = 6;
+            dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            dataGridViewTextBoxColumn5.ReadOnly = true;
+            dataGridViewTextBoxColumn5.Width = 125;
+            // 
             // grpChonSP
             // 
             grpChonSP.Controls.Add(txtTimSanPham);
@@ -98,9 +140,9 @@ namespace GUI_QuanLy
             // 
             txtTimSanPham.Location = new Point(10, 25);
             txtTimSanPham.Name = "txtTimSanPham";
+            txtTimSanPham.PlaceholderText = "Mã/Tên SP";
             txtTimSanPham.Size = new Size(100, 27);
             txtTimSanPham.TabIndex = 0;
-            txtTimSanPham.PlaceholderText = "Mã/Tên SP";
             txtTimSanPham.KeyDown += txtTimSanPham_KeyDown;
             // 
             // lblSanPham
@@ -175,13 +217,39 @@ namespace GUI_QuanLy
             btnXoaDong.UseVisualStyleBackColor = false;
             btnXoaDong.Click += btnXoaDong_Click;
             // 
+            // btnTangSL
+            // 
+            btnTangSL.BackColor = Color.ForestGreen;
+            btnTangSL.ForeColor = Color.White;
+            btnTangSL.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnTangSL.Location = new Point(130, 412);
+            btnTangSL.Name = "btnTangSL";
+            btnTangSL.Size = new Size(50, 32);
+            btnTangSL.TabIndex = 7;
+            btnTangSL.Text = "+";
+            btnTangSL.UseVisualStyleBackColor = false;
+            btnTangSL.Click += btnTangSL_Click;
+            // 
+            // btnGiamSL
+            // 
+            btnGiamSL.BackColor = Color.DarkOrange;
+            btnGiamSL.ForeColor = Color.White;
+            btnGiamSL.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnGiamSL.Location = new Point(185, 412);
+            btnGiamSL.Name = "btnGiamSL";
+            btnGiamSL.Size = new Size(50, 32);
+            btnGiamSL.TabIndex = 8;
+            btnGiamSL.Text = "−";
+            btnGiamSL.UseVisualStyleBackColor = false;
+            btnGiamSL.Click += btnGiamSL_Click;
+            // 
             // grpKhachHang
             // 
             grpKhachHang.Controls.Add(lblSDTKH);
             grpKhachHang.Controls.Add(txtSDTKhachHang);
             grpKhachHang.Controls.Add(btnTimKH);
             grpKhachHang.Controls.Add(lblTenKhachHang);
-            grpKhachHang.Controls.Add(txtTenKhachHang); // Thêm ô nhập tên
+            grpKhachHang.Controls.Add(txtTenKhachHang);
             grpKhachHang.Controls.Add(chkDungDiem);
             grpKhachHang.Controls.Add(txtSoDiem);
             grpKhachHang.Controls.Add(lblQuyDoi);
@@ -234,34 +302,34 @@ namespace GUI_QuanLy
             // 
             txtTenKhachHang.Location = new Point(140, 55);
             txtTenKhachHang.Name = "txtTenKhachHang";
+            txtTenKhachHang.PlaceholderText = "Tên khách mới";
             txtTenKhachHang.Size = new Size(130, 27);
             txtTenKhachHang.TabIndex = 4;
-            txtTenKhachHang.PlaceholderText = "Tên khách mới";
-            //
-            // chkDungDiem  (Row 3: Y=88)
-            //
+            // 
+            // chkDungDiem
+            // 
             chkDungDiem.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
             chkDungDiem.ForeColor = Color.DarkOrange;
             chkDungDiem.Location = new Point(10, 88);
             chkDungDiem.Name = "chkDungDiem";
             chkDungDiem.Size = new Size(100, 22);
             chkDungDiem.TabIndex = 4;
-            chkDungDiem.Text = "⭐ Dùng điểm:";
+            chkDungDiem.Text = "Dùng điểm:";
             chkDungDiem.UseVisualStyleBackColor = true;
             chkDungDiem.CheckedChanged += chkDungDiem_CheckedChanged;
-            //
+            // 
             // txtSoDiem
-            //
+            // 
+            txtSoDiem.Enabled = false;
             txtSoDiem.Location = new Point(112, 86);
             txtSoDiem.Name = "txtSoDiem";
             txtSoDiem.Size = new Size(65, 27);
             txtSoDiem.TabIndex = 5;
             txtSoDiem.Text = "0";
-            txtSoDiem.Enabled = false;
             txtSoDiem.TextChanged += txtSoDiem_TextChanged;
-            //
+            // 
             // lblQuyDoi
-            //
+            // 
             lblQuyDoi.Font = new Font("Segoe UI", 8F);
             lblQuyDoi.ForeColor = Color.Gray;
             lblQuyDoi.Location = new Point(180, 90);
@@ -283,7 +351,7 @@ namespace GUI_QuanLy
             grpThanhToan.Controls.Add(lblGhiChu);
             grpThanhToan.Controls.Add(txtGhiChu);
             grpThanhToan.Controls.Add(btnThanhToan);
-            grpThanhToan.Controls.Add(btnInHoaDon); // Thêm nút in hóa đơn
+            grpThanhToan.Controls.Add(btnInHoaDon);
             grpThanhToan.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             grpThanhToan.Location = new Point(720, 160);
             grpThanhToan.Name = "grpThanhToan";
@@ -292,7 +360,7 @@ namespace GUI_QuanLy
             grpThanhToan.TabStop = false;
             grpThanhToan.Text = "Thanh toán";
             // 
-            // lblTongTienTitle  (Row 1: Y=28)
+            // lblTongTienTitle
             // 
             lblTongTienTitle.Location = new Point(10, 28);
             lblTongTienTitle.Name = "lblTongTienTitle";
@@ -310,7 +378,7 @@ namespace GUI_QuanLy
             lblTongTien.TabIndex = 1;
             lblTongTien.Text = "0 VNĐ";
             // 
-            // lblGiamGia  (Row 2: Y=60)
+            // lblGiamGia
             // 
             lblGiamGia.Location = new Point(10, 60);
             lblGiamGia.Name = "lblGiamGia";
@@ -327,7 +395,7 @@ namespace GUI_QuanLy
             txtGiamGia.Text = "0";
             txtGiamGia.TextChanged += txtGiamGia_TextChanged;
             // 
-            // lblThanhToanTitle  (Row 3: Y=98)
+            // lblThanhToanTitle
             // 
             lblThanhToanTitle.Location = new Point(10, 98);
             lblThanhToanTitle.Name = "lblThanhToanTitle";
@@ -345,7 +413,7 @@ namespace GUI_QuanLy
             lblThanhToan.TabIndex = 5;
             lblThanhToan.Text = "0 VNĐ";
             // 
-            // lblPTTT  (Row 4: Y=135)
+            // lblPTTT
             // 
             lblPTTT.Location = new Point(10, 135);
             lblPTTT.Name = "lblPTTT";
@@ -361,7 +429,7 @@ namespace GUI_QuanLy
             cbPhuongThucTT.Size = new Size(160, 28);
             cbPhuongThucTT.TabIndex = 7;
             // 
-            // lblGhiChu  (Row 5: Y=172)
+            // lblGhiChu
             // 
             lblGhiChu.Location = new Point(10, 172);
             lblGhiChu.Name = "lblGhiChu";
@@ -376,7 +444,7 @@ namespace GUI_QuanLy
             txtGhiChu.Size = new Size(255, 27);
             txtGhiChu.TabIndex = 9;
             // 
-            // btnThanhToan  (Row 6: Y=235)
+            // btnThanhToan
             // 
             btnThanhToan.BackColor = Color.DarkGreen;
             btnThanhToan.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
@@ -385,77 +453,36 @@ namespace GUI_QuanLy
             btnThanhToan.Name = "btnThanhToan";
             btnThanhToan.Size = new Size(255, 42);
             btnThanhToan.TabIndex = 10;
-            btnThanhToan.Text = "✅ THANH TOÁN";
+            btnThanhToan.Text = " THANH TOÁN";
             btnThanhToan.UseVisualStyleBackColor = false;
             btnThanhToan.Click += btnThanhToan_Click;
             // 
             // btnInHoaDon
             // 
             btnInHoaDon.BackColor = Color.SteelBlue;
+            btnInHoaDon.Enabled = false;
             btnInHoaDon.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnInHoaDon.ForeColor = Color.White;
             btnInHoaDon.Location = new Point(10, 282);
             btnInHoaDon.Name = "btnInHoaDon";
             btnInHoaDon.Size = new Size(255, 38);
             btnInHoaDon.TabIndex = 11;
-            btnInHoaDon.Text = "🖨 IN HÓA ĐƠN";
+            btnInHoaDon.Text = " IN HÓA ĐƠN";
             btnInHoaDon.UseVisualStyleBackColor = false;
             btnInHoaDon.Click += btnInHoaDon_Click;
-            btnInHoaDon.Enabled = false; 
             // 
             // btnLamMoi
             // 
             btnLamMoi.BackColor = Color.DimGray;
             btnLamMoi.Font = new Font("Segoe UI", 10F);
             btnLamMoi.ForeColor = Color.White;
-            btnLamMoi.Location = new Point(720, 478);
+            btnLamMoi.Location = new Point(717, 487);
             btnLamMoi.Name = "btnLamMoi";
             btnLamMoi.Size = new Size(280, 38);
             btnLamMoi.TabIndex = 6;
             btnLamMoi.Text = "🔄 Làm mới";
             btnLamMoi.UseVisualStyleBackColor = false;
             btnLamMoi.Click += btnLamMoi_Click;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            dataGridViewTextBoxColumn1.HeaderText = "Mã SP";
-            dataGridViewTextBoxColumn1.MinimumWidth = 6;
-            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            dataGridViewTextBoxColumn1.ReadOnly = true;
-            dataGridViewTextBoxColumn1.Width = 125;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            dataGridViewTextBoxColumn2.HeaderText = "Tên sản phẩm";
-            dataGridViewTextBoxColumn2.MinimumWidth = 6;
-            dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            dataGridViewTextBoxColumn2.ReadOnly = true;
-            dataGridViewTextBoxColumn2.Width = 125;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            dataGridViewTextBoxColumn3.HeaderText = "SL";
-            dataGridViewTextBoxColumn3.MinimumWidth = 6;
-            dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            dataGridViewTextBoxColumn3.ReadOnly = true;
-            dataGridViewTextBoxColumn3.Width = 125;
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            dataGridViewTextBoxColumn4.HeaderText = "Đơn giá";
-            dataGridViewTextBoxColumn4.MinimumWidth = 6;
-            dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            dataGridViewTextBoxColumn4.ReadOnly = true;
-            dataGridViewTextBoxColumn4.Width = 125;
-            // 
-            // dataGridViewTextBoxColumn5
-            // 
-            dataGridViewTextBoxColumn5.HeaderText = "Thành tiền";
-            dataGridViewTextBoxColumn5.MinimumWidth = 6;
-            dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            dataGridViewTextBoxColumn5.ReadOnly = true;
-            dataGridViewTextBoxColumn5.Width = 125;
-            // 
             // 
             // frmBanHang
             // 
@@ -464,6 +491,8 @@ namespace GUI_QuanLy
             Controls.Add(grpChonSP);
             Controls.Add(dgvGioHang);
             Controls.Add(btnXoaDong);
+            Controls.Add(btnTangSL);
+            Controls.Add(btnGiamSL);
             Controls.Add(grpKhachHang);
             Controls.Add(grpThanhToan);
             Controls.Add(btnLamMoi);
@@ -504,5 +533,7 @@ namespace GUI_QuanLy
         private System.Windows.Forms.CheckBox chkDungDiem;
         private System.Windows.Forms.TextBox txtSoDiem;
         private System.Windows.Forms.Label lblQuyDoi;
+        private System.Windows.Forms.Button btnTangSL;
+        private System.Windows.Forms.Button btnGiamSL;
     }
 }

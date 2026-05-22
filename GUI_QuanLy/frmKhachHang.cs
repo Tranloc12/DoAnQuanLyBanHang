@@ -26,9 +26,13 @@ namespace GUI_QuanLy
         {
             dgvKhachHang.DataSource = customerBUS.LayDanhSachKhachHang();
             if (dgvKhachHang.Columns["CustomerID"] != null) dgvKhachHang.Columns["CustomerID"].Visible = false;
+            if (dgvKhachHang.Columns["CustomerName"] != null) dgvKhachHang.Columns["CustomerName"].HeaderText = "Tên khách hàng";
+            if (dgvKhachHang.Columns["Phone"] != null) dgvKhachHang.Columns["Phone"].HeaderText = "Số điện thoại";
+            if (dgvKhachHang.Columns["Email"] != null) dgvKhachHang.Columns["Email"].HeaderText = "Email";
+            if (dgvKhachHang.Columns["Address"] != null) dgvKhachHang.Columns["Address"].HeaderText = "Địa chỉ";
             if (dgvKhachHang.Columns["LoyaltyPoints"] != null) dgvKhachHang.Columns["LoyaltyPoints"].HeaderText = "Điểm tích lũy";
             if (dgvKhachHang.Columns["TotalSpent"] != null) dgvKhachHang.Columns["TotalSpent"].HeaderText = "Tổng chi tiêu";
-            if (dgvKhachHang.Columns["CustomerRank"] != null) dgvKhachHang.Columns["CustomerRank"].HeaderText = "Hạng viên";
+            if (dgvKhachHang.Columns["CustomerRank"] != null) dgvKhachHang.Columns["CustomerRank"].HeaderText = "Hạng thành viên";
         }
 
         private void SetControls(bool edit)

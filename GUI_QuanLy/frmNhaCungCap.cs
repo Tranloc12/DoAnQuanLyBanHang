@@ -18,13 +18,19 @@ namespace GUI_QuanLy
             dgvNCC.DataSource = supplierBUS.LayDanhSachNhaCungCap();
             if (dgvNCC.Columns["SupplierID"] != null)
                 dgvNCC.Columns["SupplierID"].Visible = false;
+            if (dgvNCC.Columns["SupplierName"] != null)
+                dgvNCC.Columns["SupplierName"].HeaderText = "Tên nhà cung cấp";
+            if (dgvNCC.Columns["Phone"] != null)
+                dgvNCC.Columns["Phone"].HeaderText = "Số điện thoại";
+            if (dgvNCC.Columns["Address"] != null)
+                dgvNCC.Columns["Address"].HeaderText = "Địa chỉ";
         }
 
         private void SetControls(bool edit)
         {
             txtTen.Enabled = txtSDT.Enabled = txtDiaChi.Enabled = edit;
             btnThem.Enabled = btnSua.Enabled = btnXoa.Enabled = !edit;
-            btnLuu.Enabled  = btnHuy.Enabled = edit;
+            btnLuu.Enabled = btnHuy.Enabled = edit;
         }
 
         private void btnThem_Click(object sender, EventArgs e)
@@ -78,11 +84,16 @@ namespace GUI_QuanLy
             if (r < 0 || r >= dgvNCC.Rows.Count) return;
             try
             {
-                txtTen.Text    = dgvNCC.Rows[r].Cells["SupplierName"].Value?.ToString();
-                txtSDT.Text    = dgvNCC.Rows[r].Cells["Phone"].Value?.ToString();
+                txtTen.Text = dgvNCC.Rows[r].Cells["SupplierName"].Value?.ToString();
+                txtSDT.Text = dgvNCC.Rows[r].Cells["Phone"].Value?.ToString();
                 txtDiaChi.Text = dgvNCC.Rows[r].Cells["Address"].Value?.ToString();
             }
             catch { }
+        }
+
+        private void txtTen_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
