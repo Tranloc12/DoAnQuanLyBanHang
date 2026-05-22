@@ -178,6 +178,7 @@ namespace GUI_QuanLy
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            AcceptButton = btnLogin;
             Controls.Add(panelRight);
             Controls.Add(panelLeft);
             FormBorderStyle = FormBorderStyle.FixedDialog;

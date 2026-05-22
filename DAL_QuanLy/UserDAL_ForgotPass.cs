@@ -9,7 +9,7 @@ namespace DAL_QuanLy
         // Kiểm tra UserName + (Email hoặc Phone) để lấy UserID phục vụ việc reset mật khẩu
         public int LayUserIdByEmail(string username, string contact)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 // Cho phép dùng Email hoặc Số điện thoại để xác minh
                 string query = "SELECT UserID FROM Users WHERE UserName = @u AND (Email = @c OR Phone = @c) AND IsActive = 1";

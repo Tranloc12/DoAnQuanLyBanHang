@@ -23,7 +23,7 @@ namespace GUI_QuanLy
             lblInfo.Text = $"Đơn hàng: {orderCode}\nSố tiền: {amount:N0} VNĐ";
             try
             {
-                Bitmap qr = PayPalHelper.TaoMaQRPayPal(email, amount, orderCode);
+                Bitmap? qr = PayPalHelper.TaoMaQRPayPal(email, amount, orderCode);
                 if (qr != null)
                 {
                     picQR.Image = qr;

@@ -7,7 +7,7 @@ namespace DAL_QuanLy
     {
         public DataTable LayDanhSachLoaiHang()
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlDataAdapter da = new SqlDataAdapter(
@@ -20,7 +20,7 @@ namespace DAL_QuanLy
 
         public bool KiemTraTenLoai(string name)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(
@@ -32,7 +32,7 @@ namespace DAL_QuanLy
 
         public bool ThemLoaiHang(string name, string description)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(
@@ -45,7 +45,7 @@ namespace DAL_QuanLy
 
         public bool SuaLoaiHang(int id, string name, string description)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(
@@ -59,7 +59,7 @@ namespace DAL_QuanLy
 
         public bool XoaLoaiHang(int id)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 // Kiểm tra còn sản phẩm không

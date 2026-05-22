@@ -108,6 +108,17 @@ namespace GUI_QuanLy
             dgvSanPham.Columns["CategoryID"].Visible  = false;
             dgvSanPham.Columns["SupplierID"].Visible  = false;
             dgvSanPham.Columns["IsActive"].Visible    = false;
+            if (dgvSanPham.Columns["ProductCode"] != null)   dgvSanPham.Columns["ProductCode"].HeaderText   = "Mã sản phẩm";
+            if (dgvSanPham.Columns["ProductName"] != null)   dgvSanPham.Columns["ProductName"].HeaderText   = "Tên sản phẩm";
+            if (dgvSanPham.Columns["CategoryName"] != null)  dgvSanPham.Columns["CategoryName"].HeaderText  = "Loại hàng";
+            if (dgvSanPham.Columns["SupplierName"] != null)  dgvSanPham.Columns["SupplierName"].HeaderText  = "Nhà cung cấp";
+            if (dgvSanPham.Columns["CostPrice"] != null)     dgvSanPham.Columns["CostPrice"].HeaderText     = "Giá nhập";
+            if (dgvSanPham.Columns["SellPrice"] != null)     dgvSanPham.Columns["SellPrice"].HeaderText     = "Giá bán";
+            if (dgvSanPham.Columns["Quantity"] != null)      dgvSanPham.Columns["Quantity"].HeaderText      = "Số lượng";
+            if (dgvSanPham.Columns["MinQuantity"] != null)   dgvSanPham.Columns["MinQuantity"].HeaderText   = "SL tối thiểu";
+            if (dgvSanPham.Columns["Unit"] != null)          dgvSanPham.Columns["Unit"].HeaderText          = "Đơn vị";
+            if (dgvSanPham.Columns["LoiNhuan"] != null)      dgvSanPham.Columns["LoiNhuan"].HeaderText      = "Lợi nhuận";
+            if (dgvSanPham.Columns["SapHetHang"] != null)    dgvSanPham.Columns["SapHetHang"].HeaderText    = "Sắp hết hàng";
         }
 
         private void NapComboBox()

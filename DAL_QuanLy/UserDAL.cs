@@ -11,7 +11,7 @@ namespace DAL_QuanLy
         // Kiểm tra đăng nhập — trả về UserDTO hoặc null
         public UserDTO? KiemTraDangNhap(string userName, string matKhau)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 string query = @"SELECT UserID, UserName, FullName, Email, Phone, Role, IsActive
                                  FROM Users
@@ -41,7 +41,7 @@ namespace DAL_QuanLy
         // Lấy danh sách tất cả nhân viên
         public DataTable LayDanhSachNhanVien()
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = "SELECT UserID, UserName, FullName, Email, Phone, Role, IsActive FROM Users ORDER BY UserID DESC";
@@ -55,7 +55,7 @@ namespace DAL_QuanLy
         // Kiểm tra username đã tồn tại chưa
         public bool KiemTraUserName(string userName)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = "SELECT COUNT(*) FROM Users WHERE UserName = @user";
@@ -69,7 +69,7 @@ namespace DAL_QuanLy
         public bool KiemTraEmail(string email, int excludeUserId = 0)
         {
             if (string.IsNullOrWhiteSpace(email)) return false;
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = "SELECT COUNT(*) FROM Users WHERE Email = @email AND UserID <> @id AND IsActive = 1";
@@ -84,7 +84,7 @@ namespace DAL_QuanLy
         public bool KiemTraPhone(string phone, int excludeUserId = 0)
         {
             if (string.IsNullOrWhiteSpace(phone)) return false;
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = "SELECT COUNT(*) FROM Users WHERE Phone = @phone AND UserID <> @id AND IsActive = 1";
@@ -98,7 +98,7 @@ namespace DAL_QuanLy
         // Thêm nhân viên mới
         public bool ThemNhanVien(UserDTO user, string matKhau)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"INSERT INTO Users (UserName, PasswordHash, FullName, Email, Phone, Role, IsActive)
@@ -117,7 +117,7 @@ namespace DAL_QuanLy
         // Sửa thông tin nhân viên
         public bool SuaNhanVien(UserDTO user)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"UPDATE Users SET FullName = @name, Email = @email, Phone = @phone, Role = @role
@@ -135,7 +135,7 @@ namespace DAL_QuanLy
         // Đổi mật khẩu
         public bool DoiMatKhau(int userId, string matKhauMoi)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = "UPDATE Users SET PasswordHash = @pass WHERE UserID = @id";
@@ -149,7 +149,7 @@ namespace DAL_QuanLy
         // Xóa nhân viên (Ưu tiên xóa hẳn, nếu vướng khóa ngoại thì vô hiệu hóa)
         public bool XoaNhanVien(int userId)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 try 

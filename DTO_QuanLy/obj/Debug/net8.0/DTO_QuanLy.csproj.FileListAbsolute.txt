@@ -1,0 +1,12 @@
+c:\Users\admin\source\repos\DoAnQuanLyBanHang\DTO_QuanLy\bin\Debug\net8.0\DTO_QuanLy.deps.json
+c:\Users\admin\source\repos\DoAnQuanLyBanHang\DTO_QuanLy\bin\Debug\net8.0\DTO_QuanLy.dll
+c:\Users\admin\source\repos\DoAnQuanLyBanHang\DTO_QuanLy\bin\Debug\net8.0\DTO_QuanLy.pdb
+c:\Users\admin\source\repos\DoAnQuanLyBanHang\DTO_QuanLy\obj\Debug\net8.0\DTO_QuanLy.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\admin\source\repos\DoAnQuanLyBanHang\DTO_QuanLy\obj\Debug\net8.0\DTO_QuanLy.AssemblyInfoInputs.cache
+c:\Users\admin\source\repos\DoAnQuanLyBanHang\DTO_QuanLy\obj\Debug\net8.0\DTO_QuanLy.AssemblyInfo.cs
+c:\Users\admin\source\repos\DoAnQuanLyBanHang\DTO_QuanLy\obj\Debug\net8.0\DTO_QuanLy.csproj.CoreCompileInputs.cache
+c:\Users\admin\source\repos\DoAnQuanLyBanHang\DTO_QuanLy\obj\Debug\net8.0\DTO_QuanLy.sourcelink.json
+c:\Users\admin\source\repos\DoAnQuanLyBanHang\DTO_QuanLy\obj\Debug\net8.0\DTO_QuanLy.dll
+c:\Users\admin\source\repos\DoAnQuanLyBanHang\DTO_QuanLy\obj\Debug\net8.0\refint\DTO_QuanLy.dll
+c:\Users\admin\source\repos\DoAnQuanLyBanHang\DTO_QuanLy\obj\Debug\net8.0\DTO_QuanLy.pdb
+c:\Users\admin\source\repos\DoAnQuanLyBanHang\DTO_QuanLy\obj\Debug\net8.0\ref\DTO_QuanLy.dll

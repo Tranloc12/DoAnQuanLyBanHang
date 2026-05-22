@@ -36,6 +36,14 @@ namespace GUI_QuanLy
             dgvNhanVien.DataSource = userBUS.LayDanhSachNhanVien();
             if (dgvNhanVien.Columns["PasswordHash"] != null)
                 dgvNhanVien.Columns["PasswordHash"].Visible = false;
+            if (dgvNhanVien.Columns["UserID"] != null)
+                dgvNhanVien.Columns["UserID"].Visible = false;
+            if (dgvNhanVien.Columns["UserName"] != null)    dgvNhanVien.Columns["UserName"].HeaderText   = "Tên đăng nhập";
+            if (dgvNhanVien.Columns["FullName"] != null)    dgvNhanVien.Columns["FullName"].HeaderText   = "Họ và tên";
+            if (dgvNhanVien.Columns["Email"] != null)       dgvNhanVien.Columns["Email"].HeaderText      = "Email";
+            if (dgvNhanVien.Columns["Phone"] != null)       dgvNhanVien.Columns["Phone"].HeaderText      = "Số điện thoại";
+            if (dgvNhanVien.Columns["Role"] != null)        dgvNhanVien.Columns["Role"].HeaderText       = "Quyền hạn";
+            if (dgvNhanVien.Columns["IsActive"] != null)    dgvNhanVien.Columns["IsActive"].HeaderText   = "Hoạt động";
         }
 
         private void SetControls(bool edit)

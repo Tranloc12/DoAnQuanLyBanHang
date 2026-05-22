@@ -66,8 +66,10 @@ namespace GUI_QuanLy
             if (cbSanPham.SelectedValue != null && cbSanPham.SelectedValue is int)
             {
                 int productId = (int)cbSanPham.SelectedValue;
-                DataRowView drv = (DataRowView)cbSanPham.SelectedItem;
-                txtDonGia.Text = Convert.ToDecimal(drv["SellPrice"]).ToString("N0");
+                DataRowView? drv = cbSanPham.SelectedItem as DataRowView;
+                if (drv != null) {
+                    txtDonGia.Text = Convert.ToDecimal(drv["SellPrice"]).ToString("N0");
+                }
             }
         }
 
@@ -90,7 +92,7 @@ namespace GUI_QuanLy
                 return;
             }
 
-            CustomerDTO kh = customerBUS.TimTheoSoDienThoai(sdt);
+            CustomerDTO? kh = customerBUS.TimTheoSoDienThoai(sdt);
             if (kh != null)
             {
                 khachHangHienTai = kh;
@@ -102,7 +104,14 @@ namespace GUI_QuanLy
                 chkDungDiem.Checked = false;
                 txtSoDiem.Text = "0";
                 lblQuyDoi.Text = "= 0 VNĐ";
-                lblTenKhachHang.Text = $"Tên khách (⭐ {kh.LoyaltyPoints} - {kh.CustomerRank}):";
+                
+                string rankShort = kh.CustomerRank;
+                if (rankShort == "Kim Cương") rankShort = "KC";
+                else if (rankShort == "Vàng") rankShort = "V";
+                else if (rankShort == "Bạc") rankShort = "B";
+                else if (rankShort == "Đồng") rankShort = "Đ";
+                
+                lblTenKhachHang.Text = $"KH ({kh.LoyaltyPoints}đ - {rankShort}):";
             }
             else
             {
@@ -134,9 +143,9 @@ namespace GUI_QuanLy
                     cbSanPham.SelectedValue = firstProductId;
                     
                     // Nếu gõ đúng mã SP (giống như quét mã vạch), thêm luôn vào giỏ
-                    if (dt.Rows[0]["ProductCode"].ToString().Equals(kw, StringComparison.OrdinalIgnoreCase))
+                    if (dt.Rows[0]["ProductCode"]?.ToString()?.Equals(kw, StringComparison.OrdinalIgnoreCase) == true)
                     {
-                        btnThemVaoGio_Click(null, null);
+                        btnThemVaoGio_Click(this, EventArgs.Empty);
                         txtTimSanPham.Clear();
                         txtTimSanPham.Focus();
                     }
@@ -189,6 +198,39 @@ namespace GUI_QuanLy
             foreach (var item in danhSachChiTiet)
             {
                 dgvGioHang.Rows.Add(item.ProductID, item.ProductName, item.Quantity, item.UnitPrice.ToString("N0"), (item.Quantity * item.UnitPrice).ToString("N0"));
+            }
+        }
+
+        private void btnTangSL_Click(object sender, EventArgs e)
+        {
+            if (dgvGioHang.CurrentRow == null) return;
+            int productId = (int)dgvGioHang.CurrentRow.Cells[0].Value;
+            var item = danhSachChiTiet.Find(x => x.ProductID == productId);
+            if (item != null) { item.Quantity++; CapNhatBangGioHang(); TinhTongTien(); }
+        }
+
+        private void btnGiamSL_Click(object sender, EventArgs e)
+        {
+            if (dgvGioHang.CurrentRow == null) return;
+            int productId = (int)dgvGioHang.CurrentRow.Cells[0].Value;
+            var item = danhSachChiTiet.Find(x => x.ProductID == productId);
+            if (item == null) return;
+            if (item.Quantity <= 1)
+            {
+                // Khi số lượng = 1 mà giảm nữa → hỏi xóa luôn
+                if (MessageBox.Show($"Xóa '{item.ProductName}' khỏi giỏ hàng?", "Xác nhận",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    danhSachChiTiet.Remove(item);
+                    CapNhatBangGioHang();
+                    TinhTongTien();
+                }
+            }
+            else
+            {
+                item.Quantity--;
+                CapNhatBangGioHang();
+                TinhTongTien();
             }
         }
 
@@ -315,6 +357,28 @@ namespace GUI_QuanLy
                 Notes         = txtGhiChu.Text.Trim() + (soDiemDung > 0 ? $" [Dùng {soDiemDung} điểm]" : "")
             };
 
+            // --- GIẢ LẬP LUỒNG THANH TOÁN PAYPAL / CHUYỂN KHOẢN ---
+            // Phải đưa QR ra thu tiền TRƯỚC khi ghi nhận hóa đơn vào DB
+            if (cbPhuongThucTT.Text.Contains("PayPal"))
+            {
+                // Tạo mã dự kiến để in ra QR (chưa lưu vào DB)
+                string tempOrderCode = "DH_" + DateTime.Now.ToString("yyMMddHHmmss");
+                frmPaymentQR qrForm = new frmPaymentQR(thanhToan, tempOrderCode);
+                qrForm.ShowDialog(); // App sẽ tạm dừng ở đây đợi thu ngân tắt form QR
+
+                // Thu ngân tắt form QR xong, phần mềm sẽ hỏi xác nhận tiền đã vào tài khoản chưa
+                var xacNhan = MessageBox.Show(
+                    "Khách hàng đã quét mã và thanh toán thành công chưa?", 
+                    "Xác nhận nhận tiền", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (xacNhan != DialogResult.Yes)
+                {
+                    MessageBox.Show("Giao dịch đã bị hủy do chưa nhận được tiền thanh toán.", "Hủy thanh toán", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return; // Kết thúc, không lưu DB
+                }
+                donHang.OrderCode = tempOrderCode; // Lấy đúng mã trên QR để lưu
+            }
+
             int orderId = orderBUS.TaoDonHang(donHang, danhSachChiTiet);
             if (orderId > 0)
             {
@@ -324,40 +388,27 @@ namespace GUI_QuanLy
                 }
 
                 int diemTich = (int)(thanhToan / 100000);
-                string thongBaoDiem = customerId.HasValue && diemTich > 0 ? $"\n⭐ Điểm tích lũy: +{diemTich} điểm" : "";
-                string thongBaoDungDiem = soDiemDung > 0 ? $"\n✨ Đã dùng: {soDiemDung} điểm (-{giamDiem:N0} VNĐ)" : "";
+                string thongBaoDiem = customerId.HasValue && diemTich > 0 ? $"\n- Điểm tích lũy: +{diemTich} điểm" : "";
+                string thongBaoDungDiem = soDiemDung > 0 ? $"\n- Đã dùng: {soDiemDung} điểm (-{giamDiem:N0} VNĐ)" : "";
 
                 var dhFull = orderBUS.LayDonHangTheoID(orderId);
                 if (dhFull != null) donHang = dhFull;
-
-                MessageBox.Show(
-                    $"✅ Thanh toán thành công!\nMã đơn: {donHang.OrderCode}\nThành tiền: {thanhToan:N0} VNĐ{thongBaoDungDiem}{thongBaoDiem}",
-                    "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 lastOrder = donHang;
                 lastOrderDetails = new List<OrderDetailDTO>(danhSachChiTiet);
                 lastCustomerName = txtTenKhachHang.Text.Trim();
                 lastEmployeeName = SessionUser.CurrentUser?.FullName ?? "POS System";
 
-                if (donHang.CustomerID.HasValue)
-                {
-                    CustomerDTO? khCapNhat = customerBUS.TimTheoSoDienThoai(sdtLuu);
-                    if (khCapNhat != null)
-                    {
-                        khachHangHienTai = khCapNhat;
-                        txtTenKhachHang.Text = khCapNhat.CustomerName;
-                        txtTenKhachHang.ReadOnly = true;
-                        lblTenKhachHang.Text = $"Tên khách (⭐ {khCapNhat.LoyaltyPoints} - {khCapNhat.CustomerRank}):";
-                    }
-                }
-
                 if (btnInHoaDon != null) btnInHoaDon.Enabled = true;
 
-                // Nếu chọn PayPal, hiện mã QR sau khi lưu đơn thành công
-                if (cbPhuongThucTT.Text.Contains("PayPal"))
+                // TỰ ĐỘNG HỎI IN HÓA ĐƠN
+                var result = MessageBox.Show(
+                    $"Thanh toán thành công!\nMã đơn: {donHang.OrderCode}\nThành tiền: {thanhToan:N0} VNĐ{thongBaoDungDiem}{thongBaoDiem}\n\nBạn có muốn in hóa đơn cho khách không?",
+                    "Thành công", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                if (result == DialogResult.Yes)
                 {
-                    frmPaymentQR qrForm = new frmPaymentQR(thanhToan, donHang.OrderCode);
-                    qrForm.ShowDialog();
+                    btnInHoaDon_Click(this, EventArgs.Empty);
                 }
 
                 LamMoiDonHang();

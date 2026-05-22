@@ -10,8 +10,8 @@ namespace GUI_QuanLy
     public partial class FormMain : Form
     {
         private readonly BUS_QuanLy.DashboardBUS dashboardBUS = new BUS_QuanLy.DashboardBUS();
-        private Form activeForm = null;
-        private Panel pnlHome;
+        private Form? activeForm = null;
+        private Panel pnlHome = null!;
 
         public FormMain()
         {
@@ -64,7 +64,7 @@ namespace GUI_QuanLy
             });
         }
 
-        private System.Windows.Forms.Timer mainTimer;
+        private System.Windows.Forms.Timer mainTimer = null!;
 
         private void FormMain_Load(object sender, EventArgs e)
         {

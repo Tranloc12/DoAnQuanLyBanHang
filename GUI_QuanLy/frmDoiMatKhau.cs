@@ -30,6 +30,12 @@ namespace GUI_QuanLy
             if (mkMoi != mkNhap2)
             { MessageBox.Show("Xác nhận mật khẩu không khớp!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
 
+            if (SessionUser.CurrentUser == null)
+            {
+                MessageBox.Show("Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             // Xác nhận mật khẩu cũ bằng cách thử đăng nhập
             var check = userBUS.KiemTraDangNhap(SessionUser.CurrentUser.UserName, mkCu);
             if (check == null)

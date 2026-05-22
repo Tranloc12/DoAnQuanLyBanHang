@@ -53,7 +53,7 @@ namespace GUI_QuanLy
             lblLegend1.Name = "lblLegend1";
             lblLegend1.Size = new Size(120, 20);
             lblLegend1.TabIndex = 0;
-            lblLegend1.Text = "  \U0001f7e2 Còn hàng  ";
+            lblLegend1.Text = "   Còn hàng  ";
             // 
             // lblLegend2
             // 
@@ -62,7 +62,7 @@ namespace GUI_QuanLy
             lblLegend2.Name = "lblLegend2";
             lblLegend2.Size = new Size(120, 20);
             lblLegend2.TabIndex = 1;
-            lblLegend2.Text = "  \U0001f7e1 Sắp hết   ";
+            lblLegend2.Text = "   Sắp hết   ";
             // 
             // lblLegend3
             // 
@@ -71,7 +71,7 @@ namespace GUI_QuanLy
             lblLegend3.Name = "lblLegend3";
             lblLegend3.Size = new Size(120, 20);
             lblLegend3.TabIndex = 2;
-            lblLegend3.Text = "  🔴 Hết hàng  ";
+            lblLegend3.Text = "   Hết hàng  ";
             // 
             // dgvTonKho
             // 

@@ -19,6 +19,10 @@ namespace GUI_QuanLy
             dgvLoaiHang.DataSource = categoryBUS.LayDanhSachLoaiHang();
             if (dgvLoaiHang.Columns["CategoryID"] != null)
                 dgvLoaiHang.Columns["CategoryID"].Visible = false;
+            if (dgvLoaiHang.Columns["CategoryName"] != null)
+                dgvLoaiHang.Columns["CategoryName"].HeaderText = "Tên loại hàng";
+            if (dgvLoaiHang.Columns["Description"] != null)
+                dgvLoaiHang.Columns["Description"].HeaderText = "Mô tả";
         }
 
         private void SetControls(bool edit)

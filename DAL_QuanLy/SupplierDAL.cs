@@ -7,7 +7,7 @@ namespace DAL_QuanLy
     {
         public DataTable LayDanhSachNhaCungCap()
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlDataAdapter da = new SqlDataAdapter(
@@ -21,7 +21,7 @@ namespace DAL_QuanLy
         // Kiểm tra Tên NCC đã tồn tại chưa
         public bool KiemTraTenNCC(string name, int excludeSupplierId = 0)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(
@@ -36,7 +36,7 @@ namespace DAL_QuanLy
         public bool KiemTraSoDienThoai(string phone, int excludeSupplierId = 0)
         {
             if (string.IsNullOrWhiteSpace(phone)) return false;
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Suppliers WHERE Phone = @phone AND SupplierID <> @id", conn);
@@ -48,7 +48,7 @@ namespace DAL_QuanLy
 
         public bool ThemNhaCungCap(string name, string phone, string address)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(
@@ -62,7 +62,7 @@ namespace DAL_QuanLy
 
         public bool SuaNhaCungCap(int id, string name, string phone, string address)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(
@@ -77,7 +77,7 @@ namespace DAL_QuanLy
 
         public bool XoaNhaCungCap(int id)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand check = new SqlCommand(

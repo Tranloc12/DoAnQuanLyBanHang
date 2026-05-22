@@ -30,6 +30,16 @@ namespace GUI_QuanLy
                 dgvDonHang.Columns["CustomerID"].Visible = false;
             if (dgvDonHang.Columns["UserID"] != null)
                 dgvDonHang.Columns["UserID"].Visible = false;
+            if (dgvDonHang.Columns["OrderCode"] != null)      dgvDonHang.Columns["OrderCode"].HeaderText      = "Mã đơn hàng";
+            if (dgvDonHang.Columns["CustomerName"] != null)   dgvDonHang.Columns["CustomerName"].HeaderText   = "Khách hàng";
+            if (dgvDonHang.Columns["UserName"] != null)       dgvDonHang.Columns["UserName"].HeaderText       = "Nhân viên";
+            if (dgvDonHang.Columns["OrderDate"] != null)      dgvDonHang.Columns["OrderDate"].HeaderText      = "Ngày đặt";
+            if (dgvDonHang.Columns["TotalAmount"] != null)    dgvDonHang.Columns["TotalAmount"].HeaderText    = "Tổng tiền";
+            if (dgvDonHang.Columns["Discount"] != null)       dgvDonHang.Columns["Discount"].HeaderText       = "Giảm giá";
+            if (dgvDonHang.Columns["FinalAmount"] != null)    dgvDonHang.Columns["FinalAmount"].HeaderText    = "Thành tiền";
+            if (dgvDonHang.Columns["PaymentMethod"] != null)  dgvDonHang.Columns["PaymentMethod"].HeaderText  = "Thanh toán";
+            if (dgvDonHang.Columns["OrderStatus"] != null)    dgvDonHang.Columns["OrderStatus"].HeaderText    = "Trạng thái";
+            if (dgvDonHang.Columns["Notes"] != null)          dgvDonHang.Columns["Notes"].HeaderText          = "Ghi chú";
         }
 
         private void btnLoc_Click(object sender, EventArgs e)
@@ -53,7 +63,7 @@ namespace GUI_QuanLy
         private void btnHuyDon_Click(object sender, EventArgs e)
         {
             if (dgvDonHang.CurrentRow == null) return;
-            string status = dgvDonHang.CurrentRow.Cells["OrderStatus"].Value?.ToString();
+            string? status = dgvDonHang.CurrentRow.Cells["OrderStatus"].Value?.ToString();
             if (status == "Hủy") { MessageBox.Show("Đơn hàng này đã bị hủy rồi!"); return; }
             int orderId = Convert.ToInt32(dgvDonHang.CurrentRow.Cells["OrderID"].Value);
             if (MessageBox.Show("Bạn có chắc muốn hủy đơn hàng này?", "Xác nhận",
@@ -84,6 +94,11 @@ namespace GUI_QuanLy
             dgvDonHang.DataSource = string.IsNullOrEmpty(kw)
                 ? orderBUS.LayDanhSachDonHang()
                 : orderBUS.TimKiemDonHang(kw);
+        }
+
+        private void txtTimKiem_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

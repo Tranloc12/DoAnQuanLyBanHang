@@ -1,4 +1,4 @@
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using DTO_QuanLy;
 using System.Data;
 
@@ -9,11 +9,11 @@ namespace DAL_QuanLy
         // Lấy danh sách khách hàng
         public DataTable LayDanhSachKhachHang()
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"SELECT CustomerID, CustomerName, Phone, Email, Address,
-                                        TotalSpent, LoyaltyPoints, CustomerRank
+                                        TotalSpent, LoyaltyPoints, CustomerRank, CreatedDate
                                  FROM Customers ORDER BY CustomerID DESC";
                 SqlDataAdapter da = new SqlDataAdapter(query, conn);
                 DataTable dt = new DataTable();
@@ -25,11 +25,11 @@ namespace DAL_QuanLy
         // Tìm kiếm khách hàng theo tên hoặc SĐT
         public DataTable TimKiemKhachHang(string tuKhoa)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"SELECT CustomerID, CustomerName, Phone, Email, Address,
-                                        TotalSpent, LoyaltyPoints, CustomerRank
+                                        TotalSpent, LoyaltyPoints, CustomerRank, CreatedDate
                                  FROM Customers
                                  WHERE CustomerName LIKE @kw OR Phone LIKE @kw
                                  ORDER BY CustomerID DESC";
@@ -44,10 +44,10 @@ namespace DAL_QuanLy
         // Tìm theo số điện thoại (dùng khi bán hàng)
         public CustomerDTO TimTheoSoDienThoai(string phone)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 string query = @"SELECT CustomerID, CustomerName, Phone, Email, Address,
-                                        TotalSpent, LoyaltyPoints, CustomerRank
+                                        TotalSpent, LoyaltyPoints, CustomerRank, CreatedDate
                                  FROM Customers WHERE Phone = @phone";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@phone", phone);
@@ -62,7 +62,7 @@ namespace DAL_QuanLy
         // Thêm khách hàng
         public bool ThemKhachHang(CustomerDTO kh)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"INSERT INTO Customers (CustomerName, Phone, Email, Address)
@@ -79,7 +79,7 @@ namespace DAL_QuanLy
         // Sửa khách hàng
         public bool SuaKhachHang(CustomerDTO kh)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"UPDATE Customers
@@ -99,7 +99,7 @@ namespace DAL_QuanLy
         // Xóa khách hàng
         public bool XoaKhachHang(int customerId)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = "DELETE FROM Customers WHERE CustomerID = @id";
@@ -112,21 +112,21 @@ namespace DAL_QuanLy
         // Trừ điểm khi khách dùng điểm
         public bool TruDiemKhachHang(int customerId, int soDiemDung)
         {
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 string query = @"UPDATE Customers
                                  SET LoyaltyPoints = LoyaltyPoints - @diem
                                  WHERE CustomerID = @id AND LoyaltyPoints >= @diem;
                                  
-                                 -- Recalculate Rank immediately
+                                 -- Tính lại hạng dựa vào TotalSpent (tổng tiền chi tiêu)
                                  UPDATE Customers
                                  SET CustomerRank = 
                                      CASE 
-                                         WHEN LoyaltyPoints >= 1000 THEN N'Kim C\u01B0\u01A1ng'
-                                         WHEN LoyaltyPoints >= 300  THEN N'V\u00E0ng'
-                                         WHEN LoyaltyPoints >= 100  THEN N'B\u1EA1c'
-                                         ELSE N'\u0110\u1ED3ng'
+                                         WHEN TotalSpent >= 500000 THEN N'Kim Cương'
+                                         WHEN TotalSpent >= 200000  THEN N'Vàng'
+                                         WHEN TotalSpent >= 100000  THEN N'Bạc'
+                                         ELSE N'Đồng'
                                      END
                                  WHERE CustomerID = @id;";
                 SqlCommand cmd = new SqlCommand(query, conn);
@@ -140,7 +140,7 @@ namespace DAL_QuanLy
         public bool KiemTraSoDienThoai(string phone, int excludeCustomerId = 0)
         {
             if (string.IsNullOrWhiteSpace(phone)) return false;
-            using (SqlConnection conn = KetNoiChung.TaoKetNoi())
+            using (SqlConnection conn = DBConnect.TaoKetNoi())
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Customers WHERE Phone = @phone AND CustomerID <> @id", conn);
@@ -161,8 +161,10 @@ namespace DAL_QuanLy
                 Address      = reader["Address"] == System.DBNull.Value ? "" : reader["Address"].ToString(),
                 TotalSpent   = (decimal)reader["TotalSpent"],
                 LoyaltyPoints = (int)reader["LoyaltyPoints"],
-                CustomerRank  = reader["CustomerRank"].ToString()
+                CustomerRank  = reader["CustomerRank"].ToString(),
+                CreatedDate   = reader["CreatedDate"] == System.DBNull.Value ? System.DateTime.Now : (System.DateTime)reader["CreatedDate"]
             };
         }
     }
 }
+

@@ -9,7 +9,12 @@ namespace DAL_QuanLy
 {
     public class DBConnect
     {
-        // Chỉnh sửa lại chuỗi kết nối cho phù hợp với máy của bạn
-        protected SqlConnection _conn = new SqlConnection(@"Data Source=.;Initial Catalog=QLSV;Integrated Security=True;TrustServerCertificate=True");
+        private static readonly string chuoiKetNoi =
+            @"Data Source=.;Initial Catalog=Quanlybanhang;Integrated Security=True;Encrypt=False;Trust Server Certificate=True";
+
+        public static SqlConnection TaoKetNoi()
+        {
+            return new SqlConnection(chuoiKetNoi);
+        }
     }
 }

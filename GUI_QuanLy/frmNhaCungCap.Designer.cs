@@ -6,50 +6,200 @@ namespace GUI_QuanLy
         protected override void Dispose(bool disposing) { if (disposing && components != null) components.Dispose(); base.Dispose(disposing); }
         private void InitializeComponent()
         {
-            lblTitle = new System.Windows.Forms.Label();
-            dgvNCC   = new System.Windows.Forms.DataGridView();
-            grpThongTin = new System.Windows.Forms.GroupBox();
-            lblTen   = new System.Windows.Forms.Label(); txtTen    = new System.Windows.Forms.TextBox();
-            lblSDT   = new System.Windows.Forms.Label(); txtSDT    = new System.Windows.Forms.TextBox();
-            lblDiaChi = new System.Windows.Forms.Label(); txtDiaChi = new System.Windows.Forms.TextBox();
-            pnlButtons = new System.Windows.Forms.Panel();
-            btnThem = new System.Windows.Forms.Button(); btnSua = new System.Windows.Forms.Button();
-            btnXoa  = new System.Windows.Forms.Button(); btnLuu = new System.Windows.Forms.Button();
-            btnHuy  = new System.Windows.Forms.Button();
-
+            lblTitle = new Label();
+            dgvNCC = new DataGridView();
+            grpThongTin = new GroupBox();
+            lblTen = new Label();
+            txtTen = new TextBox();
+            lblSDT = new Label();
+            txtSDT = new TextBox();
+            lblDiaChi = new Label();
+            txtDiaChi = new TextBox();
+            pnlButtons = new Panel();
+            btnThem = new Button();
+            btnSua = new Button();
+            btnXoa = new Button();
+            btnLuu = new Button();
+            btnHuy = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvNCC).BeginInit();
-            grpThongTin.SuspendLayout(); pnlButtons.SuspendLayout(); SuspendLayout();
-
-            lblTitle.Text = "QUẢN LÝ NHÀ CUNG CẤP"; lblTitle.Font = new System.Drawing.Font("Segoe UI", 14, System.Drawing.FontStyle.Bold); lblTitle.ForeColor = System.Drawing.Color.DarkGreen; lblTitle.Location = new System.Drawing.Point(12, 10); lblTitle.Size = new System.Drawing.Size(380, 30);
-
-            dgvNCC.Location = new System.Drawing.Point(12, 48); dgvNCC.Size = new System.Drawing.Size(660, 270);
-            dgvNCC.AllowUserToAddRows = false; dgvNCC.ReadOnly = true;
-            dgvNCC.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvNCC.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dgvNCC.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(dgvNCC_RowEnter);
-
-            grpThongTin.Text = "Thông tin nhà cung cấp"; grpThongTin.Font = new System.Drawing.Font("Segoe UI", 9, System.Drawing.FontStyle.Bold);
-            grpThongTin.Location = new System.Drawing.Point(12, 330); grpThongTin.Size = new System.Drawing.Size(660, 105);
-            int lx = 12, tx = 130, gap = 30;
-            lblTen.Text   = "Tên NCC:";    lblTen.Location   = new System.Drawing.Point(lx, 25);        lblTen.Size   = new System.Drawing.Size(115, 22); txtTen.Location   = new System.Drawing.Point(tx, 23);        txtTen.Size   = new System.Drawing.Size(250, 27);
-            lblSDT.Text   = "Điện thoại:"; lblSDT.Location   = new System.Drawing.Point(lx, 25+gap);    lblSDT.Size   = new System.Drawing.Size(115, 22); txtSDT.Location   = new System.Drawing.Point(tx, 25+gap);    txtSDT.Size   = new System.Drawing.Size(150, 27);
-            lblDiaChi.Text= "Địa chỉ:";    lblDiaChi.Location= new System.Drawing.Point(lx, 25+gap*2);  lblDiaChi.Size= new System.Drawing.Size(115, 22); txtDiaChi.Location= new System.Drawing.Point(tx, 25+gap*2);  txtDiaChi.Size= new System.Drawing.Size(400, 27);
-            grpThongTin.Controls.AddRange(new System.Windows.Forms.Control[] { lblTen, txtTen, lblSDT, txtSDT, lblDiaChi, txtDiaChi });
-
-            pnlButtons.Location = new System.Drawing.Point(12, 445); pnlButtons.Size = new System.Drawing.Size(660, 42);
-            int bw = 100, bh = 34;
-            btnThem.Text = "➕ Thêm"; btnThem.Location = new System.Drawing.Point(0, 4);   btnThem.Size = new System.Drawing.Size(bw, bh); btnThem.BackColor = System.Drawing.Color.SeaGreen;   btnThem.ForeColor = System.Drawing.Color.White; btnThem.Click += new System.EventHandler(btnThem_Click);
-            btnSua.Text  = "✏ Sửa";  btnSua.Location  = new System.Drawing.Point(108, 4); btnSua.Size  = new System.Drawing.Size(bw, bh); btnSua.BackColor  = System.Drawing.Color.SteelBlue;  btnSua.ForeColor  = System.Drawing.Color.White; btnSua.Click  += new System.EventHandler(btnSua_Click);
-            btnXoa.Text  = "🗑 Xóa"; btnXoa.Location  = new System.Drawing.Point(216, 4); btnXoa.Size  = new System.Drawing.Size(bw, bh); btnXoa.BackColor  = System.Drawing.Color.Crimson;    btnXoa.ForeColor  = System.Drawing.Color.White; btnXoa.Click  += new System.EventHandler(btnXoa_Click);
-            btnLuu.Text  = "💾 Lưu"; btnLuu.Location  = new System.Drawing.Point(324, 4); btnLuu.Size  = new System.Drawing.Size(bw, bh); btnLuu.BackColor  = System.Drawing.Color.DarkOrange; btnLuu.ForeColor  = System.Drawing.Color.White; btnLuu.Click  += new System.EventHandler(btnLuu_Click);
-            btnHuy.Text  = "✖ Hủy";  btnHuy.Location  = new System.Drawing.Point(432, 4); btnHuy.Size  = new System.Drawing.Size(bw, bh); btnHuy.BackColor  = System.Drawing.Color.Gray;       btnHuy.ForeColor  = System.Drawing.Color.White; btnHuy.Click  += new System.EventHandler(btnHuy_Click);
-            pnlButtons.Controls.AddRange(new System.Windows.Forms.Control[] { btnThem, btnSua, btnXoa, btnLuu, btnHuy });
-
-            ClientSize = new System.Drawing.Size(692, 500); Text = "Quản Lý Nhà Cung Cấp"; StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Load += new System.EventHandler(frmNhaCungCap_Load);
-            Controls.AddRange(new System.Windows.Forms.Control[] { lblTitle, dgvNCC, grpThongTin, pnlButtons });
+            grpThongTin.SuspendLayout();
+            pnlButtons.SuspendLayout();
+            SuspendLayout();
+            // 
+            // lblTitle
+            // 
+            lblTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lblTitle.ForeColor = Color.DarkGreen;
+            lblTitle.Location = new Point(12, 10);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(380, 30);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "QUẢN LÝ NHÀ CUNG CẤP";
+            // 
+            // dgvNCC
+            // 
+            dgvNCC.AllowUserToAddRows = false;
+            dgvNCC.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvNCC.ColumnHeadersHeight = 29;
+            dgvNCC.Location = new Point(12, 48);
+            dgvNCC.Name = "dgvNCC";
+            dgvNCC.ReadOnly = true;
+            dgvNCC.RowHeadersWidth = 51;
+            dgvNCC.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvNCC.Size = new Size(660, 270);
+            dgvNCC.TabIndex = 1;
+            dgvNCC.RowEnter += dgvNCC_RowEnter;
+            // 
+            // grpThongTin
+            // 
+            grpThongTin.Controls.Add(lblTen);
+            grpThongTin.Controls.Add(txtTen);
+            grpThongTin.Controls.Add(lblSDT);
+            grpThongTin.Controls.Add(txtSDT);
+            grpThongTin.Controls.Add(lblDiaChi);
+            grpThongTin.Controls.Add(txtDiaChi);
+            grpThongTin.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            grpThongTin.Location = new Point(12, 330);
+            grpThongTin.Name = "grpThongTin";
+            grpThongTin.Size = new Size(660, 120);
+            grpThongTin.TabIndex = 2;
+            grpThongTin.TabStop = false;
+            grpThongTin.Text = "Thông tin nhà cung cấp";
+            // 
+            // lblTen
+            // 
+            lblTen.Location = new Point(15, 30);
+            lblTen.Name = "lblTen";
+            lblTen.Size = new Size(80, 22);
+            lblTen.TabIndex = 0;
+            lblTen.Text = "Tên NCC:";
+            // 
+            // txtTen
+            // 
+            txtTen.Location = new Point(100, 30);
+            txtTen.Name = "txtTen";
+            txtTen.Size = new Size(200, 27);
+            txtTen.TabIndex = 1;
+            txtTen.TextChanged += txtTen_TextChanged;
+            // 
+            // lblSDT
+            // 
+            lblSDT.Location = new Point(328, 30);
+            lblSDT.Name = "lblSDT";
+            lblSDT.Size = new Size(111, 22);
+            lblSDT.TabIndex = 2;
+            lblSDT.Text = "Số điện thoại:";
+            // 
+            // txtSDT
+            // 
+            txtSDT.Location = new Point(440, 27);
+            txtSDT.Name = "txtSDT";
+            txtSDT.Size = new Size(190, 27);
+            txtSDT.TabIndex = 3;
+            // 
+            // lblDiaChi
+            // 
+            lblDiaChi.Location = new Point(15, 70);
+            lblDiaChi.Name = "lblDiaChi";
+            lblDiaChi.Size = new Size(80, 22);
+            lblDiaChi.TabIndex = 4;
+            lblDiaChi.Text = "Địa chỉ:";
+            // 
+            // txtDiaChi
+            // 
+            txtDiaChi.Location = new Point(100, 70);
+            txtDiaChi.Name = "txtDiaChi";
+            txtDiaChi.Size = new Size(510, 27);
+            txtDiaChi.TabIndex = 5;
+            // 
+            // pnlButtons
+            // 
+            pnlButtons.Controls.Add(btnThem);
+            pnlButtons.Controls.Add(btnSua);
+            pnlButtons.Controls.Add(btnXoa);
+            pnlButtons.Controls.Add(btnLuu);
+            pnlButtons.Controls.Add(btnHuy);
+            pnlButtons.Location = new Point(12, 460);
+            pnlButtons.Name = "pnlButtons";
+            pnlButtons.Size = new Size(660, 42);
+            pnlButtons.TabIndex = 3;
+            // 
+            // btnThem
+            // 
+            btnThem.BackColor = Color.SeaGreen;
+            btnThem.ForeColor = Color.White;
+            btnThem.Location = new Point(0, 4);
+            btnThem.Name = "btnThem";
+            btnThem.Size = new Size(100, 34);
+            btnThem.TabIndex = 0;
+            btnThem.Text = "➕ Thêm";
+            btnThem.UseVisualStyleBackColor = false;
+            btnThem.Click += btnThem_Click;
+            // 
+            // btnSua
+            // 
+            btnSua.BackColor = Color.SteelBlue;
+            btnSua.ForeColor = Color.White;
+            btnSua.Location = new Point(108, 4);
+            btnSua.Name = "btnSua";
+            btnSua.Size = new Size(100, 34);
+            btnSua.TabIndex = 1;
+            btnSua.Text = "✏ Sửa";
+            btnSua.UseVisualStyleBackColor = false;
+            btnSua.Click += btnSua_Click;
+            // 
+            // btnXoa
+            // 
+            btnXoa.BackColor = Color.Crimson;
+            btnXoa.ForeColor = Color.White;
+            btnXoa.Location = new Point(216, 4);
+            btnXoa.Name = "btnXoa";
+            btnXoa.Size = new Size(100, 34);
+            btnXoa.TabIndex = 2;
+            btnXoa.Text = "🗑 Xóa";
+            btnXoa.UseVisualStyleBackColor = false;
+            btnXoa.Click += btnXoa_Click;
+            // 
+            // btnLuu
+            // 
+            btnLuu.BackColor = Color.DarkOrange;
+            btnLuu.ForeColor = Color.White;
+            btnLuu.Location = new Point(324, 4);
+            btnLuu.Name = "btnLuu";
+            btnLuu.Size = new Size(100, 34);
+            btnLuu.TabIndex = 3;
+            btnLuu.Text = "💾 Lưu";
+            btnLuu.UseVisualStyleBackColor = false;
+            btnLuu.Click += btnLuu_Click;
+            // 
+            // btnHuy
+            // 
+            btnHuy.BackColor = Color.Gray;
+            btnHuy.ForeColor = Color.White;
+            btnHuy.Location = new Point(432, 4);
+            btnHuy.Name = "btnHuy";
+            btnHuy.Size = new Size(100, 34);
+            btnHuy.TabIndex = 4;
+            btnHuy.Text = "✖ Hủy";
+            btnHuy.UseVisualStyleBackColor = false;
+            btnHuy.Click += btnHuy_Click;
+            // 
+            // frmNhaCungCap
+            // 
+            ClientSize = new Size(692, 520);
+            Controls.Add(lblTitle);
+            Controls.Add(dgvNCC);
+            Controls.Add(grpThongTin);
+            Controls.Add(pnlButtons);
+            Name = "frmNhaCungCap";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Quản Lý Nhà Cung Cấp";
+            Load += frmNhaCungCap_Load;
             ((System.ComponentModel.ISupportInitialize)dgvNCC).EndInit();
-            grpThongTin.ResumeLayout(false); pnlButtons.ResumeLayout(false); ResumeLayout(false);
+            grpThongTin.ResumeLayout(false);
+            grpThongTin.PerformLayout();
+            pnlButtons.ResumeLayout(false);
+            ResumeLayout(false);
         }
         private System.Windows.Forms.Label lblTitle, lblTen, lblSDT, lblDiaChi;
         private System.Windows.Forms.TextBox txtTen, txtSDT, txtDiaChi;
