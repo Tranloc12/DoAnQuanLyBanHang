@@ -39,11 +39,38 @@
 
 ---
 
-## 🏗️ Kiến trúc 3 Lớp (Micro)
+## 🏗️ Kiến trúc 3 Lớp (Chi tiết & Gọn gàng)
 
 ```mermaid
-graph LR
-    UI["UI Layer"] --> BUS["BUS Layer"] --> DAL["DAL Layer"] --> DB[("SQL Server")]
+flowchart TD
+    User(("👤 Người dùng / Nhân viên"))
+
+    subgraph UI ["1. Presentation Layer (UI_QuanLy)"]
+        Forms["Form_Login · Form_Dashboard · Form_Product · Form_Order · Form_Customer · Form_Supplier · Form_Inventory"]
+    end
+
+    subgraph BUS ["2. Business Logic Layer (BUS_QuanLy)"]
+        BUSClasses["UserBUS · ProductBUS · OrderBUS · CustomerBUS · SupplierBUS · InventoryBUS · DashboardBUS"]
+    end
+
+    subgraph DAL ["3. Data Access Layer (DAL_QuanLy)"]
+        DALClasses["UserDAL · ProductDAL · OrderDAL · CustomerDAL · SupplierDAL · DBConnect.cs · InvoiceHelper.cs"]
+    end
+
+    subgraph DB ["4. Database Layer (SQL Server)"]
+        Tables[("Tables: Users · Products · Orders · OrderDetails · Customers · Suppliers · InventoryLog")]
+    end
+
+    subgraph DTO ["DTO Layer"]
+        DTOClasses["UserDTO · ProductDTO · OrderDTO · CustomerDTO · SupplierDTO · InventoryLogDTO"]
+    end
+
+    User --> Forms
+    Forms -->|Gọi BUS| BUSClasses
+    BUSClasses -->|Truy vấn DAL| DALClasses
+    DALClasses -->|ADO.NET| Tables
+
+    DTOClasses -.- Forms & BUSClasses & DALClasses
 ```
 
 ---
