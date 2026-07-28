@@ -1,15 +1,14 @@
-<h1 align="center">💪 Gym Management System</h1>
+<h1 align="center">🛒 Phần Mềm Quản Lý Bán Hàng</h1>
 
 <p align="center">
-  <strong>Hệ thống quản lý phòng gym toàn diện — từ đăng ký gói tập, quản lý lịch tập, đến thanh toán và chat thời gian thực.</strong>
+  <strong>Ứng dụng desktop quản lý bán hàng toàn diện — sản phẩm, đơn hàng, khách hàng, nhà cung cấp và thống kê doanh thu.</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Java-Spring%20MVC-ED8B00?style=for-the-badge&logo=spring&logoColor=white" />
-  <img src="https://img.shields.io/badge/React-18-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
-  <img src="https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white" />
-  <img src="https://img.shields.io/badge/Firebase-Realtime-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" />
-  <img src="https://img.shields.io/badge/VNPay-Payment-0066CC?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/C%23-.NET%208-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" />
+  <img src="https://img.shields.io/badge/Windows%20Forms-UI-0078D4?style=for-the-badge&logo=windows&logoColor=white" />
+  <img src="https://img.shields.io/badge/SQL%20Server-Database-CC2927?style=for-the-badge&logo=microsoftsqlserver&logoColor=white" />
+  <img src="https://img.shields.io/badge/Architecture-3--Layer-brightgreen?style=for-the-badge" />
 </p>
 
 ---
@@ -27,63 +26,56 @@
 
 ## 📌 Giới thiệu
 
-**Gym Management System** là ứng dụng web quản lý phòng gym được xây dựng bởi **Nhóm 12**, bao gồm đầy đủ các chức năng từ quản lý thành viên, lịch tập, thanh toán trực tuyến qua **VNPay**, đến chat thời gian thực giữa hội viên và huấn luyện viên.
+**Phần Mềm Quản Lý Bán Hàng** là ứng dụng desktop được xây dựng bằng **C# Windows Forms** trên nền tảng **.NET 8**, áp dụng mô hình kiến trúc **3 lớp (Three-Layer Architecture)** nhằm tách biệt rõ ràng giữa giao diện, nghiệp vụ và truy cập dữ liệu.
 
 ---
 
 ## ✨ Tính năng chính
 
-- 👤 **Quản lý người dùng & Phân quyền**: Admin, Staff, Trainer, Member (JWT Token)
-- 🏋️ **Quản lý gói tập & Đăng ký**: Đăng ký, gia hạn gói tập, xem lịch sử
-- 💳 **Thanh toán VNPay**: Tích hợp cổng thanh toán trực tuyến
-- 💬 **Chat thời gian thực**: Chat 1-1 giữa HV & Trainer (Firebase)
-- 📊 **Thống kê & Báo cáo**: Doanh thu, hội viên mới (Chart.js)
+- 👤 **Quản lý người dùng**: Đăng nhập (BCrypt), phân quyền Admin / Nhân viên.
+- 📦 **Quản lý sản phẩm & Kho**: Thêm/sửa/xóa sản phẩm, danh mục, tồn kho.
+- 🛒 **Quản lý bán hàng**: Tạo đơn hàng, xuất hóa đơn PDF.
+- 📊 **Thống kê & Dashboard**: Biểu đồ doanh thu, sản phẩm bán chạy.
 
 ---
 
-## 🏗️ Kiến trúc hệ thống
+## 🏗️ Kiến trúc 3 Lớp (Micro)
 
 ```mermaid
-flowchart LR
-    User(("🌐 User")) --> Client["<b>Frontend</b><br/>ReactJS / Thymeleaf"]
-    Client --> Security["<b>Security</b><br/>JwtFilter"]
-    Security --> Controllers["<b>Controllers</b><br/>Spring MVC"]
-    Controllers --> Services["<b>Services</b><br/>Business Logic"]
-    Services --> DB[("<b>MySQL 8</b>")] & Services --> Ext["<b>Cloud Services</b><br/>Firebase / VNPay"]
+graph LR
+    UI["UI Layer"] --> BUS["BUS Layer"] --> DAL["DAL Layer"] --> DB[("SQL Server")]
 ```
 
 ---
 
 ## 🛠️ Công nghệ sử dụng
 
-| Tầng | Công nghệ |
-|------|-----------|
-| **Backend** | Java 17, Spring MVC, Spring Security, Hibernate ORM, JWT, JavaMail |
-| **Frontend** | ReactJS 18, React Router v6, Axios, Tailwind CSS, ShadCN UI |
-| **Database & Services** | MySQL 8, Firebase Realtime DB, VNPay Payment API |
+| Tầng | Công nghệ / Thư viện |
+|------|----------------------|
+| **Framework** | .NET 8 (Windows Forms) |
+| **Database** | Microsoft SQL Server (ADO.NET) |
+| **Mã hóa** | BCrypt.Net (Mật khẩu) |
+| **Xuất PDF** | QuestPDF / iText |
 
 ---
 
 ## 🚀 Cài đặt & Chạy dự án
 
 ```bash
-# Backend
-cd GymManagementApp && mvn clean package -DskipTests
-
-# Frontend
-cd GymManagementWebb/gymmanagementweb && npm install && npm start
+git clone https://github.com/Tranloc12/DoAnQuanLyBanHang.git
+# Mở solution trong VS2022 -> Cấu hình DBConnect.cs -> Nhấn F5
 ```
 
 ---
 
 ## 🤝 Thành viên nhóm
 
-| Thành viên | GitHub |
-|------------|--------|
-| Trần Lộc | [@Tranloc12](https://github.com/Tranloc12) |
+| Thành viên | MSSV | GitHub |
+|------------|------|--------|
+| Trần Quang Lộc | 2251012087 | [@Tranloc12](https://github.com/Tranloc12) |
 
 ---
 
 <p align="center">
-  Made with ❤️ by <strong>Nhóm 12</strong>
+  Made with ❤️ by <strong>Trần Quang Lộc</strong> & Team
 </p>
