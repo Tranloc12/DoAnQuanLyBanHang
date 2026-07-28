@@ -69,39 +69,46 @@ Dự án được phát triển như một đồ án môn học **Lập trình C
 - Số đơn hàng mới, khách hàng mới
 - Biểu đồ trực quan trên giao diện dashboard
 
+
 ---
 
-## 🏗️ Kiến trúc hệ thống
+### 2. Mã Mermaid Sơ đồ Kiến trúc 3 Lớp Quản lý Bán hàng (`DoAnQuanLyBanHang`)
 
-Dự án áp dụng mô hình **3-Layer Architecture** chuẩn:
+Đoạn mã cho dự án Bán hàng (WinForms 3-Layer):
 
-```
-┌─────────────────────────────────────────┐
-│           UI Layer (Windows Forms)       │
-│   Form_Login, Form_Dashboard,           │
-│   Form_Product, Form_Order, ...          │
-└──────────────────┬──────────────────────┘
-                   │ gọi xuống
-┌──────────────────▼──────────────────────┐
-│         BUS Layer (Business Logic)       │
-│   UserBUS, ProductBUS, OrderBUS,        │
-│   CustomerBUS, SupplierBUS, ...          │
-└──────────────────┬──────────────────────┘
-                   │ gọi xuống
-┌──────────────────▼──────────────────────┐
-│         DAL Layer (Data Access)          │
-│   UserDAL, ProductDAL, OrderDAL,        │
-│   CustomerDAL, InventoryDAL, ...         │
-└──────────────────┬──────────────────────┘
-                   │ kết nối
-┌──────────────────▼──────────────────────┐
-│          SQL Server Database             │
-│   (ADO.NET — stored procedures/queries) │
-└─────────────────────────────────────────┘
+```markdown
+```mermaid
+flowchart TD
+    User(("🔵 Người dùng / Nhân viên"))
+    
+    subgraph DTO_Layer["Data Transfer Object (DTO)"]
+        DTO["UserDTO | ProductDTO | OrderDTO | CustomerDTO"]
+    end
+    
+    subgraph UI_Layer["Presentation Layer (UI)"]
+        UI["Windows Forms App (GUI)<br/>Form_Login · Form_Dashboard · Form_Product · Form_Order"]
+    end
 
-          DTO Layer (xuyên suốt các tầng)
-   UserDTO, ProductDTO, OrderDTO, ...
-```
+    subgraph BUS_Layer["Business Logic Layer (BUS)"]
+        BUS["Business Logic Processing<br/>UserBUS · ProductBUS · OrderBUS · CustomerBUS"]
+    end
+
+    subgraph DAL_Layer["Data Access Layer (DAL)"]
+        DAL["Data Access Layer (ADO.NET)<br/>UserDAL · ProductDAL · OrderDAL · InventoryDAL"]
+    end
+
+    subgraph DB_Layer["Database Layer"]
+        DB[("Microsoft SQL Server Database")]
+    end
+
+    User --> UI
+    UI -- "Gọi nghiệp vụ" --> BUS
+    BUS -- "Truy vấn dữ liệu" --> DAL
+    DAL -- "ADO.NET Connection" --> DB
+    
+    DTO -.- UI
+    DTO -.- BUS
+    DTO -.- DAL
 
 ### Giải thích các tầng
 
