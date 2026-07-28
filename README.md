@@ -69,14 +69,10 @@ Dự án được phát triển như một đồ án môn học **Lập trình C
 - Số đơn hàng mới, khách hàng mới
 - Biểu đồ trực quan trên giao diện dashboard
 
-
 ---
 
-### 2. Mã Mermaid Sơ đồ Kiến trúc 3 Lớp Quản lý Bán hàng (`DoAnQuanLyBanHang`)
+## 🏗️ Kiến trúc hệ thống
 
-Đoạn mã cho dự án Bán hàng (WinForms 3-Layer):
-
-```markdown
 ```mermaid
 flowchart TD
     User(("🔵 Người dùng / Nhân viên"))
@@ -109,6 +105,7 @@ flowchart TD
     DTO -.- UI
     DTO -.- BUS
     DTO -.- DAL
+```
 
 ### Giải thích các tầng
 
@@ -163,8 +160,6 @@ cd DoAnQuanLyBanHang
 CREATE DATABASE QuanLyBanHang;
 ```
 
-4. Import file script SQL (nếu có trong repo) hoặc để Hibernate/migration tự tạo bảng
-
 ### Bước 3: Cấu hình Connection String
 
 Mở file `DAL_QuanLy/DBConnect.cs` và chỉnh sửa connection string:
@@ -174,21 +169,11 @@ private static string connectionString =
     "Server=YOUR_SERVER_NAME;Database=QuanLyBanHang;Trusted_Connection=True;TrustServerCertificate=True;";
 ```
 
-> 💡 Thay `YOUR_SERVER_NAME` bằng tên SQL Server instance của bạn (ví dụ: `localhost`, `.\SQLEXPRESS`, `(localdb)\MSSQLLocalDB`)
-
 ### Bước 4: Build & Chạy
 
 1. Mở file `DoAnQuanLyBanHang.sln` bằng **Visual Studio 2022**
 2. Nhấn **Ctrl + Shift + B** để Build solution
 3. Nhấn **F5** hoặc nút ▶️ để chạy ứng dụng
-
-### Tài khoản mặc định
-
-| Tài khoản | Mật khẩu | Quyền |
-|-----------|----------|-------|
-| `admin` | `Admin@123` | Quản trị viên |
-
-> ⚠️ Hãy đổi mật khẩu sau lần đăng nhập đầu tiên!
 
 ---
 
@@ -198,79 +183,12 @@ private static string connectionString =
 DoAnQuanLyBanHang/
 │
 ├── DTO_QuanLy/                    # Tầng Data Transfer Object
-│   ├── UserDTO.cs                 # DTO người dùng
-│   ├── ProductDTO.cs              # DTO sản phẩm
-│   ├── OrderDTO.cs                # DTO đơn hàng
-│   ├── CustomerDTO.cs             # DTO khách hàng
-│   ├── SupplierDTO.cs             # DTO nhà cung cấp
-│   ├── CategoryDTO.cs             # DTO danh mục
-│   ├── InventoryLogDTO.cs         # DTO nhật ký tồn kho
-│   ├── SessionUser.cs             # Thông tin phiên đăng nhập
-│   └── PasswordHasher.cs          # Mã hóa mật khẩu (BCrypt)
-│
 ├── DAL_QuanLy/                    # Tầng Data Access Layer
-│   ├── DBConnect.cs               # Kết nối SQL Server
-│   ├── UserDAL.cs                 # CRUD người dùng
-│   ├── UserDAL_ForgotPass.cs      # Xử lý quên mật khẩu
-│   ├── ProductDAL.cs              # CRUD sản phẩm
-│   ├── OrderDAL.cs                # CRUD đơn hàng
-│   ├── CustomerDAL.cs             # CRUD khách hàng
-│   ├── SupplierDAL.cs             # CRUD nhà cung cấp
-│   ├── CategoryDAL.cs             # CRUD danh mục
-│   ├── InventoryDAL.cs            # Quản lý tồn kho
-│   ├── DashboardDAL.cs            # Dữ liệu thống kê
-│   └── Helpers/
-│       └── InvoiceHelper.cs       # Xuất hóa đơn PDF
-│
 ├── BUS_QuanLy/                    # Tầng Business Logic
-│   ├── UserBUS.cs                 # Nghiệp vụ người dùng
-│   ├── ProductBUS.cs              # Nghiệp vụ sản phẩm
-│   ├── OrderBUS.cs                # Nghiệp vụ đơn hàng
-│   ├── CustomerBUS.cs             # Nghiệp vụ khách hàng
-│   ├── SupplierBUS.cs             # Nghiệp vụ nhà cung cấp
-│   ├── CategoryBUS.cs             # Nghiệp vụ danh mục
-│   ├── InventoryBUS.cs            # Nghiệp vụ tồn kho
-│   └── DashboardBUS.cs            # Nghiệp vụ thống kê
-│
 ├── UI_QuanLy/                     # Tầng giao diện (Windows Forms)
-│   ├── Form_Login.cs              # Màn hình đăng nhập
-│   ├── Form_Dashboard.cs          # Dashboard chính
-│   ├── Form_Product.cs            # Quản lý sản phẩm
-│   ├── Form_Order.cs              # Quản lý đơn hàng
-│   ├── Form_Customer.cs           # Quản lý khách hàng
-│   ├── Form_Supplier.cs           # Quản lý nhà cung cấp
-│   ├── Form_Category.cs           # Quản lý danh mục
-│   ├── Form_Inventory.cs          # Quản lý tồn kho
-│   └── Form_User.cs               # Quản lý tài khoản
-│
 ├── DoAnQuanLyBanHang.sln          # Solution file
-├── BaoCaoLTCSDL.docx              # Báo cáo đồ án
-└── 2251012087_TranQuangLoc_BCLTCSDL.docx
+└── BaoCaoLTCSDL.docx              # Báo cáo đồ án
 ```
-
----
-
-## 🗄️ Cơ sở dữ liệu
-
-Hệ thống sử dụng **SQL Server** với các bảng chính:
-
-| Bảng | Mô tả |
-|------|-------|
-| `Users` | Tài khoản đăng nhập (admin/nhân viên) |
-| `Products` | Danh sách sản phẩm |
-| `Categories` | Danh mục sản phẩm |
-| `Customers` | Thông tin khách hàng |
-| `Suppliers` | Nhà cung cấp |
-| `Orders` | Đơn hàng |
-| `OrderDetails` | Chi tiết từng đơn hàng (sản phẩm, số lượng, giá) |
-| `Inventory` | Nhật ký nhập/xuất kho |
-
----
-
-## 📄 Tài liệu
-
-- 📄 [Báo cáo đồ án (DOCX)](BaoCaoLTCSDL.docx)
-- 📄 [Báo cáo cá nhân Trần Quang Lộc](2251012087_TranQuangLoc_BCLTCSDL.docx)
 
 ---
 
@@ -279,13 +197,6 @@ Hệ thống sử dụng **SQL Server** với các bảng chính:
 | Thành viên | MSSV | GitHub |
 |------------|------|--------|
 | Trần Quang Lộc | 2251012087 | [@Tranloc12](https://github.com/Tranloc12) |
-| *(Thêm thành viên khác)* | — | — |
-
----
-
-## 📄 License
-
-Dự án được phát triển cho mục đích học thuật — môn **Lập trình Cơ sở Dữ liệu**.
 
 ---
 
