@@ -33,73 +33,73 @@
 
 ## ✨ Tính năng chính
 
-### 👤 Quản lý người dùng
-- Đăng nhập với tài khoản và mật khẩu (mã hóa bcrypt)
-- Phân quyền: **Admin** và **Nhân viên**
-- Quên mật khẩu / đặt lại mật khẩu
-
-### 📦 Quản lý sản phẩm & Đơn hàng
-- Thêm, sửa, xóa sản phẩm, danh mục
-- Tạo đơn hàng, cập nhật trạng thái
-- **Xuất hóa đơn PDF** & Thống kê doanh thu
+- 👤 **Quản lý người dùng**: Đăng nhập (BCrypt), phân quyền Admin / Nhân viên, lấy lại mật khẩu.
+- 📦 **Quản lý sản phẩm & Kho**: Thêm/sửa/xóa sản phẩm, danh mục, nhật ký tồn kho.
+- 🛒 **Quản lý bán hàng & Hóa đơn**: Tạo đơn hàng, xuất hóa đơn PDF (QuestPDF).
+- 📊 **Thống kê & Dashboard**: Biểu đồ doanh thu, sản phẩm bán chạy.
 
 ---
 
-## 🏗️ Kiến trúc hệ thống
+## 🏗️ Kiến trúc 3 Lớp (Chi tiết vừa vặn)
 
 ```mermaid
-graph LR
-    User(("👤 User")) --> UI["Presentation Layer (UI)<br/>WinForms"]
-    UI --> BUS["Business Logic (BUS)"]
-    BUS --> DAL["Data Access (DAL)"]
-    DAL --> DB[("SQL Server")]
-    
-    subgraph DTO["Data Transfer Object (DTO)"]
-        direction TB
-        d1["UserDTO"]
-        d2["ProductDTO"]
-        d3["OrderDTO"]
+flowchart TD
+    User(("👤 Người dùng / Nhân viên"))
+
+    subgraph DTO ["DTO Layer (Xuyên suốt các tầng)"]
+        DTOClasses["UserDTO · ProductDTO · OrderDTO<br/>CustomerDTO · SupplierDTO · InventoryLogDTO"]
     end
-    
-    DTO -.- UI
-    DTO -.- BUS
-    DTO -.- DAL
+
+    subgraph UI ["1. Presentation Layer (UI_QuanLy)"]
+        Forms["Form_Login · Form_Dashboard · Form_Product<br/>Form_Order · Form_Customer · Form_Supplier · Form_Inventory"]
+    end
+
+    subgraph BUS ["2. Business Logic Layer (BUS_QuanLy)"]
+        BUSClasses["UserBUS · ProductBUS · OrderBUS<br/>CustomerBUS · SupplierBUS · DashboardBUS"]
+        Logic["Xử lý nghiệp vụ, Validation & Tính toán"]
+    end
+
+    subgraph DAL ["3. Data Access Layer (DAL_QuanLy)"]
+        DALClasses["UserDAL · ProductDAL · OrderDAL<br/>CustomerDAL · SupplierDAL · InventoryDAL"]
+        DBConn["DBConnect.cs (SQL Connection)"]
+        PdfHelper["InvoiceHelper.cs (Xuất PDF)"]
+    end
+
+    subgraph DB ["4. Database Layer"]
+        SQLServer[("🗄️ SQL Server Database<br/>(Users, Products, Orders, Customers, Inventory)")]
+    end
+
+    User --> Forms
+    Forms --> BUSClasses
+    BUSClasses --> Logic
+    Logic --> DALClasses
+    DALClasses --> DBConn
+    DBConn --> SQLServer
+    DALClasses --> PdfHelper
+
+    DTOClasses -.- Forms
+    DTOClasses -.- BUSClasses
+    DTOClasses -.- DALClasses
 ```
-
-### Giải thích các tầng
-
-| Tầng | Thư mục | Vai trò |
-|------|---------|---------|
-| **DTO** | `DTO_QuanLy/` | Truyền dữ liệu giữa các tầng |
-| **DAL** | `DAL_QuanLy/` | Truy vấn SQL Server qua ADO.NET |
-| **BUS** | `BUS_QuanLy/` | Xử lý nghiệp vụ & validation |
-| **UI** | `UI_QuanLy/` | Giao diện Windows Forms |
 
 ---
 
 ## 🛠️ Công nghệ sử dụng
 
-| Công nghệ | Mô tả |
-|-----------|-------|
-| **C# / .NET 8** | Ngôn ngữ & nền tảng chính |
-| **Windows Forms** | Framework giao diện desktop |
-| **SQL Server** | Hệ quản trị cơ sở dữ liệu |
-| **ADO.NET** | Kết nối và truy vấn database |
-| **QuestPDF** | Xuất hóa đơn dạng PDF |
+| Tầng | Công nghệ / Thư viện |
+|------|----------------------|
+| **Framework** | .NET 8 (Windows Forms) |
+| **Database** | Microsoft SQL Server (ADO.NET) |
+| **Mã hóa** | BCrypt.Net (Mật khẩu) |
+| **Xuất PDF** | QuestPDF / iText |
 
 ---
 
 ## 🚀 Cài đặt & Chạy dự án
 
 ```bash
-# 1. Clone repository
 git clone https://github.com/Tranloc12/DoAnQuanLyBanHang.git
-
-# 2. Mở file solution trong Visual Studio 2022
-DoAnQuanLyBanHang.sln
-
-# 3. Đổi Connection String trong DAL_QuanLy/DBConnect.cs
-# 4. Nhấn F5 để chạy dự án
+# Mở solution trong VS2022 -> Cấu hình DBConnect.cs -> Nhấn F5
 ```
 
 ---
@@ -108,7 +108,7 @@ DoAnQuanLyBanHang.sln
 
 ```
 DoAnQuanLyBanHang/
-├── DTO_QuanLy/                    # Data Transfer Object
+├── DTO_QuanLy/                    # Data Transfer Object Layer
 ├── DAL_QuanLy/                    # Data Access Layer
 ├── BUS_QuanLy/                    # Business Logic Layer
 ├── UI_QuanLy/                     # Windows Forms UI
