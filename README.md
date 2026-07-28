@@ -1,14 +1,15 @@
-<h1 align="center">🛒 Phần Mềm Quản Lý Bán Hàng</h1>
+<h1 align="center">💪 Gym Management System</h1>
 
 <p align="center">
-  <strong>Ứng dụng desktop quản lý bán hàng toàn diện — sản phẩm, đơn hàng, khách hàng, nhà cung cấp và thống kê doanh thu.</strong>
+  <strong>Hệ thống quản lý phòng gym toàn diện — từ đăng ký gói tập, quản lý lịch tập, đến thanh toán và chat thời gian thực.</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/C%23-.NET%208-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" />
-  <img src="https://img.shields.io/badge/Windows%20Forms-UI-0078D4?style=for-the-badge&logo=windows&logoColor=white" />
-  <img src="https://img.shields.io/badge/SQL%20Server-Database-CC2927?style=for-the-badge&logo=microsoftsqlserver&logoColor=white" />
-  <img src="https://img.shields.io/badge/Architecture-3--Layer-brightgreen?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Java-Spring%20MVC-ED8B00?style=for-the-badge&logo=spring&logoColor=white" />
+  <img src="https://img.shields.io/badge/React-18-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+  <img src="https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white" />
+  <img src="https://img.shields.io/badge/Firebase-Realtime-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" />
+  <img src="https://img.shields.io/badge/VNPay-Payment-0066CC?style=for-the-badge" />
 </p>
 
 ---
@@ -20,112 +21,69 @@
 - [Kiến trúc hệ thống](#-kiến-trúc-hệ-thống)
 - [Công nghệ sử dụng](#-công-nghệ-sử-dụng)
 - [Cài đặt & Chạy dự án](#-cài-đặt--chạy-dự-án)
-- [Cấu trúc thư mục](#-cấu-trúc-thư-mục)
 - [Thành viên nhóm](#-thành-viên-nhóm)
 
 ---
 
 ## 📌 Giới thiệu
 
-**Phần Mềm Quản Lý Bán Hàng** là ứng dụng desktop được xây dựng bằng **C# Windows Forms** trên nền tảng **.NET 8**, áp dụng mô hình kiến trúc **3 lớp (Three-Layer Architecture)** nhằm tách biệt rõ ràng giữa giao diện, nghiệp vụ và truy cập dữ liệu.
+**Gym Management System** là ứng dụng web quản lý phòng gym được xây dựng bởi **Nhóm 12**, bao gồm đầy đủ các chức năng từ quản lý thành viên, lịch tập, thanh toán trực tuyến qua **VNPay**, đến chat thời gian thực giữa hội viên và huấn luyện viên.
 
 ---
 
 ## ✨ Tính năng chính
 
-- 👤 **Quản lý người dùng**: Đăng nhập (BCrypt), phân quyền Admin / Nhân viên, lấy lại mật khẩu.
-- 📦 **Quản lý sản phẩm & Kho**: Thêm/sửa/xóa sản phẩm, danh mục, nhật ký tồn kho.
-- 🛒 **Quản lý bán hàng & Hóa đơn**: Tạo đơn hàng, xuất hóa đơn PDF (QuestPDF).
-- 📊 **Thống kê & Dashboard**: Biểu đồ doanh thu, sản phẩm bán chạy.
+- 👤 **Quản lý người dùng & Phân quyền**: Admin, Staff, Trainer, Member (JWT Token)
+- 🏋️ **Quản lý gói tập & Đăng ký**: Đăng ký, gia hạn gói tập, xem lịch sử
+- 💳 **Thanh toán VNPay**: Tích hợp cổng thanh toán trực tuyến
+- 💬 **Chat thời gian thực**: Chat 1-1 giữa HV & Trainer (Firebase)
+- 📊 **Thống kê & Báo cáo**: Doanh thu, hội viên mới (Chart.js)
 
 ---
 
-## 🏗️ Kiến trúc 3 Lớp (Chi tiết vừa vặn)
+## 🏗️ Kiến trúc hệ thống
 
 ```mermaid
-flowchart TD
-    User(("👤 Người dùng / Nhân viên"))
-
-    subgraph DTO ["DTO Layer (Xuyên suốt các tầng)"]
-        DTOClasses["UserDTO · ProductDTO · OrderDTO<br/>CustomerDTO · SupplierDTO · InventoryLogDTO"]
-    end
-
-    subgraph UI ["1. Presentation Layer (UI_QuanLy)"]
-        Forms["Form_Login · Form_Dashboard · Form_Product<br/>Form_Order · Form_Customer · Form_Supplier · Form_Inventory"]
-    end
-
-    subgraph BUS ["2. Business Logic Layer (BUS_QuanLy)"]
-        BUSClasses["UserBUS · ProductBUS · OrderBUS<br/>CustomerBUS · SupplierBUS · DashboardBUS"]
-        Logic["Xử lý nghiệp vụ, Validation & Tính toán"]
-    end
-
-    subgraph DAL ["3. Data Access Layer (DAL_QuanLy)"]
-        DALClasses["UserDAL · ProductDAL · OrderDAL<br/>CustomerDAL · SupplierDAL · InventoryDAL"]
-        DBConn["DBConnect.cs (SQL Connection)"]
-        PdfHelper["InvoiceHelper.cs (Xuất PDF)"]
-    end
-
-    subgraph DB ["4. Database Layer"]
-        SQLServer[("🗄️ SQL Server Database<br/>(Users, Products, Orders, Customers, Inventory)")]
-    end
-
-    User --> Forms
-    Forms --> BUSClasses
-    BUSClasses --> Logic
-    Logic --> DALClasses
-    DALClasses --> DBConn
-    DBConn --> SQLServer
-    DALClasses --> PdfHelper
-
-    DTOClasses -.- Forms
-    DTOClasses -.- BUSClasses
-    DTOClasses -.- DALClasses
+flowchart LR
+    User(("🌐 User")) --> Client["<b>Frontend</b><br/>ReactJS / Thymeleaf"]
+    Client --> Security["<b>Security</b><br/>JwtFilter"]
+    Security --> Controllers["<b>Controllers</b><br/>Spring MVC"]
+    Controllers --> Services["<b>Services</b><br/>Business Logic"]
+    Services --> DB[("<b>MySQL 8</b>")] & Services --> Ext["<b>Cloud Services</b><br/>Firebase / VNPay"]
 ```
 
 ---
 
 ## 🛠️ Công nghệ sử dụng
 
-| Tầng | Công nghệ / Thư viện |
-|------|----------------------|
-| **Framework** | .NET 8 (Windows Forms) |
-| **Database** | Microsoft SQL Server (ADO.NET) |
-| **Mã hóa** | BCrypt.Net (Mật khẩu) |
-| **Xuất PDF** | QuestPDF / iText |
+| Tầng | Công nghệ |
+|------|-----------|
+| **Backend** | Java 17, Spring MVC, Spring Security, Hibernate ORM, JWT, JavaMail |
+| **Frontend** | ReactJS 18, React Router v6, Axios, Tailwind CSS, ShadCN UI |
+| **Database & Services** | MySQL 8, Firebase Realtime DB, VNPay Payment API |
 
 ---
 
 ## 🚀 Cài đặt & Chạy dự án
 
 ```bash
-git clone https://github.com/Tranloc12/DoAnQuanLyBanHang.git
-# Mở solution trong VS2022 -> Cấu hình DBConnect.cs -> Nhấn F5
-```
+# Backend
+cd GymManagementApp && mvn clean package -DskipTests
 
----
-
-## 📁 Cấu trúc thư mục
-
-```
-DoAnQuanLyBanHang/
-├── DTO_QuanLy/                    # Data Transfer Object Layer
-├── DAL_QuanLy/                    # Data Access Layer
-├── BUS_QuanLy/                    # Business Logic Layer
-├── UI_QuanLy/                     # Windows Forms UI
-├── DoAnQuanLyBanHang.sln          # Solution file
-└── BaoCaoLTCSDL.docx              # Báo cáo đồ án
+# Frontend
+cd GymManagementWebb/gymmanagementweb && npm install && npm start
 ```
 
 ---
 
 ## 🤝 Thành viên nhóm
 
-| Thành viên | MSSV | GitHub |
-|------------|------|--------|
-| Trần Quang Lộc | 2251012087 | [@Tranloc12](https://github.com/Tranloc12) |
+| Thành viên | GitHub |
+|------------|--------|
+| Trần Lộc | [@Tranloc12](https://github.com/Tranloc12) |
 
 ---
 
 <p align="center">
-  Made with ❤️ by <strong>Trần Quang Lộc</strong> & Team
+  Made with ❤️ by <strong>Nhóm 12</strong>
 </p>
